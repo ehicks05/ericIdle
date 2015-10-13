@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eric Idle 0.1</title>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/lodash.min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/villager.js"></script>
+    <script src="js/unhide.js"></script>
+    <script src="js/persistence.js"></script>
+    <script src="js/clicker.js"></script>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- Ractive -->
+    <script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
+
+    <script>
+        $(document).ready(function()
+        {
+            init();
+        });
+
+        <!-- Bootstrap Tabs -->
+        $('#tabs a').click(function (e)
+        {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    </script>
+
+</head>
+<body>
+<div id="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span style="font-size: 24pt;">Eric <span style="color: forestgreen">Idle</span></span>
+            </div>
+
+            <form class="navbar-form navbar-right" role="search">
+                <span class="mainMenu"><input type="button" class="btn btn-default" value="save" onclick="saveState();"></span>
+                <span class="mainMenu"><input type="button" class="btn btn-danger" value="clear" onclick="clearState();"></span>
+                <span class="mainMenu"><input type="button" class="btn btn-default" value="debug" onclick="enableDebugging();"></span>
+            </form>
+
+        </div>
+    </nav>
+
+    <div id="mainTemplateContainer"></div>
+</div>
+</body>
+
+<script id='mainTemplate' type='text/ractive'>
+    <table style="margin: auto;">
+        <tr>
+            <td id="resourcesContainer" style="vertical-align: top; border: solid 1px black;">
+                {{>resourcesPartial}}
+            </td>
+            <td style="vertical-align: top; border: solid 1px black;">
+                <div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#buildingsTable" aria-controls="home" role="tab" data-toggle="tab">Buildings</a></li>
+                        <li role="presentation"><a href="#villagersTable" aria-controls="profile" role="tab" data-toggle="tab">Villagers</a></li>
+                        <li role="presentation"><a href="#researchTable" aria-controls="messages" role="tab" data-toggle="tab">Research</a></li>
+                    </ul>
+
+                    <!-- Tab Panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="buildingsTable">
+                            <div id="buildingsContainer">
+                                {{>buildingsPartial}}
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="villagersTable">
+                            <div id="villagersContainer">
+                                {{>villagersPartial}}
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="researchTable">
+                            <div id="technologiesContainer">
+                                {{>technologiesPartial}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</script>
+
+<script id='resourcesPartial' type='text/ractive'>
+    <table class="table table-hover" id="resourcesTable" style="text-align: center;">
+        <tbody>
+            <tr class="listHeader"><th colspan="5">Resources</th></tr>
+            <tr>
+                <th>Resource</th><th style="width: 120px;" class="cellRight">Quantity</th><th class="cellRight">Rate</th><th></th>
+            </tr>
+            {{#each game.resources}}
+                {{#if status !== 'hidden'}}
+                    <tr id="{{name}}Row">
+                        <td class="cellLeft">
+                            <img src="ico/{{image}}"/>
+                            {{name}}
+                        </td>
+                        <td class="cellRight">
+                            <span id="{{name}}">{{myRound(amount, 2)}}</span> / <span id="{{name}}Limit">{{limit}}</span>
+                        </td>
+                        <td id="{{name}}Rate" class="cellRight">{{rate}}</td>
+                        <td class="cellLeft">{{#if name === 'food'}}<input type="button" class="btn btn-default btn-sm" value="Harvest" onclick="updateResource('food', .1);"/>{{/if}}</td>
+                    </tr>
+                {{/if}}
+            {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script id='buildingsPartial' type='text/ractive'>
+    <table class="table" id="buildingsTable" style="text-align: center;">
+        <tbody>
+            <tr class="noTopBorder">
+                <th>Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
+            </tr>
+            {{#each game.buildings}}
+                {{#if status !== 'hidden'}}
+                    <tr id="{{name}}Row">
+                        <td class="cellLeft">
+                            <img src="ico/{{image}}"/>
+                            {{name}}
+                        </td>
+                        <td class="cellRight">{{amount}}</td>
+                        <td class="cellRight">
+                            {{cost.amount}}
+                            <img src="ico/{{cost.resource.image}}"/>
+                        </td>
+                        <td class="cellLeft"><input type="button" class="btn btn-default btn-sm" value="Build" onclick="buildBuilding('{{name}}');"/></td>
+                    </tr>
+                {{/if}}
+            {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script id='villagersPartial' type='text/ractive'>
+    <table class="table" id="villagersTable" style="text-align: center;">
+        <tbody>
+            <tr class="noTopBorder">
+                <th>Villagers</th><th class="cellRight">Quantity</th><th></th>
+            </tr>
+            {{#each game.jobs}}
+                {{#if status !== 'hidden'}}
+                    <tr id="{{name}}Row">
+                        <td class="cellLeft">{{name}}</td>
+                        <td class="cellRight">{{amount}}</td>
+                        <td class="cellLeft">
+                            {{#if name !== 'idlers'}}
+                                <input type="button" class="btn btn-default btn-sm" value="+" onclick="assignWorker('{{name}}');"/>
+                                <input type="button" class="btn btn-default btn-sm" value="-" onclick="unAssignWorker('{{name}}');"/>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/if}}
+            {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script id='technologiesPartial' type='text/ractive'>
+    <table class="table" id="technologiesTable" style="text-align: center;">
+        <tbody>
+            <tr class="noTopBorder">
+                <th>Technology</th><th class="cellRight">Price</th><th></th>
+            </tr>
+            {{#each game.technologies}}
+                {{#if status !== 'hidden'}}
+                    <tr id="{{name}}Row">
+                        <td class="cellLeft">{{name}}</td>
+                        <td class="cellRight">
+                            {{researchCost}}
+                            <img src="ico/coma.png"/>
+                        </td>
+                        <td class="cellLeft">
+                            <input type="button" class="btn btn-default btn-sm" value="+" onclick="makeDiscovery('{{name}}');"/>
+                        </td>
+                    </tr>
+                {{/if}}
+            {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script>
+    var ractive = new Ractive({
+        el: '#mainTemplateContainer',
+        template: '#mainTemplate',
+        magic: true,
+        data: {
+            game: game,
+            myRound: function(value, places)
+            {
+                var multiplier = Math.pow(10, places);
+                return (Math.round(value * multiplier) / multiplier);
+            }
+        }
+    });
+
+</script>
+
+</html>
