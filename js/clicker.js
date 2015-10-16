@@ -25,15 +25,7 @@ function setGameDefaults() {
     var builders = {name: 'builders', amount: 0, status: 'hidden'};
     var thinkers = {name: 'thinkers', amount: 0, status: 'hidden', production : [{resource: research, amount: 0.2}]};
 
-    var farming = {name: 'farming', discovered: false, researchCost: 5, status: 'hidden'};
-    var basicConstruction = {name: 'basicConstruction', discovered: false, researchCost: 5, status: 'hidden'};
-
-    var unlockBuildings = {unlocked: false, requirement: {resource: food, amount: 4}};
-    var unlockVillagers = {unlocked: false, requirement: {resource: villagers, amount: 1}};
-    var unlockResearch = {unlocked: false, requirement: {resource: villagers, amount: 8}};
-    var unlockFarming = {unlocked: false, requirement: {technology: farming}};
-
-    var huts = {name: 'huts', amount: 0, image: 'house.png', status: 'hidden', prereq: unlockBuildings,
+    var huts = {name: 'huts', amount: 0, image: 'tipi.png', status: 'hidden',
         cost: {resource: food, amount: 1},
         resourceLimitModifier : [{resource: villagers, amount: 2, type: 'additive'}]};
     var farms = {name: 'farms', amount: 0, image: 'barn.png', status: 'hidden',
@@ -42,7 +34,7 @@ function setGameDefaults() {
     var lumberMills = {name: 'lumberMills', amount: 0, image: 'circular-saw.png', status: 'hidden',
         cost: {resource: lumber, amount: 2},
         bonus: [{resource: lumber, amount: .1}]};
-    var storerooms = {name: 'storerooms', amount: 0, image: 'igloo.png', status: 'hidden',
+    var storerooms = {name: 'storerooms', amount: 0, image: 'block-house.png', status: 'hidden',
         cost: {resource: lumber, amount: 5},
         resourceLimitModifier: [{resource: food, amount: 5, type: 'additive'},{resource: lumber, amount: 5, type: 'additive'},{resource: stone, amount: 5, type: 'additive'}]};
     var huntingCamps = {name: 'huntingCamps', amount: 0, status: 'hidden',
@@ -56,12 +48,43 @@ function setGameDefaults() {
         cost: {resource: lumber, amount: 3},
         bonus: [{resource: research, amount: .06}]};
 
+    var farming = {name: 'farming', discovered: false, researchCost: 5, status: 'hidden', buttonLabel: 'Discover'};
+    var basicConstruction = {name: 'basicConstruction', discovered: false, researchCost: 5, status: 'hidden', buttonLabel: 'Discover'};
+
+    var unlockHuts = {unlocked: false, requirement: {resource: 'food', amount: 4}};
+    var unlockVillagers = {unlocked: false, requirement: {resource: 'villagers', amount: 1}};
+    var unlockResearch = {unlocked: false, requirement: {resource: 'villagers', amount: 8}};
+    var unlockFarming = {unlocked: false, requirement: {technology: 'farming'}};
+    var unlockBasicConstruction = {unlocked: false, requirement: {technology: 'basicConstruction'}};
+
+    // set prereqs
+    villagers.prereq = unlockVillagers;
+    idlers.prereq = unlockVillagers;
+    farmers.prereq = unlockVillagers;
+    foresters.prereq = unlockVillagers;
+    lumber.prereq = unlockVillagers;
+
+    huts.prereq = unlockHuts;
+
+    research.prereq = unlockResearch;
+    thinkers.prereq = unlockResearch;
+    farming.prereq = unlockResearch;
+    basicConstruction.prereq = unlockResearch;
+
+    farms.prereq = unlockFarming;
+
+    stone.prereq = unlockBasicConstruction;
+    lumberMills.prereq = unlockBasicConstruction;
+    storerooms.prereq = unlockBasicConstruction;
+    quarries.prereq = unlockBasicConstruction;
+    miners.prereq = unlockBasicConstruction;
+
     return {
         resources: {food: food, lumber: lumber, research: research, villagers: villagers, stone: stone},
         buildings: {huts: huts, farms: farms, lumberMills: lumberMills, storerooms: storerooms, quarries: quarries, schools: schools},
         jobs: {idlers: idlers, farmers: farmers, foresters: foresters, hunters: hunters, miners: miners, builders: builders, thinkers: thinkers},
         technologies: {farming: farming, basicConstruction: basicConstruction},
-        progress: {unlockBuildings: unlockBuildings, unlockVillagers: unlockVillagers, unlockResearch: unlockResearch, unlockFarming: unlockFarming},
+        progress: {unlockHuts: unlockHuts, unlockVillagers: unlockVillagers, unlockResearch: unlockResearch, unlockFarming: unlockFarming, unlockBasicConstruction: unlockBasicConstruction},
 
         // system
         fps: 50,
@@ -86,12 +109,12 @@ function checkProgress()
             var unlockIt = false;
             if (requirementObject.hasOwnProperty('resource'))
             {
-                if (game.resources[requirementObject.resource.name].amount >= requirementObject.amount)
+                if (game.resources[requirementObject.resource].amount >= requirementObject.amount)
                     unlockIt = true;
             }
             if (requirementObject.hasOwnProperty('technology'))
             {
-                if (game.technologies[requirementObject.technology.name].discovered = true)
+                if (game.technologies[requirementObject.technology].discovered === true)
                     unlockIt = true;
             }
 
@@ -116,6 +139,16 @@ function checkProgress()
 
 function applyProgress(progressObject)
 {
+    Object.keys(game.resources).forEach(function(resourceKey)
+    {
+        var resource = game.resources[resourceKey];
+        if (resource.hasOwnProperty('prereq'))
+        {
+            if (resource.prereq === progressObject)
+                resource.status = 'visible';
+        }
+    });
+
     Object.keys(game.buildings).forEach(function(buildingKey)
     {
         var building = game.buildings[buildingKey];
@@ -123,6 +156,26 @@ function applyProgress(progressObject)
         {
             if (building.prereq === progressObject)
                 building.status = 'visible';
+        }
+    });
+
+    Object.keys(game.jobs).forEach(function(jobKey)
+    {
+        var job = game.jobs[jobKey];
+        if (job.hasOwnProperty('prereq'))
+        {
+            if (job.prereq === progressObject)
+                job.status = 'visible';
+        }
+    });
+
+    Object.keys(game.technologies).forEach(function(key)
+    {
+        var job = game.technologies[key];
+        if (job.hasOwnProperty('prereq'))
+        {
+            if (job.prereq === progressObject)
+                job.status = 'visible';
         }
     });
 }
@@ -317,6 +370,7 @@ function makeDiscovery(technologyName)
     {
         updateResource('research', -game.technologies[technologyName].researchCost);
         game.technologies[technologyName].discovered = true;
+        game.technologies[technologyName].buttonLabel = 'Discovered!';
     }
 }
 

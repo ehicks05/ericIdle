@@ -37,7 +37,7 @@ function restoreState()
     }
 }
 
-function clearState()
+function resetState()
 {
     if(typeof(Storage)!=="undefined")
     {

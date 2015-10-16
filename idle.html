@@ -8,7 +8,6 @@
     <script src="js/lodash.min.js"></script>
     <script src="js/util.js"></script>
     <script src="js/villager.js"></script>
-    <script src="js/unhide.js"></script>
     <script src="js/persistence.js"></script>
     <script src="js/clicker.js"></script>
 
@@ -58,7 +57,7 @@
 
             <form class="navbar-form navbar-right" role="search">
                 <span class="mainMenu"><input type="button" class="btn btn-default" value="save" onclick="saveState();"></span>
-                <span class="mainMenu"><input type="button" class="btn btn-danger" value="clear" onclick="clearState();"></span>
+                <span class="mainMenu"><input type="button" class="btn btn-danger" value="reset" onclick="resetState();"></span>
                 <span class="mainMenu"><input type="button" class="btn btn-default" value="debug" onclick="enableDebugging();"></span>
             </form>
 
@@ -135,7 +134,7 @@
 </script>
 
 <script id='buildingsPartial' type='text/ractive'>
-    <table class="table" id="buildingsTable" style="text-align: center;">
+    <table class="table table-hover" id="buildingsTable" style="text-align: center;">
         <tbody>
             <tr class="noTopBorder">
                 <th>Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
@@ -149,10 +148,12 @@
                         </td>
                         <td class="cellRight">{{amount}}</td>
                         <td class="cellRight">
-                            {{cost.amount}}
-                            <img src="ico/{{cost.resource.image}}"/>
+                            <div style="background-color: #CCC;">
+                                {{cost.amount}}
+                                <img src="ico/{{cost.resource.image}}"/>
+                            </div>
                         </td>
-                        <td class="cellLeft"><input type="button" class="btn btn-default btn-sm" value="Build" onclick="buildBuilding('{{name}}');"/></td>
+                        <td class="cellLeft"><input type="button" class="btn btn-default btn-sm" value="Build" {{#if cost.amount > cost.resource.amount }}disabled{{/if}} onclick="buildBuilding('{{name}}');"/></td>
                     </tr>
                 {{/if}}
             {{/each}}
@@ -161,7 +162,7 @@
 </script>
 
 <script id='villagersPartial' type='text/ractive'>
-    <table class="table" id="villagersTable" style="text-align: center;">
+    <table class="table table-hover" id="villagersTable" style="text-align: center;">
         <tbody>
             <tr class="noTopBorder">
                 <th>Villagers</th><th class="cellRight">Quantity</th><th></th>
@@ -173,8 +174,8 @@
                         <td class="cellRight">{{amount}}</td>
                         <td class="cellLeft">
                             {{#if name !== 'idlers'}}
-                                <input type="button" class="btn btn-default btn-sm" value="+" onclick="assignWorker('{{name}}');"/>
-                                <input type="button" class="btn btn-default btn-sm" value="-" onclick="unAssignWorker('{{name}}');"/>
+                                <input type="button" class="btn btn-default btn-sm" value="+" {{#if game.jobs.idlers.amount == 0}}disabled{{/if}} onclick="assignWorker('{{name}}');"/>
+                                <input type="button" class="btn btn-default btn-sm" value="-" {{#if amount == 0}}disabled{{/if}} onclick="unAssignWorker('{{name}}');"/>
                             {{/if}}
                         </td>
                     </tr>
@@ -185,7 +186,7 @@
 </script>
 
 <script id='technologiesPartial' type='text/ractive'>
-    <table class="table" id="technologiesTable" style="text-align: center;">
+    <table class="table table-hover" id="technologiesTable" style="text-align: center;">
         <tbody>
             <tr class="noTopBorder">
                 <th>Technology</th><th class="cellRight">Price</th><th></th>
@@ -199,7 +200,7 @@
                             <img src="ico/coma.png"/>
                         </td>
                         <td class="cellLeft">
-                            <input type="button" class="btn btn-default btn-sm" value="+" onclick="makeDiscovery('{{name}}');"/>
+                            <input type="button" class="btn btn-default btn-sm" value="{{buttonLabel}}" {{#if discovered}}disabled{{/if}} onclick="makeDiscovery('{{name}}');"/>
                         </td>
                     </tr>
                 {{/if}}
