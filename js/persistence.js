@@ -53,3 +53,24 @@ function resetState()
         // Sorry! No Web Storage support..
     }
 }
+
+function exportState()
+{
+    var stateAsString = JSON.stringify(game);
+    var encodedState = btoa(stateAsString);
+    var deEncodedState = atob(encodedState);
+    var parsedGame = JSON.parse(deEncodedState);
+    console.log('exported game, food= ' + parsedGame.resources.food.amount);
+    return encodedState;
+}
+
+function importState(encodedState)
+{
+    var deEncodedState = atob(encodedState);
+    var parsedGame = JSON.parse(deEncodedState);
+
+    _.merge(game, parsedGame);
+    ractive.set({game: game});
+
+    console.log('imported game state, food: ' + parsedGame.resources.food.amount);
+}

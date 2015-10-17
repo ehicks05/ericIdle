@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Eric Idle 0.1</title>
     <script src="js/jquery-2.1.1.min.js"></script>
+
+    <link rel="stylesheet" href="js/jquery-ui/jquery-ui.min.css">
+    <!--<script src="js/jquery-ui/external/jquery/jquery.js"></script>-->
+    <script src="js/jquery-ui/jquery-ui.min.js"></script>
+
     <script src="js/lodash.min.js"></script>
-    <script src="js/util.js"></script>
     <script src="js/villager.js"></script>
     <script src="js/persistence.js"></script>
     <script src="js/clicker.js"></script>
@@ -28,6 +32,8 @@
         $(document).ready(function()
         {
             init();
+            var bootstrapButton = $.fn.button.noConflict() // return $.fn.button to previously assigned value
+            $.fn.bootstrapBtn = bootstrapButton            // give $().bootstrapBtn the Bootstrap functionality
         });
 
         <!-- Bootstrap Tabs -->
@@ -36,6 +42,60 @@
             e.preventDefault();
             $(this).tab('show');
         });
+
+        function showExportDialog(encodedGame)
+        {
+            $( "#dialog-export" ).dialog({
+                resizable: false,
+                height:'auto',
+                width:380,
+                modal: true,
+                open: function (event, ui)
+                {
+                    $( "#exportTextField").val(encodedGame);
+                },
+                buttons:
+                {
+                    Close: function()
+                    {
+                        $( this ).dialog( "close" );
+                    }
+                }
+            });
+        }
+
+        function showImportDialog()
+        {
+            $( "#dialog-import" ).dialog({
+                resizable: false,
+                height:'auto',
+                width:380,
+                modal: true,
+                open: function (event, ui)
+                {
+                    $( "#importTextField").val('');
+                },
+                buttons:
+                {
+                    Import: function()
+                    {
+                        var textAreaValue = $("#importTextField").val();
+                        importState(textAreaValue);
+                        $( this ).dialog( "close" );
+                    },
+                    Close: function()
+                    {
+                        $( this ).dialog( "close" );
+                    }
+                }
+            });
+        }
+
+        function performExport()
+        {
+            var encodedState = exportState();
+            showExportDialog(encodedState);
+        }
     </script>
 
 </head>
@@ -56,9 +116,10 @@
             </div>
 
             <form class="navbar-form navbar-right" role="search">
-                <span class="mainMenu"><input type="button" class="btn btn-default" value="save" onclick="saveState();"></span>
+                <!--<span class="mainMenu"><input type="button" class="btn btn-default" value="save" onclick="saveState();"></span>-->
+                <span class="mainMenu"><input type="button" class="btn btn-default" value="export" onclick="performExport();"></span>
+                <span class="mainMenu"><input type="button" class="btn btn-default" value="import" onclick="showImportDialog();"></span>
                 <span class="mainMenu"><input type="button" class="btn btn-danger" value="reset" onclick="resetState();"></span>
-                <span class="mainMenu"><input type="button" class="btn btn-default" value="debug" onclick="enableDebugging();"></span>
             </form>
 
         </div>
@@ -117,9 +178,9 @@
             {{#each game.resources}}
                 {{#if status !== 'hidden'}}
                     <tr id="{{name}}Row">
-                        <td class="cellLeft">
+                        <td class="cellLeft" style="white-space: nowrap;">
                             <img src="ico/{{image}}"/>
-                            {{name}}
+                            {{ camelToTitle(name) }}
                         </td>
                         <td class="cellRight">
                             <span id="{{name}}">{{myRound(amount, 2)}}</span> / <span id="{{name}}Limit">{{limit}}</span>
@@ -144,11 +205,11 @@
                     <tr id="{{name}}Row">
                         <td class="cellLeft">
                             <img src="ico/{{image}}"/>
-                            {{name}}
+                            {{ camelToTitle(name) }}
                         </td>
                         <td class="cellRight">{{amount}}</td>
                         <td class="cellRight">
-                            <div style="background-color: #CCC;">
+                            <div style="background-color: #EEE;">
                                 {{cost.amount}}
                                 <img src="ico/{{cost.resource.image}}"/>
                             </div>
@@ -170,7 +231,9 @@
             {{#each game.jobs}}
                 {{#if status !== 'hidden'}}
                     <tr id="{{name}}Row">
-                        <td class="cellLeft">{{name}}</td>
+                        <td class="cellLeft">
+                            {{ camelToTitle(name) }}
+                        </td>
                         <td class="cellRight">{{amount}}</td>
                         <td class="cellLeft">
                             {{#if name !== 'idlers'}}
@@ -194,10 +257,14 @@
             {{#each game.technologies}}
                 {{#if status !== 'hidden'}}
                     <tr id="{{name}}Row">
-                        <td class="cellLeft">{{name}}</td>
+                        <td class="cellLeft">
+                            {{ camelToTitle(name) }}
+                        </td>
                         <td class="cellRight">
-                            {{researchCost}}
-                            <img src="ico/coma.png"/>
+                            <div style="background-color: #EEE;">
+                                {{researchCost}}
+                                <img src="ico/coma.png"/>
+                            </div>
                         </td>
                         <td class="cellLeft">
                             <input type="button" class="btn btn-default btn-sm" value="{{buttonLabel}}" {{#if discovered}}disabled{{/if}} onclick="makeDiscovery('{{name}}');"/>
@@ -220,10 +287,30 @@
             {
                 var multiplier = Math.pow(10, places);
                 return (Math.round(value * multiplier) / multiplier);
+            },
+            camelToTitle : function(value)
+            {
+                var result = value.replace( /([A-Z])/g, " $1" );
+                var finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+                return finalResult;
             }
         }
     });
 
 </script>
+
+<!-- Export Dialog -->
+<div style="display:none;">
+    <div id="dialog-export" title="Export Save">
+        <textarea id="exportTextField" rows="12" cols="36" readonly></textarea>
+    </div>
+</div>
+
+<!-- Import Dialog -->
+<div style="display:none;">
+    <div id="dialog-import" title="Import Save">
+        <textarea id="importTextField" rows="12" cols="36"></textarea>
+    </div>
+</div>
 
 </html>

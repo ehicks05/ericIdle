@@ -125,16 +125,6 @@ function checkProgress()
             }
         }
     });
-
-    if (game.progress.unlockBuildings === false && game.resources.food.amount > 2.2)
-    {
-        game.progress.unlockBuildings = true;
-        $('#buildingsTabButton').addClass('selected');
-
-        unHide('buildingsTabButton');
-        unHide('buildingsTable');
-        unHide('hutsRow');
-    }
 }
 
 function applyProgress(progressObject)
@@ -184,7 +174,6 @@ game.run = function gameLoop()
 {
     if (Date.now() - game.timeOfLastTick >= game.msPerTick)
     {
-        UnHideUIElements();
         updateResources();
         updateResourceLimits();
         if (isCreateVillager())
@@ -395,4 +384,11 @@ function buildBuilding(buildingName)
         if (building.name === 'quarries' && building.amount === 1)
             game.progress.minersUnlocked = true;
     }
+}
+
+// UTILITY
+function myRound(value, places)
+{
+    var multiplier = Math.pow(10, places);
+    return (Math.round(value * multiplier) / multiplier);
 }
