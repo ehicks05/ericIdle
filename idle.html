@@ -32,8 +32,8 @@
         $(document).ready(function()
         {
             init();
-            var bootstrapButton = $.fn.button.noConflict() // return $.fn.button to previously assigned value
-            $.fn.bootstrapBtn = bootstrapButton            // give $().bootstrapBtn the Bootstrap functionality
+            var bootstrapButton = $.fn.button.noConflict(); // return $.fn.button to previously assigned value
+            $.fn.bootstrapBtn = bootstrapButton;            // give $().bootstrapBtn the Bootstrap functionality
         });
 
         <!-- Bootstrap Tabs -->
@@ -96,6 +96,22 @@
             var encodedState = exportState();
             showExportDialog(encodedState);
         }
+
+        function pause()
+        {
+            if (game.paused)
+            {
+                game._intervalId = setInterval(game.run, 1000 / game.fps);
+                game.paused = false;
+                $('#pauseButton').val('pause');
+            }
+            else
+            {
+                window.clearInterval(game._intervalId);
+                game.paused = true;
+                $('#pauseButton').val('resume');
+            }
+        }
     </script>
 
 </head>
@@ -117,6 +133,7 @@
 
             <form class="navbar-form navbar-right" role="search">
                 <!--<span class="mainMenu"><input type="button" class="btn btn-default" value="save" onclick="saveState();"></span>-->
+                <span class="mainMenu"><input type="button" id="pauseButton" class="btn btn-default" value="pause" onclick="pause();"></span>
                 <span class="mainMenu"><input type="button" class="btn btn-default" value="export" onclick="performExport();"></span>
                 <span class="mainMenu"><input type="button" class="btn btn-default" value="import" onclick="showImportDialog();"></span>
                 <span class="mainMenu"><input type="button" class="btn btn-danger" value="reset" onclick="resetState();"></span>

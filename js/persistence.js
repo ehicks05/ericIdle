@@ -33,7 +33,7 @@ function restoreState()
     }
     else
     {
-        // Sorry! No Web Storage support..
+        console.log('Sorry! No Web Storage support...');
     }
 }
 
@@ -50,7 +50,7 @@ function resetState()
     }
     else
     {
-        // Sorry! No Web Storage support..
+        console.log('Sorry! No Web Storage support...');
     }
 }
 

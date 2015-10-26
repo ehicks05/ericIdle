@@ -6,6 +6,7 @@ function init()
         restoreState();
 
     game._intervalId = setInterval(game.run, 1000 / game.fps);
+    game.paused = false;
 }
 
 function setGameDefaults() {
@@ -51,7 +52,7 @@ function setGameDefaults() {
     var farming = {name: 'farming', discovered: false, researchCost: 5, status: 'hidden', buttonLabel: 'Discover'};
     var basicConstruction = {name: 'basicConstruction', discovered: false, researchCost: 5, status: 'hidden', buttonLabel: 'Discover'};
 
-    var unlockHuts = {unlocked: false, requirement: {resource: 'food', amount: 4}};
+    var unlockHuts = {unlocked: false, requirement: {resource: 'food', amount: 1}};
     var unlockVillagers = {unlocked: false, requirement: {resource: 'villagers', amount: 1}};
     var unlockResearch = {unlocked: false, requirement: {resource: 'villagers', amount: 8}};
     var unlockFarming = {unlocked: false, requirement: {technology: 'farming'}};
@@ -341,10 +342,10 @@ function killWorkersFromStarvation()
     }
 }
 
-// Preconditions: name must be id of html element and name of member of game object...
 function updateResource(name, amount)
 {
     var newAmount = game.resources[name].amount + amount;
+    newAmount = myRound(newAmount, 4);
     if (newAmount > game.resources[name].limit)
         game.resources[name].amount = game.resources[name].limit; // set it to the limit
     else
