@@ -284,7 +284,7 @@
                             </div>
                         </td>
                         <td class="cellLeft">
-                            <input type="button" class="btn btn-default btn-sm" value="{{buttonLabel}}" {{#if discovered}}disabled{{/if}} onclick="makeDiscovery('{{name}}');"/>
+                            <input type="button" class="btn btn-default btn-sm" value="{{buttonLabel}}" {{#if discovered || (researchCost > game.resources.research.amount)}}disabled{{/if}} onclick="makeDiscovery('{{name}}');"/>
                         </td>
                     </tr>
                 {{/if}}
