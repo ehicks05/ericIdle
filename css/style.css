@@ -7,7 +7,7 @@
 body {margin:auto; font-family: openSans, sans-serif;}
 img {height: 30px; vertical-align: middle;}
 
-#container {max-width: 740px; margin: auto;}
+#container {max-width: 940px; margin: auto;}
 #clickCount {padding: 1px; border: 1px solid black;}
 
 .hidden {display: none;}

@@ -274,9 +274,9 @@ function getDefaultGameState()
     }
 
     const idlers = new Job('idlers', 'watch.png', 'unlockVillagers');
-    const farmers = new Job('farmers', 'watch.png', 'unlockVillagers', [{resource: food, amount: 0.5}]);
-    const thinkers = new Job('thinkers', 'watch.png', 'unlockVillagers', [{resource: research, amount: 0.2}]);
-    const foresters = new Job('foresters', 'watch.png', 'unlockWoodConstruction', [{resource: lumber, amount: 0.3}]);
+    const farmers = new Job('farmers', 'farmer.png', 'unlockVillagers', [{resource: food, amount: 0.5}]);
+    const thinkers = new Job('thinkers', 'think.png', 'unlockVillagers', [{resource: research, amount: 0.2}]);
+    const foresters = new Job('foresters', 'hand-saw.png', 'unlockWoodConstruction', [{resource: lumber, amount: 0.3}]);
     const hunters = new Job('hunters', 'watch.png', 'unlockHunting');
     const miners = new Job('miners', 'watch.png', 'unlockStoneConstruction', [{resource: stone, amount: 0.1}]);
     const builders = new Job('builders', 'watch.png', 'unlockBuilders');
@@ -317,6 +317,7 @@ function getDefaultGameState()
         this.discovered = false;
         this.researchCost = researchCost;
         this.status = 'hidden';
+        this.image = 'enlightenment.png';
         this.buttonLabel = 'Discover';
         this.prereq = prereq;
     }

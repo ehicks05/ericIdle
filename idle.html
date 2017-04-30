@@ -98,7 +98,9 @@
                                     </tr>
                                     <tr v-for="building in game.buildings" v-if="building.status !== 'hidden'" v-bind:id="building.name + 'Row'">
                                         <td class="cellLeft">
-                                            <img v-bind:src="'ico/' + building.image" style="height: 64px;"/>
+                                            <a tabindex="0" data-html="true" data-toggle="popover" :data-title="getBuildingPopoverTitle(building.name)" :data-content="getBuildingPopoverContent(building.name)" data-trigger="hover">
+                                                <img v-bind:src="'ico/' + building.image" style="height: 64px;"/>
+                                            </a>
                                             {{ camelToTitle(building.name) }}
                                         </td>
                                         <td class="cellRight">{{building.amount}}</td>
@@ -149,12 +151,13 @@
                                     </tr>
                                     <tr v-for="tech in game.technologies" v-if="tech.status !== 'hidden'" v-bind:id="tech.name + 'Row'">
                                         <td class="cellLeft">
+                                            <img v-bind:src="'ico/' + tech.image" style="height: 64px;"/>
                                             {{ camelToTitle(tech.name) }}
                                         </td>
                                         <td class="cellRight">
                                             <div style="background-color: #EEE;">
                                                 {{tech.researchCost}}
-                                                <img v-bind:src="'ico/coma.png'" style="height: 64px;"/>
+                                                <img v-bind:src="'ico/' + game.resources['research'].image"/>
                                             </div>
                                         </td>
                                         <td class="cellLeft">
@@ -196,6 +199,10 @@
 <script src="js/util.js"></script>
 <script src="js/game.js"></script>
 <script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    });
+
     const game = getDefaultGameState();
 
     if (localStorage['persistedGame'])
@@ -262,6 +269,35 @@
                     updateResource(game, 'research', -game.technologies[technologyName].researchCost);
                     game.technologies[technologyName].discovered = true;
                 }
+            },
+            getBuildingPopoverTitle: function(buildingName){
+                const building = game.buildings[buildingName];
+                return '<div style="font-weight: bold;">' + camelToTitle(buildingName) + '</div>';
+            },
+            getBuildingPopoverContent: function(buildingName){
+                const building = game.buildings[buildingName];
+                let content = '';
+                if (building.bonus.length > 0)
+                {
+                    content += '<table class="table table-hover"><tr><td colspan="2">Production Bonuses</td></tr><tr><td>Resource</td><td>Amount</td></tr>';
+                    building.bonus.forEach(function (bonus)
+                    {
+                        content += '<tr><td>' + bonus.resource.name + '</td><td>+' + (bonus.amount * 100) + '%</td></tr>';
+                    });
+                    content += '</table>';
+                }
+
+                if (building.resourceLimitModifier.length > 0)
+                {
+                    content += '<table class="table table-hover"><tr><td colspan="3">Resource Limit Mods</td></tr><tr><td>Resource</td><td>Amount</td><td>Type</td></tr>';
+                    building.resourceLimitModifier.forEach(function (limitModifier)
+                    {
+                        content += '<tr><td>' + limitModifier.resource.name + '</td><td>' + limitModifier.amount + '</td><td>' + limitModifier.type + '</td></tr>';
+                    });
+                    content += '</table>';
+                }
+
+                return content;
             },
             reset: function() {
                 const intervalId = game._intervalId;
