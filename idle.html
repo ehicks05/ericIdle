@@ -105,10 +105,10 @@
                                         </td>
                                         <td class="cellRight">{{building.amount}}</td>
                                         <td class="cellRight">
-                                            <div style="background-color: #EEE;">
-                                                {{building.cost.amount}}
-                                                <img v-bind:src="'ico/' + building.cost.resource.image"/>
-                                            </div>
+                                            <resource-cost
+                                                    v-bind:coster="building"
+                                                    v-bind:id="building.name">
+                                            </resource-cost>
                                         </td>
                                         <td class="cellLeft">
                                             <input type="button" class="btn btn-default btn-sm" value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
@@ -155,15 +155,15 @@
                                             {{ camelToTitle(tech.name) }}
                                         </td>
                                         <td class="cellRight">
-                                            <div style="background-color: #EEE;">
-                                                {{tech.researchCost}}
-                                                <img v-bind:src="'ico/' + game.resources['research'].image"/>
-                                            </div>
+                                            <resource-cost
+                                                    v-bind:coster="tech"
+                                                    v-bind:id="tech.name">
+                                            </resource-cost>
                                         </td>
                                         <td class="cellLeft">
                                             <input type="button" class="btn btn-default btn-sm"
                                                    v-bind:value="tech.discovered ? 'Discovered' : 'Discover'"
-                                                   v-bind:disabled="tech.discovered || (tech.researchCost > game.resources.research.amount)"
+                                                   v-bind:disabled="tech.discovered || (tech.cost.amount > game.resources.research.amount)"
                                                    v-on:click="makeDiscovery(tech.name)"/>
                                         </td>
                                     </tr>
@@ -216,6 +216,16 @@
 
     game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
 
+
+    // Define a new component called resource-cost
+    Vue.component('resource-cost', {
+        props: ['coster'],
+        template: '<div style="background-color: #EEE;">\n' +
+        '{{coster.cost.amount}}\n' +
+        '<img v-bind:src="\'ico/\' + coster.cost.resource.image"/>\n' +
+        '</div>'
+    });
+
     const vm = new Vue({
         el: '#container',
         data: {
@@ -263,10 +273,10 @@
                 }
             },
             makeDiscovery: function(technologyName){
-                const canAfford = game.resources.research.amount >= game.technologies[technologyName].researchCost;
+                const canAfford = game.resources.research.amount >= game.technologies[technologyName].cost.amount;
                 if (canAfford)
                 {
-                    updateResource(game, 'research', -game.technologies[technologyName].researchCost);
+                    updateResource(game, 'research', -game.technologies[technologyName].cost.amount);
                     game.technologies[technologyName].discovered = true;
                 }
             },

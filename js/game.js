@@ -194,7 +194,8 @@ function isCreateVillager(game)
         }
 
         const timeSinceLastVillagerInMS = Date.now() - game.timeOfLastVillagerCreation;
-        const rand = Math.random() * 50000;
+
+        const rand = Math.random() * (20 * 1000);
 
         return rand < timeSinceLastVillagerInMS;
     }
@@ -311,21 +312,21 @@ function getDefaultGameState()
     const smithies = new Building('smithies', 'watch.png', 'unlockSmithies', {resource: lumber, amount: 3}, [], []);
     const schools = new Building('schools', 'greek-temple.png', 'unlockSchools', {resource: lumber, amount: 3}, [], [{resource: research, amount: 0.06}]);
 
-    function Technology(name, researchCost, prereq)
+    function Technology(name, cost, prereq)
     {
         this.name = name;
         this.discovered = false;
-        this.researchCost = researchCost;
+        this.cost = cost;
         this.status = 'hidden';
         this.image = 'enlightenment.png';
         this.buttonLabel = 'Discover';
         this.prereq = prereq;
     }
 
-    const farming = new Technology('farming', 5, 'unlockLevelOneTech');
-    const woodConstruction = new Technology('woodConstruction', 5, 'unlockLevelOneTech');
-    const stoneConstruction = new Technology('stoneConstruction', 5, 'unlockLevelOneTech');
-    const wheel = new Technology('wheel', 5, 'unlockLevelOneTech');
+    const farming = new Technology('farming', {resource: research, amount: 1}, 'unlockLevelOneTech');
+    const woodConstruction = new Technology('woodConstruction', {resource: research, amount: 2}, 'unlockLevelOneTech');
+    const stoneConstruction = new Technology('stoneConstruction', {resource: research, amount: 5}, 'unlockLevelOneTech');
+    const wheel = new Technology('wheel', {resource: research, amount: 5}, 'unlockLevelOneTech');
 
     function Prereq(name, requirement)
     {
@@ -336,7 +337,7 @@ function getDefaultGameState()
 
     const unlockHuts = new Prereq('unlockHuts', {resource: 'food', amount: 1});
     const unlockVillagers = new Prereq('unlockVillagers', {resource: 'villagers', amount: 1});
-    const unlockLevelOneTech = new Prereq('unlockLevelOneTech', {resource: 'research', amount: 2});
+    const unlockLevelOneTech = new Prereq('unlockLevelOneTech', {resource: 'research', amount: 1});
     const unlockFarming = new Prereq('unlockFarming', {technology: 'farming'});
     const unlockWoodConstruction = new Prereq('unlockWoodConstruction', {technology: 'woodConstruction'});
     const unlockStoneConstruction = new Prereq('unlockStoneConstruction', {technology: 'stoneConstruction'});
