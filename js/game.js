@@ -60,7 +60,7 @@ function createVillager(game)
 {
     let spacesAvailable = game.resources.villagers.limit - game.resources.villagers.amount;
 
-    let villagersToCreate = Math.floor(Math.sqrt(game.resources.villagers.amount)) - 3;
+    let villagersToCreate = Math.floor(Math.sqrt(game.resources.villagers.amount)) - 1;
     villagersToCreate = Math.min(villagersToCreate, spacesAvailable);
     if (villagersToCreate < 1)
         villagersToCreate = 1;

@@ -14,9 +14,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script
 
     <!-- JQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -26,154 +26,154 @@
 </head>
 <body>
 <div id="container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Eric <span style="color: forestgreen">Idle</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <span style="font-size: 24pt;">Eric <span style="color: forestgreen">Idle</span></span>
-            </div>
-
-            <form class="navbar-form navbar-right" role="search">
-                <span class="mainMenu"><input type="button" class="btn btn-default" value="pause" v-on:click="pause()" id="pauseButton"></span>
-                <span class="mainMenu"><input type="button" class="btn btn-default" value="export" v-on:click="showExport()"></span>
-                <span class="mainMenu"><input type="button" class="btn btn-default" value="import" v-on:click="showImport()"></span>
-                <span class="mainMenu"><input type="button" class="btn btn-danger" value="reset" v-on:click="reset()"></span>
-            </form>
-
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="pause" v-on:click="pause()" id="pauseButton" />
+                <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="export" v-on:click="showExport()" />
+                <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="import" v-on:click="showImport()" />
+                <input type="button" class="mx-1 btn btn-outline-danger btn-sm" value="reset" v-on:click="reset()" />
+            </ul>
         </div>
     </nav>
 
-    <div class="col-sm-6" id="resourcesContainer" style="vertical-align: top;">
-        <table class="table table-hover" style="text-align: center;">
-            <tr class="listHeader"><td colspan="6">Resources</td></tr>
-            <tr>
-                <td>Icon</td><td>Name</td><td>Amount</td><td>Limit</td><td>Rate</td><td></td>
-            </tr>
-            <tr v-for="resource in game.resources" v-if="resource.status !== 'hidden'" v-bind:id="resource.name + 'Row'">
-                <td>
-                    <img v-bind:src="'ico/' + resource.image" style="height: 64px;"/>
-                </td>
-                <td>
-                    {{ camelToTitle(resource.name) }}
-                </td>
-                <td>
-                    <span v-bind:id="resource.name">{{myRound(resource.amount, 2)}}</span>
-                </td>
-                <td>
-                    <span v-bind:id="resource.name + 'Limit'">{{resource.limit}}</span>
-                </td>
-                <td v-bind:id="resource.name + 'Rate'">
-                    {{resource.rate}}
-                    <br>
-                    <button class="btn btn-default btn-sm" v-if="resource.name === 'food'" v-on:click="harvestFood">Harvest</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="col-sm-6" style="vertical-align: top;">
-        <div>
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#buildingsTable" aria-controls="home" role="tab" data-toggle="tab">Buildings</a></li>
-                <li role="presentation"><a href="#villagersTable" aria-controls="profile" role="tab" data-toggle="tab">Villagers</a></li>
-                <li role="presentation"><a href="#researchTable" aria-controls="messages" role="tab" data-toggle="tab">Research</a></li>
-            </ul>
+    <div class="row" style="max-width: 950px; margin:auto;">
 
-            <!-- Tab Panes -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="buildingsTable">
-                    <div id="buildingsContainer">
-                        <table class="table table-hover" style="text-align: center;">
-                            <tbody>
-                            <tr class="noTopBorder">
-                                <th>Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
-                            </tr>
-                            <tr v-for="building in game.buildings" v-if="building.status !== 'hidden'" v-bind:id="building.name + 'Row'">
-                                <td class="cellLeft">
-                                    <a tabindex="0" data-html="true" data-toggle="popover" :data-title="getBuildingPopoverTitle(building.name)" :data-content="getBuildingPopoverContent(building.name)" data-trigger="hover">
-                                        <img v-bind:src="'ico/' + building.image" style="height: 64px;"/>
-                                    </a>
-                                    {{ camelToTitle(building.name) }}
-                                </td>
-                                <td class="cellRight">{{building.amount}}</td>
-                                <td class="cellRight">
-                                    <resource-cost
-                                            v-bind:coster="building"
-                                            v-bind:id="building.name">
-                                    </resource-cost>
-                                </td>
-                                <td class="cellLeft">
-                                    <input type="button" class="btn btn-default btn-sm" value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+        <div class="col-md-6" id="resourcesContainer" style="vertical-align: top;">
+            <table class="table table-hover" style="text-align: center;">
+                <tr class="listHeader"><td colspan="6">Resources</td></tr>
+                <tr>
+                    <td>Icon</td><td>Name</td><td>Amount</td><td>Limit</td><td>Rate</td><td></td>
+                </tr>
+                <tr v-for="resource in game.resources" v-if="resource.status !== 'hidden'" v-bind:id="resource.name + 'Row'">
+                    <td>
+                        <img v-bind:src="'ico/' + resource.image" style="height: 48px;"/>
+                    </td>
+                    <td>
+                        {{ camelToTitle(resource.name) }}
+                    </td>
+                    <td>
+                        <span v-bind:id="resource.name">{{myRound(resource.amount, 2)}}</span>
+                    </td>
+                    <td>
+                        <span v-bind:id="resource.name + 'Limit'">{{resource.limit}}</span>
+                    </td>
+                    <td v-bind:id="resource.name + 'Rate'">
+                        {{resource.rate}}
+                        <br>
+                        <button class="btn btn-outline-primary btn-sm" v-if="resource.name === 'food'" v-on:click="harvestFood">Harvest</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6" style="vertical-align: top;">
+            <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-pills nav-fill mb-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="buildings-tab" href="#buildingsTable" aria-controls="buildingsTable" aria-selected="true" role="tab" data-toggle="pill">Buildings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="villagers-tab" href="#villagersTable" aria-controls="villagersTable" aria-selected="false" role="tab" data-toggle="pill">Villagers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="research-tab" href="#researchTable" aria-controls="researchTable" aria-selected="false" role="tab" data-toggle="tab">Research</a>
+                    </li>
+                </ul>
+
+                <!-- Tab Panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade show active" id="buildingsTable" aria-labelledby="buildings-tab">
+                        <div id="buildingsContainer">
+                            <table class="table table-hover" style="text-align: center;">
+                                <tbody>
+                                <tr class="noTopBorder">
+                                    <th>Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
+                                </tr>
+                                <tr v-for="building in game.buildings" v-if="building.status !== 'hidden'" v-bind:id="building.name + 'Row'">
+                                    <td class="cellLeft">
+                                        <a tabindex="0" data-html="true" data-toggle="popover" :data-title="getBuildingPopoverTitle(building.name)" :data-content="getBuildingPopoverContent(building.name)" data-trigger="hover">
+                                            <img v-bind:src="'ico/' + building.image" style="height: 48px;"/>
+                                        </a>
+                                        {{ camelToTitle(building.name) }}
+                                    </td>
+                                    <td class="cellRight">{{building.amount}}</td>
+                                    <td class="cellRight">
+                                        <resource-cost
+                                                v-bind:coster="building"
+                                                v-bind:id="building.name">
+                                        </resource-cost>
+                                    </td>
+                                    <td class="cellLeft">
+                                        <input type="button" class="btn btn-outline-secondary btn-sm" value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="villagersTable">
-                    <div id="villagersContainer">
-                        <table class="table table-hover" style="text-align: center;">
-                            <tbody>
-                            <tr class="noTopBorder">
-                                <th>Villagers</th><th class="cellRight">Quantity</th><th></th>
-                            </tr>
-                            <tr v-for="job in game.jobs" v-if="job.status !== 'hidden'" v-bind:id="job.name + 'Row'">
-                                <td class="cellLeft">
-                                    <img v-bind:src="'ico/' + job.image" style="height: 64px;"/>
-                                    {{ camelToTitle(job.name) }}
-                                </td>
-                                <td class="cellRight">{{job.amount}}</td>
-                                <td class="cellLeft">
-                                    <span v-if="job.name !== 'idlers'">
-                                        <input type="button" class="btn btn-default btn-sm" value="+" v-bind:disabled="game.jobs.idlers.amount == 0" v-on:click="assignWorker(job.name)"/>
-                                        <input type="button" class="btn btn-default btn-sm" value="-" v-bind:disabled="job.amount == 0" v-on:click="unAssignWorker(job.name)"/>
-                                    </span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div role="tabpanel" class="tab-pane fade" id="villagersTable" aria-labelledby="villagers-tab">
+                        <div id="villagersContainer">
+                            <table class="table table-hover" style="text-align: center;">
+                                <tbody>
+                                <tr class="noTopBorder">
+                                    <th>Villagers</th><th class="cellRight">Quantity</th><th></th>
+                                </tr>
+                                <tr v-for="job in game.jobs" v-if="job.status !== 'hidden'" v-bind:id="job.name + 'Row'">
+                                    <td class="cellLeft">
+                                        <img v-bind:src="'ico/' + job.image" style="height: 48px;"/>
+                                        {{ camelToTitle(job.name) }}
+                                    </td>
+                                    <td class="cellRight">{{job.amount}}</td>
+                                    <td class="cellLeft">
+                                        <span v-if="job.name !== 'idlers'">
+                                            <input type="button" class="btn btn-outline-secondary btn-sm" value="+" v-bind:disabled="game.jobs.idlers.amount == 0" v-on:click="assignWorker(job.name)"/>
+                                            <input type="button" class="btn btn-outline-secondary btn-sm" value="-" v-bind:disabled="job.amount == 0" v-on:click="unAssignWorker(job.name)"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="researchTable">
-                    <div id="technologiesContainer">
-                        <table class="table table-hover" id="technologiesTable" style="text-align: center;">
-                            <tbody>
-                            <tr class="noTopBorder">
-                                <th>Technology</th><th class="cellRight">Price</th><th></th>
-                            </tr>
-                            <tr v-for="tech in game.technologies" v-if="tech.status !== 'hidden'" v-bind:id="tech.name + 'Row'">
-                                <td class="cellLeft">
-                                    <img v-bind:src="'ico/' + tech.image" style="height: 64px;"/>
-                                    {{ camelToTitle(tech.name) }}
-                                </td>
-                                <td class="cellRight">
-                                    <resource-cost
-                                            v-bind:coster="tech"
-                                            v-bind:id="tech.name">
-                                    </resource-cost>
-                                </td>
-                                <td class="cellLeft">
-                                    <input type="button" class="btn btn-default btn-sm"
-                                           v-bind:value="tech.discovered ? 'Discovered' : 'Discover'"
-                                           v-bind:disabled="tech.discovered || (tech.cost.amount > game.resources.research.amount)"
-                                           v-on:click="makeDiscovery(tech.name)"/>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div role="tabpanel" class="tab-pane fade" id="researchTable" aria-labelledby="research-tab">
+                        <div id="technologiesContainer">
+                            <table class="table table-hover" id="technologiesTable" style="text-align: center;">
+                                <tbody>
+                                <tr class="noTopBorder">
+                                    <th>Technology</th><th class="cellRight">Price</th><th></th>
+                                </tr>
+                                <tr v-for="tech in game.technologies" v-if="tech.status !== 'hidden'" v-bind:id="tech.name + 'Row'">
+                                    <td class="cellLeft">
+                                        <img v-bind:src="'ico/' + tech.image" style="height: 48px;"/>
+                                        {{ camelToTitle(tech.name) }}
+                                    </td>
+                                    <td class="cellRight">
+                                        <resource-cost
+                                                v-bind:coster="tech"
+                                                v-bind:id="tech.name">
+                                        </resource-cost>
+                                    </td>
+                                    <td class="cellLeft">
+                                        <input type="button" class="btn btn-outline-secondary btn-sm"
+                                               v-bind:value="tech.discovered ? 'Discovered' : 'Discover'"
+                                               v-bind:disabled="tech.discovered || (tech.cost.amount > game.resources.research.amount)"
+                                               v-on:click="makeDiscovery(tech.name)"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 <!-- Export Dialog -->
@@ -216,7 +216,7 @@
     // Define a new component called resource-cost
     Vue.component('resource-cost', {
         props: ['coster'],
-        template: '<div style="background-color: #EEE;">\n' +
+        template: '<div style="white-space:nowrap;background-color: #EEE;">\n' +
         '{{coster.cost.amount}}\n' +
         '<img v-bind:src="\'ico/\' + coster.cost.resource.image"/>\n' +
         '</div>'
@@ -345,13 +345,13 @@
         if (!game._intervalId)
         {
             game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
-            $('#pauseButton').val('pause');
+            $('#pauseButton').text('pause').val('pause');
         }
         else
         {
             window.clearInterval(game._intervalId);
             game._intervalId = null;
-            $('#pauseButton').val('resume');
+            $('#pauseButton').text('resume').val('resume');
         }
     }
 
