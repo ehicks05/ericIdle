@@ -16,7 +16,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
     <!-- JQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -48,7 +48,7 @@
             <table class="table table-hover" style="text-align: center;">
                 <tr class="listHeader"><td colspan="6">Resources</td></tr>
                 <tr>
-                    <td>Icon</td><td>Name</td><td>Amount</td><td>Limit</td><td>Rate</td><td></td>
+                    <th>Icon</th><th>Name</th><th>Amount</th><th>Limit</th><th>Rate</th>
                 </tr>
                 <tr v-for="resource in game.resources" v-if="resource.status !== 'hidden'" v-bind:id="resource.name + 'Row'">
                     <td>
@@ -74,7 +74,7 @@
         <div class="col-md-6" style="vertical-align: top;">
             <div>
                 <!-- Nav tabs -->
-                <ul class="nav nav-pills nav-fill mb-3" role="tablist">
+                <ul class="nav nav-pills nav-fill mt-1" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="buildings-tab" href="#buildingsTable" aria-controls="buildingsTable" aria-selected="true" role="tab" data-toggle="pill">Buildings</a>
                     </li>
@@ -93,7 +93,7 @@
                             <table class="table table-hover" style="text-align: center;">
                                 <tbody>
                                 <tr class="noTopBorder">
-                                    <th>Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
+                                    <th class="cellLeft">Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
                                 </tr>
                                 <tr v-for="building in game.buildings" v-if="building.status !== 'hidden'" v-bind:id="building.name + 'Row'">
                                     <td class="cellLeft">
@@ -122,7 +122,7 @@
                             <table class="table table-hover" style="text-align: center;">
                                 <tbody>
                                 <tr class="noTopBorder">
-                                    <th>Villagers</th><th class="cellRight">Quantity</th><th></th>
+                                    <th class="cellLeft">Villagers</th><th class="cellRight">Quantity</th><th></th>
                                 </tr>
                                 <tr v-for="job in game.jobs" v-if="job.status !== 'hidden'" v-bind:id="job.name + 'Row'">
                                     <td class="cellLeft">
@@ -146,7 +146,7 @@
                             <table class="table table-hover" id="technologiesTable" style="text-align: center;">
                                 <tbody>
                                 <tr class="noTopBorder">
-                                    <th>Technology</th><th class="cellRight">Price</th><th></th>
+                                    <th class="cellLeft">Technology</th><th class="cellRight">Price</th><th></th>
                                 </tr>
                                 <tr v-for="tech in game.technologies" v-if="tech.status !== 'hidden'" v-bind:id="tech.name + 'Row'">
                                     <td class="cellLeft">
