@@ -69,9 +69,10 @@
                 <td>
                     <span v-bind:id="resource.name + 'Limit'">{{resource.limit}}</span>
                 </td>
-                <td v-bind:id="resource.name + 'Rate'">{{resource.rate}}</td>
-                <td>
-                    <button class="btn btn-default btn-sm" v-if="resource.name === 'food'" v-on:click="harvestFood">Harvest Food</button>
+                <td v-bind:id="resource.name + 'Rate'">
+                    {{resource.rate}}
+                    <br>
+                    <button class="btn btn-default btn-sm" v-if="resource.name === 'food'" v-on:click="harvestFood">Harvest</button>
                 </td>
             </tr>
         </table>
