@@ -31,28 +31,10 @@
                 <!-- Tab Panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane fade show active" id="resourcesTable" aria-labelledby="resources-tab">
-                        <div id="resourcesContainer">
-                            <table class="table table-hover" style="text-align: center;">
-                                <tr>
-                                    <th class="cellLeft">Resource</th><th class="cellRight">Quantity</th><th class="cellRight">Rate</th>
-                                </tr>
-                                <tr v-for="resource in game.resources" v-if="resource.status !== 'hidden'" v-bind:id="resource.name + 'Row'">
-                                    <td class="cellLeft">
-                                        <img v-bind:src="'ico/' + resource.image" style="height: 48px;"/>
-                                        <br>{{ camelToTitle(resource.name) }}
-                                    </td>
-                                    <td class="cellRight">
-                                        <span v-bind:id="resource.name">{{myRound(resource.amount, 2)}}</span>
-                                        /
-                                        <span v-bind:id="resource.name + 'Limit'">{{resource.limit}}</span>
-                                    </td>
-                                    <td class="cellRight" v-bind:id="resource.name + 'Rate'">
-                                        <button class="btn btn-outline-primary btn-sm" v-if="resource.name === 'food'" v-on:click="harvestFood">Harvest</button>
-                                        {{resource.rate}}
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <resource-table
+                                v-bind:resources="game.resources"
+                                v-on:harvestFood="harvestFood">
+                        </resource-table>
                     </div>
                 </div>
             </div>
@@ -177,6 +159,7 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import _ from 'lodash'
     import $ from 'jquery'
 //    import 'jquery-ui'
@@ -190,6 +173,12 @@
 
     import * as util from './util.js'
     import * as gameLogic from './game.js'
+
+    import ResourceCost from './ResourceCost.vue'
+    import ResourceTable from "./ResourceTable.vue";
+
+    Vue.component('resource-cost', ResourceCost);
+    Vue.component('resource-table', ResourceTable);
 
     const game = gameLogic.getDefaultGameState();
 
@@ -205,6 +194,7 @@
     game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
 
     export default {
+        components: {ResourceTable},
         name: 'app',
         data () {
             return {
