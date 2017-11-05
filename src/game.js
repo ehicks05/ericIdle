@@ -1,4 +1,6 @@
-function updateResources(game)
+import * as util from './util.js'
+
+export function updateResources(game)
 {
     Object.keys(game.resources).forEach(function(resourceKey) {
         let totalBonusMultiFromBuildings = 0;
@@ -43,7 +45,7 @@ function updateResources(game)
 
         // apply arbitrary global multiplier
         newRate = 0.1 * newRate ;
-        game.resources[resourceKey].rate = formatRate(newRate); // rate is for display and is per second
+        game.resources[resourceKey].rate = util.formatRate(newRate); // rate is for display and is per second
         updateResource(game, resourceKey, newRate * (game.msPerTick / 1000)); // apply rate per tick
     });
 
@@ -56,7 +58,7 @@ function updateResources(game)
     }
 }
 
-function createVillager(game)
+export function createVillager(game)
 {
     let spacesAvailable = game.resources.villagers.limit - game.resources.villagers.amount;
 
@@ -71,7 +73,7 @@ function createVillager(game)
     game.creatingAVillager = false;
 }
 
-function checkProgress(game)
+export function checkProgress(game)
 {
     Object.keys(game.progress).forEach(function (progressKey)
     {
@@ -104,7 +106,7 @@ function checkProgress(game)
     });
 }
 
-function updateResourceLimits(game)
+export function updateResourceLimits(game)
 {
     Object.keys(game.resources).forEach(function (resourceKey)
     {
@@ -134,17 +136,17 @@ function updateResourceLimits(game)
     });
 }
 
-function updateResource(game, name, amount)
+export function updateResource(game, name, amount)
 {
     let newAmount = game.resources[name].amount + amount;
-    newAmount = myRound(newAmount, 4);
+    newAmount = util.myRound(newAmount, 4);
     if (newAmount > game.resources[name].limit)
         game.resources[name].amount = game.resources[name].limit; // set it to the limit
     else
         game.resources[name].amount = newAmount;
 }
 
-function killWorkersFromStarvation(game)
+export function killWorkersFromStarvation(game)
 {
     if (game.jobs.idlers.amount > 0)
     {
@@ -172,18 +174,18 @@ function killWorkersFromStarvation(game)
 }
 
 // Villager
-function updateVillagerCount(game, amount)
+export function updateVillagerCount(game, amount)
 {
     game.resources.villagers.amount += amount;
 }
 
 // Worker
-function assignIdler(game, amount)
+export function assignIdler(game, amount)
 {
     game.jobs.idlers.amount += amount;
 }
 
-function isCreateVillager(game)
+export function isCreateVillager(game)
 {
     if (game.resources.villagers.limit > game.resources.villagers.amount && game.resources.food.amount > 0)
     {
@@ -204,7 +206,7 @@ function isCreateVillager(game)
 
 // go through every game object, looking for ones whose prereq = this progressObject. Make it visible
 // todo: consider what happens if you have multiple prereqs
-function applyProgress(game, progressObject)
+export function applyProgress(game, progressObject)
 {
     Object.keys(game.resources).forEach(function(key)
     {
@@ -236,7 +238,7 @@ function applyProgress(game, progressObject)
     }
 }
 
-function getDefaultGameState()
+export function getDefaultGameState()
 {
     function Resource(name, baseLimit, image, prereq)
     {

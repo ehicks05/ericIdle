@@ -7,15 +7,7 @@
 body {margin:auto; font-family: openSans, sans-serif;}
 img {height: 30px; vertical-align: middle;}
 
-#container {margin: auto;}
-#clickCount {padding: 1px; border: 1px solid black;}
-
 .hidden {display: none;}
-
-/*#resourcesTable {}*/
-/*#buildingsTable {border-top: none; width: 400px;}*/
-/*#villagersTable {border-top: none; width: 400px;}*/
-/*#researchTable  {border-top: none; width: 400px;}*/
 
 .cellLeft {text-align: left;}
 .cellRight {text-align: right;}
