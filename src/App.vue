@@ -137,10 +137,10 @@
 
 <script>
     import Vue from 'vue'
-    import _ from 'lodash'
+    import merge from 'lodash/merge'
     import $ from 'jquery'
 
-    require("jquery-ui/ui/widgets/dialog");
+    import 'jquery-ui/ui/widgets/dialog';
     import 'jquery-ui/themes/base/base.css';
     import 'jquery-ui/themes/base/dialog.css';
     import 'jquery-ui/themes/base/all.css';
@@ -165,7 +165,7 @@
         console.log('parsed data');
 
         // merge saved state on top of the defaults
-        _.merge(game, parsedData);
+        merge(game, parsedData);
     }
 
     game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
@@ -231,7 +231,7 @@
             },
             reset: function() {
                 const intervalId = game._intervalId;
-                _.merge(game, gameLogic.getDefaultGameState());
+                merge(game, gameLogic.getDefaultGameState());
                 game._intervalId = intervalId;
             },
             pause: function() {
@@ -294,7 +294,7 @@
         const deEncodedState = atob(encodedState);
         const parsedGame = JSON.parse(deEncodedState);
 
-        _.merge(game, parsedGame);
+        merge(game, parsedGame);
 
         console.log('imported game state, food: ' + parsedGame.resources.food.amount);
     }

@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = {
     entry: './src/main.js',
@@ -65,6 +66,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new Visualizer(),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
