@@ -360,8 +360,8 @@ export function getDefaultGameState()
         progress: progress,
 
         // system
-        fps: 10,
-        msPerTick: 1000,
+        fps: 10,  // determines how often the function passed to 'setInterval' is called
+        msPerTick: 1000,  // how long to wait between ticks
         timeOfLastTick: Date.now(),
         timeOfLastVillagerCreation: Date.now(),
         creatingAVillager: false,

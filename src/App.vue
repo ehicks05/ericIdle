@@ -347,13 +347,9 @@
 </script>
 
 <style>
-    @font-face
-    {
-        font-family: openSans;
-        src: url(../fonts/OpenSans-Regular.ttf);
-    }
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
-    body {margin:auto; font-family: openSans, sans-serif;}
+    body {margin:auto; font-family: 'Open Sans', sans-serif;}
     img {height: 30px; vertical-align: middle;}
 
     .hidden {display: none;}
