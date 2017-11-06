@@ -56,33 +56,10 @@
                     <!-- Tab Panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade show active" id="buildingsTable" aria-labelledby="buildings-tab">
-                            <div id="buildingsContainer">
-                                <table class="table table-hover" style="text-align: center;">
-                                    <tbody>
-                                    <tr class="noTopBorder">
-                                        <th class="cellLeft">Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
-                                    </tr>
-                                    <tr v-for="building in game.buildings" v-if="building.status !== 'hidden'" v-bind:id="building.name + 'Row'">
-                                        <td class="cellLeft">
-                                            <a tabindex="0" data-html="true" data-toggle="popover" :data-title="getBuildingPopoverTitle(building.name)" :data-content="getBuildingPopoverContent(building.name)" data-trigger="hover">
-                                                <img v-bind:src="'ico/' + building.image" style="height: 48px;"/>
-                                            </a>
-                                            <br>{{ camelToTitle(building.name) }}
-                                        </td>
-                                        <td class="cellRight">{{building.amount}}</td>
-                                        <td class="cellRight">
-                                            <resource-cost
-                                                    v-bind:coster="building"
-                                                    v-bind:id="building.name">
-                                            </resource-cost>
-                                        </td>
-                                        <td class="cellLeft">
-                                            <input type="button" class="btn btn-outline-secondary btn-sm" value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <building-table
+                                    v-bind:buildings="game.buildings"
+                                    v-on:buildBuilding="buildBuilding">
+                            </building-table>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="villagersTable" aria-labelledby="villagers-tab">
                             <div id="villagersContainer">
@@ -162,7 +139,7 @@
     import Vue from 'vue'
     import _ from 'lodash'
     import $ from 'jquery'
-//    import 'jquery-ui'
+
     require("jquery-ui/ui/widgets/dialog");
     import 'jquery-ui/themes/base/base.css';
     import 'jquery-ui/themes/base/dialog.css';
@@ -176,9 +153,9 @@
 
     import ResourceCost from './ResourceCost.vue'
     import ResourceTable from "./ResourceTable.vue";
+    import BuildingTable from "./BuildingTable.vue";
 
     Vue.component('resource-cost', ResourceCost);
-    Vue.component('resource-table', ResourceTable);
 
     const game = gameLogic.getDefaultGameState();
 
@@ -194,7 +171,9 @@
     game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
 
     export default {
-        components: {ResourceTable},
+        components: {
+            BuildingTable,
+            ResourceTable},
         name: 'app',
         data () {
             return {
@@ -249,35 +228,6 @@
                     gameLogic.updateResource(game, 'research', -game.technologies[technologyName].cost.amount);
                     game.technologies[technologyName].discovered = true;
                 }
-            },
-            getBuildingPopoverTitle: function(buildingName){
-                const building = game.buildings[buildingName];
-                return '<div style="font-weight: bold;">' + util.camelToTitle(buildingName) + '</div>';
-            },
-            getBuildingPopoverContent: function(buildingName){
-                const building = game.buildings[buildingName];
-                let content = '';
-                if (building.bonus.length > 0)
-                {
-                    content += '<table class="table table-hover"><tr><td colspan="2">Production Bonuses</td></tr><tr><td>Resource</td><td>Amount</td></tr>';
-                    building.bonus.forEach(function (bonus)
-                    {
-                        content += '<tr><td>' + bonus.resource.name + '</td><td>+' + (bonus.amount * 100) + '%</td></tr>';
-                    });
-                    content += '</table>';
-                }
-
-                if (building.resourceLimitModifier.length > 0)
-                {
-                    content += '<table class="table table-hover"><tr><td colspan="3">Resource Limit Mods</td></tr><tr><td>Resource</td><td>Amount</td><td>Type</td></tr>';
-                    building.resourceLimitModifier.forEach(function (limitModifier)
-                    {
-                        content += '<tr><td>' + limitModifier.resource.name + '</td><td>' + limitModifier.amount + '</td><td>' + limitModifier.type + '</td></tr>';
-                    });
-                    content += '</table>';
-                }
-
-                return content;
             },
             reset: function() {
                 const intervalId = game._intervalId;
