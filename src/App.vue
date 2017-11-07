@@ -58,7 +58,8 @@
                         <div role="tabpanel" class="tab-pane fade show active" id="buildingsTable" aria-labelledby="buildings-tab">
                             <building-table
                                     v-bind:buildings="game.buildings"
-                                    v-on:buildBuilding="buildBuilding">
+                                    v-on:buildBuilding="buildBuilding"
+                                    v-on:reclaimBuilding="reclaimBuilding">
                             </building-table>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="villagersTable" aria-labelledby="villagers-tab">
@@ -205,6 +206,27 @@
                     gameLogic.updateResource(game, costResource.name, -costAmount);
                     building.cost.amount = util.myRound(costAmount * priceIncreaseMultiplier, 2);
                     building.amount += 1;
+                }
+            },
+            reclaimBuilding: function(buildingName){
+                const building = game.buildings[buildingName];
+                const costResource = building.cost.resource;
+                const costAmount = building.cost.amount;
+
+                const priceIncreaseMultiplier = building.name === 'huts' ? 1.14 : 1.07;
+
+                const canReclaim = building.amount >= 1;
+                if (canReclaim)
+                {
+                    //update reclaimed resource
+                    let newAmount = building.cost.amount;
+                    newAmount = util.myRound(newAmount, 4);
+                    game.resources[costResource.name].amount += newAmount;
+
+                    //update reclaimed building cost
+                    building.cost.amount = util.myRound(costAmount / priceIncreaseMultiplier, 2);
+                    //update reclaimed building amount
+                    building.amount -= 1;
                 }
             },
             assignWorker: function(jobName){

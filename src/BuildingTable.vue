@@ -24,6 +24,8 @@
                 <td class="cellLeft">
                     <input type="button" class="btn btn-outline-secondary btn-sm"
                            value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
+                    <input type="button" class="btn btn-outline-secondary btn-sm"
+                           value="Reclaim" v-on:click="reclaimBuilding(building.name)"/>
                 </td>
             </tr>
             </tbody>
@@ -50,6 +52,9 @@
             },
             buildBuilding: function(buildingName){
                 this.$emit('buildBuilding', buildingName);
+            },
+            reclaimBuilding: function(buildingName){
+                this.$emit('reclaimBuilding', buildingName)
             },
             getBuildingPopoverTitle: function(building){
                 return '<div style="font-weight: bold;">' + util.camelToTitle(building.name) + '</div>';
