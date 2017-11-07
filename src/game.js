@@ -53,9 +53,20 @@ export function updateResources(game)
     if (game.resources.food.amount < 0 && game.resources.villagers.amount > 0)
     {
         updateVillagerCount(game, -1);
-        killWorkersFromStarvation(game);
+        removeWorker(game);
         game.resources.food.amount = .5; // ...
     }
+
+    // Homelessness
+    let workerCount = 0;
+    Object.keys(game.jobs).forEach(function(jobKey) {
+        const job = game.jobs[jobKey];
+        if (job.hasOwnProperty('amount'))
+            workerCount += job.amount;
+    });
+    
+    if (workerCount > game.resources.villagers.amount)
+        removeWorker(game);
 }
 
 export function createVillager(game)
@@ -146,7 +157,7 @@ export function updateResource(game, name, amount)
         game.resources[name].amount = newAmount;
 }
 
-export function killWorkersFromStarvation(game)
+export function removeWorker(game)
 {
     if (game.jobs.idlers.amount > 0)
     {
