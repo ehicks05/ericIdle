@@ -62,57 +62,18 @@
                             </building-table>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="villagersTable" aria-labelledby="villagers-tab">
-                            <div id="villagersContainer">
-                                <table class="table table-hover" style="text-align: center;">
-                                    <tbody>
-                                    <tr class="noTopBorder">
-                                        <th class="cellLeft">Villagers</th><th class="cellRight">Quantity</th><th></th>
-                                    </tr>
-                                    <tr v-for="job in game.jobs" v-if="job.status !== 'hidden'" v-bind:id="job.name + 'Row'">
-                                        <td class="cellLeft">
-                                            <img v-bind:src="'ico/' + job.image" style="height: 48px;"/>
-                                            {{ camelToTitle(job.name) }}
-                                        </td>
-                                        <td class="cellRight">{{job.amount}}</td>
-                                        <td class="cellLeft">
-                                        <span v-if="job.name !== 'idlers'">
-                                            <input type="button" class="btn btn-outline-secondary btn-sm" value="+" v-bind:disabled="game.jobs.idlers.amount == 0" v-on:click="assignWorker(job.name)"/>
-                                            <input type="button" class="btn btn-outline-secondary btn-sm" value="-" v-bind:disabled="job.amount == 0" v-on:click="unAssignWorker(job.name)"/>
-                                        </span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <villager-table
+                                    v-bind:jobs="game.jobs"
+                                    v-on:assignWorker="assignWorker"
+                                    v-on:unAssignWorker="unAssignWorker">
+                            </villager-table>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="researchTable" aria-labelledby="research-tab">
-                            <div id="technologiesContainer">
-                                <table class="table table-hover" id="technologiesTable" style="text-align: center;">
-                                    <tbody>
-                                    <tr class="noTopBorder">
-                                        <th class="cellLeft">Technology</th><th class="cellRight">Price</th><th></th>
-                                    </tr>
-                                    <tr v-for="tech in game.technologies" v-if="tech.status !== 'hidden'" v-bind:id="tech.name + 'Row'">
-                                        <td class="cellLeft">
-                                            <img v-bind:src="'ico/' + tech.image" style="height: 48px;"/>
-                                            {{ camelToTitle(tech.name) }}
-                                        </td>
-                                        <td class="cellRight">
-                                            <resource-cost
-                                                    v-bind:coster="tech"
-                                                    v-bind:id="tech.name">
-                                            </resource-cost>
-                                        </td>
-                                        <td class="cellLeft">
-                                            <input type="button" class="btn btn-outline-secondary btn-sm"
-                                                   v-bind:value="tech.discovered ? 'Discovered' : 'Discover'"
-                                                   v-bind:disabled="tech.discovered || (tech.cost.amount > game.resources.research.amount)"
-                                                   v-on:click="makeDiscovery(tech.name)"/>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <technology-table
+                                    v-bind:technologies="game.technologies"
+                                    v-bind:research="game.resources.research"
+                                    v-on:makeDiscovery="makeDiscovery">
+                            </technology-table>
                         </div>
                     </div>
                 </div>
@@ -154,6 +115,8 @@
     import ResourceCost from './ResourceCost.vue'
     import ResourceTable from "./ResourceTable.vue";
     import BuildingTable from "./BuildingTable.vue";
+    import VillagerTable from "./VillagerTable.vue";
+    import TechnologyTable from "./TechnologyTable.vue";
 
     Vue.component('resource-cost', ResourceCost);
 
@@ -172,8 +135,11 @@
 
     export default {
         components: {
+            ResourceTable,
             BuildingTable,
-            ResourceTable},
+            VillagerTable,
+            TechnologyTable
+        },
         name: 'app',
         data () {
             return {
@@ -350,14 +316,4 @@
     @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
     body {margin:auto; font-family: 'Open Sans', sans-serif;}
-    img {height: 30px; vertical-align: middle;}
-
-    .hidden {display: none;}
-
-    .cellLeft {text-align: left;}
-    .cellRight {text-align: right;}
-    .cellCenter {text-align: center;}
-
-    .noTopBorder th {border-top: transparent !important;}
-    .listHeader th {margin: auto; height: 42px; font-size: 1.2em; text-align: center;}
 </style>

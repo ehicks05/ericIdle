@@ -16,3 +16,7 @@
         }
     }
 </script>
+
+<style>
+    img {height: 30px; vertical-align: middle;}
+</style>
