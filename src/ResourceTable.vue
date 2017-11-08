@@ -4,7 +4,7 @@
             <tr>
                 <th class="cellLeft">Resource</th><th class="cellRight">Quantity</th><th class="cellRight">Rate</th>
             </tr>
-            <tr v-for="resource in resources" v-if="resource.status !== 'hidden'" v-bind:id="resource.name + 'Row'">
+            <tr v-for="resource in resources" v-if="resource.status !== 'hidden'" v-bind:key="resource.name + 'Row'">
                 <td class="cellLeft">
                     <img v-bind:src="'ico/' + resource.image" style="height: 48px;"/>
                     <br>{{ camelToTitle(resource.name) }}
