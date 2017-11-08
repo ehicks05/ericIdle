@@ -8,7 +8,7 @@
             <tr v-for="tech in technologies" v-if="tech.status !== 'hidden'" v-bind:id="tech.name + 'Row'">
                 <td class="cellLeft">
                     <img v-bind:src="'ico/' + tech.image" style="height: 48px;"/>
-                    {{ camelToTitle(tech.name) }}
+                    <br>{{ camelToTitle(tech.name) }}
                 </td>
                 <td class="cellRight">
                     <resource-cost

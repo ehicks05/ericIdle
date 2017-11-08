@@ -8,7 +8,7 @@
             <tr v-for="job in jobs" v-if="job.status !== 'hidden'" v-bind:id="job.name + 'Row'">
                 <td class="cellLeft">
                     <img v-bind:src="'ico/' + job.image" style="height: 48px;"/>
-                    {{ camelToTitle(job.name) }}
+                    <br>{{ camelToTitle(job.name) }}
                 </td>
                 <td class="cellRight">{{job.amount}}</td>
                 <td class="cellLeft">
