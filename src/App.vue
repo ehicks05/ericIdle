@@ -9,8 +9,8 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="pause" v-on:click="pause()" id="pauseButton" />
-                    <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="export" v-on:click="showExport()" />
-                    <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="import" v-on:click="showImport()" />
+                    <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="export" data-toggle="modal" data-target="#dialog-export" v-on:click="showExport()" />
+                    <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="import" data-toggle="modal" data-target="#dialog-import" />
                     <input type="button" class="mx-1 btn btn-outline-danger btn-sm" value="reset" v-on:click="reset()" />
                 </ul>
             </div>
@@ -82,16 +82,51 @@
         </div>
 
         <!-- Export Dialog -->
-        <div style="display:none;">
-            <div id="dialog-export" title="Export Save">
-                <textarea id="exportTextField" rows="12" cols="44" readonly></textarea>
+        <div id="dialog-export" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Export Save</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="exportTextField">Copy this:</label><br>
+                        <textarea id="exportTextField" rows="12" cols="44" readonly></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <!-- Import Dialog -->
-        <div style="display:none;">
-            <div id="dialog-import" title="Import Save">
-                <textarea id="importTextField" rows="12" cols="44"></textarea>
+        <div id="dialog-import" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Import Save</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="importTextField">Paste save here:</label><br>
+                        <textarea id="importTextField" rows="12" cols="44"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="importButton" class="btn btn-primary" v-on:click="performImport">Import</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -101,11 +136,6 @@
     import Vue from 'vue'
     import merge from 'lodash/merge'
     import $ from 'jquery'
-
-    import 'jquery-ui/ui/widgets/dialog';
-    import 'jquery-ui/themes/base/base.css';
-    import 'jquery-ui/themes/base/dialog.css';
-    import 'jquery-ui/themes/base/all.css';
 
     import 'bootstrap'
     import 'bootstrap/dist/css/bootstrap.min.css';
@@ -229,9 +259,16 @@
                 showImportDialog();
             },
             showExport: function() {
-                showExportDialog();
+                $( "#exportTextField").val(exportState(game));
+//                showExportDialog();
             },
+            performImport: function () {
+                const textAreaValue = $("#importTextField").val();
+                importState(textAreaValue);
+                $( "#importTextField").val('');
 
+                $('#dialog-import').modal('hide')
+            }
         }
     }
 
@@ -285,52 +322,6 @@
         merge(game, parsedGame);
 
         console.log('imported game state, food: ' + parsedGame.resources.food.amount);
-    }
-
-    function showExportDialog()
-    {
-        $( "#dialog-export" ).dialog({
-            resizable: false,
-            width:480,
-            modal: true,
-            open: function (event, ui)
-            {
-                $( "#exportTextField").val(exportState(game));
-            },
-            buttons:
-                {
-                    Close: function()
-                    {
-                        $( this ).dialog( "close" );
-                    }
-                }
-        });
-    }
-
-    function showImportDialog()
-    {
-        $( "#dialog-import" ).dialog({
-            resizable: false,
-            width:480,
-            modal: true,
-            open: function (event, ui)
-            {
-                $( "#importTextField").val('');
-            },
-            buttons:
-                {
-                    Import: function()
-                    {
-                        const textAreaValue = $("#importTextField").val();
-                        importState(textAreaValue);
-                        $( this ).dialog( "close" );
-                    },
-                    Close: function()
-                    {
-                        $( this ).dialog( "close" );
-                    }
-                }
-        });
     }
 </script>
 

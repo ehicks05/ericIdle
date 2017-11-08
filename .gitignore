@@ -1,5 +1,6 @@
 node_modules/
-dist/
+dist/stats.html
+dist/build.js.map
 npm-debug.log
 yarn-error.log
 
