@@ -25,7 +25,7 @@
                     <input type="button" class="btn btn-outline-secondary btn-sm"
                            value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
                     <input type="button" class="btn btn-outline-secondary btn-sm"
-                           value="Reclaim" v-on:click="reclaimBuilding(building.name)"/>
+                           value="Reclaim" v-bind:disabled="building.amount = 0" v-on:click="reclaimBuilding(building.name)"/>
                 </td>
             </tr>
             </tbody>
