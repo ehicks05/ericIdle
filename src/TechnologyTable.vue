@@ -5,7 +5,7 @@
             <tr class="noTopBorder">
                 <th class="cellLeft">Technology</th><th class="cellRight">Price</th><th></th>
             </tr>
-            <tr v-for="tech in technologies" v-if="tech.status !== 'hidden'" v-bind:id="tech.name + 'Row'">
+            <tr v-for="tech in technologies" v-if="tech.status !== 'hidden'" v-bind:key="tech.name + 'Row'">
                 <td class="cellLeft">
                     <img v-bind:src="'ico/' + tech.image" style="height: 48px;"/>
                     <br>{{ camelToTitle(tech.name) }}

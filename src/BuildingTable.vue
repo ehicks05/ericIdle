@@ -5,7 +5,7 @@
             <tr class="noTopBorder">
                 <th class="cellLeft">Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
             </tr>
-            <tr v-for="building in buildings" v-if="building.status !== 'hidden'" v-bind:id="building.name + 'Row'">
+            <tr v-for="building in buildings" v-if="building.status !== 'hidden'" v-bind:key="building.name + 'Row'">
                 <td class="cellLeft">
                     <a tabindex="0" data-html="true" data-toggle="popover"
                        :data-title="getBuildingPopoverTitle(building)"
