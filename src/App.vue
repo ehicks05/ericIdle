@@ -190,40 +190,10 @@
                 gameLogic.updateResource(game, 'food', 1);
             },
             buildBuilding: function(buildingName){
-                const building = game.buildings[buildingName];
-                const costResource = building.cost.resource;
-                const costAmount = building.cost.amount;
-
-                const priceIncreaseMultiplier = building.name === 'huts' ? 1.14 : 1.07;
-
-                const canAfford = costResource.amount >= costAmount;
-                if (canAfford)
-                {
-                    gameLogic.updateResource(game, costResource.name, -costAmount);
-                    building.cost.amount = util.myRound(costAmount * priceIncreaseMultiplier, 2);
-                    building.amount += 1;
-                }
+                gameLogic.buildBuilding(game, buildingName);
             },
             reclaimBuilding: function(buildingName){
-                const building = game.buildings[buildingName];
-                const costResource = building.cost.resource;
-                const costAmount = building.cost.amount;
-
-                const priceIncreaseMultiplier = building.name === 'huts' ? 1.14 : 1.07;
-
-                const canReclaim = building.amount >= 1;
-                if (canReclaim)
-                {
-                    //update reclaimed resource
-                    let newAmount = building.cost.amount;
-                    newAmount = util.myRound(newAmount, 4);
-                    game.resources[costResource.name].amount += newAmount;
-
-                    //update reclaimed building cost
-                    building.cost.amount = util.myRound(costAmount / priceIncreaseMultiplier, 2);
-                    //update reclaimed building amount
-                    building.amount -= 1;
-                }
+                gameLogic.reclaimBuilding(game, buildingName);
             },
             assignWorker: function(jobName){
                 if (game.jobs.idlers.amount > 0)
