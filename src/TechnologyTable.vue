@@ -1,6 +1,6 @@
 <template>
     <div id="technologiesContainer">
-        <table class="table table-hover" id="technologiesTable" style="text-align: center;">
+        <table class="table table-sm table-responsive-sm" id="technologiesTable" style="text-align: center;">
             <tbody>
             <tr class="noTopBorder">
                 <th class="cellLeft">Technology</th><th class="cellRight">Price</th><th></th>

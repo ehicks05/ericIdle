@@ -1,6 +1,6 @@
 <template>
     <div id="villagersContainer">
-        <table class="table table-hover" style="text-align: center;">
+        <table class="table table-sm table-responsive-sm" style="text-align: center;">
             <tbody>
             <tr class="noTopBorder">
                 <th class="cellLeft">Villagers</th><th class="cellRight">Quantity</th><th></th>

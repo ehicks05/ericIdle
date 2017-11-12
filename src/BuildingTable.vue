@@ -1,6 +1,6 @@
 <template>
     <div id="buildingsContainer">
-        <table class="table table-hover" style="text-align: center;">
+        <table class="table table-sm table-responsive-sm" style="text-align: center;">
             <tbody>
             <tr class="noTopBorder">
                 <th class="cellLeft">Structure</th><th class="cellRight">Quantity</th><th class="cellRight" style="width: 90px;">Price</th><th></th>
@@ -63,7 +63,7 @@
                 let content = '';
                 if (building.bonus.length > 0)
                 {
-                    content += '<table class="table table-hover"><tr><td colspan="2">Production Bonuses</td></tr><tr><td>Resource</td><td>Amount</td></tr>';
+                    content += '<table class="table table-sm"><tr><td colspan="2">Production Bonuses</td></tr><tr><td>Resource</td><td>Amount</td></tr>';
                     building.bonus.forEach(function (bonus)
                     {
                         content += '<tr><td>' + bonus.resource.name + '</td><td>+' + (bonus.amount * 100) + '%</td></tr>';
@@ -73,7 +73,7 @@
 
                 if (building.resourceLimitModifier.length > 0)
                 {
-                    content += '<table class="table table-hover"><tr><td colspan="3">Resource Limit Mods</td></tr><tr><td>Resource</td><td>Amount</td><td>Type</td></tr>';
+                    content += '<table class="table table-sm"><tr><td colspan="3">Resource Limit Mods</td></tr><tr><td>Resource</td><td>Amount</td><td>Type</td></tr>';
                     building.resourceLimitModifier.forEach(function (limitModifier)
                     {
                         content += '<tr><td>' + limitModifier.resource.name + '</td><td>' + limitModifier.amount + '</td><td>' + limitModifier.type + '</td></tr>';
