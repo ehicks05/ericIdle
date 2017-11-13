@@ -34,6 +34,14 @@ export function formatRate(rate)
         rate *= -1;
     rate = myRound(rate, 2);
     if (rate > 0) rate = '+' + rate;
-    if (e !== 0) rate += 'e' + e;
-    return rate;
+
+    let rateString = rate.toString();
+    if (rateString.indexOf(".") < 0)
+        rateString += '.';
+
+    while (rateString.indexOf('.') + 3 > rateString.length)
+        rateString += '0';
+
+    if (e !== 0) rateString += 'e' + e;
+    return rateString;
 }

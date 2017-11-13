@@ -376,6 +376,7 @@ export function getDefaultGameState()
         timeOfLastTick: Date.now(),
         timeOfLastVillagerCreation: Date.now(),
         creatingAVillager: false,
+        nightMode: false,
         _intervalId: null
     };
 }

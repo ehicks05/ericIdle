@@ -3,15 +3,15 @@
         <table class="table table-sm table-responsive-sm" style="text-align: center;">
             <tbody>
             <tr class="noTopBorder">
-                <th class="cellLeft">Villagers</th><th class="cellRight">Quantity</th><th></th>
+                <th class="text-left">Villagers</th><th class="text-right">Quantity</th><th></th>
             </tr>
             <tr v-for="job in jobs" v-if="job.status !== 'hidden'" v-bind:id="job.name + 'Row'">
-                <td class="cellLeft">
-                    <img v-bind:src="'ico/' + job.image" style="height: 48px;"/>
-                    <br>{{ camelToTitle(job.name) }}
+                <td class="text-left">
+                    <img v-bind:src="'ico/' + job.image" style="height: 32px;"/>
+                    {{ camelToTitle(job.name) }}
                 </td>
-                <td class="cellRight">{{job.amount}}</td>
-                <td class="cellLeft">
+                <td class="text-right">{{job.amount}}</td>
+                <td class="text-center">
                     <span v-if="job.name !== 'idlers'">
                         <input type="button" class="btn btn-outline-secondary btn-sm" value="+" v-bind:disabled="jobs.idlers.amount == 0" v-on:click="assignWorker(job.name)"/>
                         <input type="button" class="btn btn-outline-secondary btn-sm" value="-" v-bind:disabled="job.amount == 0" v-on:click="unAssignWorker(job.name)"/>

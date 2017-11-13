@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Eric <span style="color: forestgreen">Idle</span></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" v-bind:class="[game.nightMode ? 'bg-dark': 'bg-light']">
+            <a class="navbar-brand" href="#"><span v-bind:class="[game.nightMode ? 'nightModeText': '']">Eric</span> <span style="color: green" v-bind:style="{color: game.nightMode ? 'limeGreen' : 'green'}">Idle</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -12,6 +12,7 @@
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="export" data-toggle="modal" data-target="#dialog-export" v-on:click="showExport()" />
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="import" data-toggle="modal" data-target="#dialog-import" />
                     <input type="button" class="mx-1 btn btn-outline-danger btn-sm" value="reset" v-on:click="reset()" />
+                    <input type="button" class="mx-1 btn btn-outline-info btn-sm" value="night mode" id="nightModeButton" v-on:click="toggleNightMode()" />
                 </ul>
             </div>
         </nav>
@@ -21,9 +22,9 @@
             <div class="col-md-6" style="vertical-align: top;">
                 <div>
                     <!-- Nav tabs -->
-                    <ul class="nav nav-tabs nav-fill mt-1" role="tablist">
+                    <ul class="nav nav-fill mt-1" role="tablist" v-bind:class="[game.nightMode ? 'nightModeText': '']">
                         <li class="nav-item">
-                            <a class="nav-link active" id="resources-tab" href="#resourcesTable" aria-controls="resourcesTable" aria-selected="true" role="tab" data-toggle="tab">Resources</a>
+                            <a class="nav-link active transparent" v-bind:class="[game.nightMode ? 'nightModeText': '']" id="resources-tab" href="#resourcesTable" aria-controls="resourcesTable" aria-selected="true" role="tab" data-toggle="tab">Resources</a>
                         </li>
                     </ul>
                 </div>
@@ -238,6 +239,11 @@
                 $( "#importTextField").val('');
 
                 $('#dialog-import').modal('hide')
+            },
+            toggleNightMode: function () {
+                game.nightMode = !game.nightMode;
+                $('#nightModeButton').val(game.nightMode ? 'day mode' : 'night mode');
+                document.body.classList.toggle('nightMode');
             }
         }
     }
@@ -260,7 +266,13 @@
     }
 
     $(function () {
-        $('[data-toggle="popover"]').popover()
+        $('[data-toggle="popover"]').popover();
+
+        if (game.nightMode)
+        {
+            $('#nightModeButton').val(game.nightMode ? 'day mode' : 'night mode');
+            document.body.classList.toggle('nightMode');
+        }
     });
 
     function pause()
@@ -299,4 +311,8 @@
     @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
     body {margin:auto; font-family: 'Open Sans', sans-serif;}
+
+    .nightMode {background-color: #1a2020 !important; color: white !important;}
+    .nightModeText {color: white !important;}
+    .transparent {background-color: transparent !important;}
 </style>

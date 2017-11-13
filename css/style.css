@@ -1,17 +1,7 @@
-@font-face
-{
-    font-family: openSans;
-    src: url(../fonts/OpenSans-Regular.ttf);
-}
-
 body {margin:auto; font-family: openSans, sans-serif;}
 img {height: 30px; vertical-align: middle;}
 
 .hidden {display: none;}
-
-.cellLeft {text-align: left;}
-.cellRight {text-align: right;}
-.cellCenter {text-align: center;}
 
 .noTopBorder th {border-top: transparent !important;}
 .listHeader th {margin: auto; height: 42px; font-size: 1.2em; text-align: center;}

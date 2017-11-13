@@ -1,5 +1,5 @@
 <template>
-    <div style="white-space:nowrap;background-color: #EEE;text-align: right;padding-left:5px;">
+    <div class="resourceCost">
         {{coster.cost.amount}}
         <img v-bind:src="'ico/' + coster.cost.resource.image"/>
     </div>
@@ -18,5 +18,6 @@
 </script>
 
 <style>
-    img {height: 30px; vertical-align: middle;}
+    img {height: 32px; vertical-align: middle;}
+    .resourceCost {white-space:nowrap; background-color: transparent; text-align: right; padding-left:5px;}
 </style>

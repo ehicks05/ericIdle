@@ -3,20 +3,20 @@
         <table class="table table-sm table-responsive-sm" id="technologiesTable" style="text-align: center;">
             <tbody>
             <tr class="noTopBorder">
-                <th class="cellLeft">Technology</th><th class="cellRight">Price</th><th></th>
+                <th class="text-left">Technology</th><th class="text-right">Price</th><th></th>
             </tr>
             <tr v-for="tech in technologies" v-if="tech.status !== 'hidden'" v-bind:key="tech.name + 'Row'">
-                <td class="cellLeft">
-                    <img v-bind:src="'ico/' + tech.image" style="height: 48px;"/>
-                    <br>{{ camelToTitle(tech.name) }}
+                <td class="text-left">
+                    <img v-bind:src="'ico/' + tech.image" style="height: 32px;"/>
+                    {{ camelToTitle(tech.name) }}
                 </td>
-                <td class="cellRight">
+                <td class="text-right">
                     <resource-cost
                             v-bind:coster="tech"
                             v-bind:id="tech.name">
                     </resource-cost>
                 </td>
-                <td class="cellLeft">
+                <td class="text-left">
                     <input type="button" class="btn btn-outline-secondary btn-sm"
                            v-bind:value="tech.discovered ? 'Discovered' : 'Discover'"
                            v-bind:disabled="tech.discovered || (tech.cost.amount > research.amount)"
