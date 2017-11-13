@@ -42,20 +42,20 @@
                 <div>
                     <!-- Nav tabs -->
                     <ul class="nav nav-pills nav-fill mt-1" role="tablist">
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="game.progress.unlockHuts.unlocked">
                             <a class="nav-link active" id="buildings-tab" href="#buildingsTable" aria-controls="buildingsTable" aria-selected="true" role="tab" data-toggle="pill">Buildings</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="game.progress.unlockVillagers.unlocked">
                             <a class="nav-link" id="villagers-tab" href="#villagersTable" aria-controls="villagersTable" aria-selected="false" role="tab" data-toggle="pill">Villagers</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="game.progress.unlockLevelOneTech.unlocked">
                             <a class="nav-link" id="research-tab" href="#researchTable" aria-controls="researchTable" aria-selected="false" role="tab" data-toggle="pill">Research</a>
                         </li>
                     </ul>
 
                     <!-- Tab Panes -->
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade show active" id="buildingsTable" aria-labelledby="buildings-tab">
+                        <div role="tabpanel" class="tab-pane fade show active" id="buildingsTable" aria-labelledby="buildings-tab" v-if="game.progress.unlockHuts.unlocked">
                             <building-table
                                     v-bind:buildings="game.buildings"
                                     v-on:buildBuilding="buildBuilding"
