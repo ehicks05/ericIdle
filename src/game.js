@@ -266,6 +266,7 @@ export function getDefaultGameState()
             this.status = 'visible';
     }
 
+    // resources
     const food = new Resource('food', 40, 'wheat.png', '');
     const lumber = new Resource('lumber', 24, 'wood-pile.png', 'unlockWoodConstruction');
     const leather = new Resource('leather', 20, 'animal-hide.png', 'unlockHunting');
@@ -287,6 +288,7 @@ export function getDefaultGameState()
                 this.production.push(production);
     }
 
+    // workers
     const idlers = new Job('idlers', 'watch.png', 'unlockVillagers');
     const farmers = new Job('farmers', 'farmer.png', 'unlockVillagers', [{resource: food, amount: 0.5}]);
     const thinkers = new Job('thinkers', 'think.png', 'unlockVillagers', [{resource: research, amount: 0.2}]);
@@ -315,6 +317,7 @@ export function getDefaultGameState()
                 this.bonus.push(bonus);
     }
 
+    // buildings
     const huts = new Building('huts', 'tipi.png', 'unlockHuts', {resource: food, amount: 1}, [{resource: villagers, amount: 2, type: 'additive'}], []);
     const farms = new Building('farms', 'barn.png', 'unlockFarming', {resource: lumber, amount: 1}, [], [{resource: food, amount: 0.05}]);
     const lumberMills = new Building('lumberMills', 'circular-saw.png', 'unlockWoodConstruction', {resource: lumber, amount: 2}, [], [{resource: lumber, amount: 0.1}]);
@@ -324,6 +327,7 @@ export function getDefaultGameState()
     const huntingCamps = new Building('huntingCamps', 'watch.png', 'unlockHunting', {resource: lumber, amount: 2}, [], []);
     const smithies = new Building('smithies', 'watch.png', 'unlockSmithies', {resource: lumber, amount: 3}, [], []);
     const schools = new Building('schools', 'greek-temple.png', 'unlockSchools', {resource: lumber, amount: 3}, [], [{resource: research, amount: 0.06}]);
+    const libraries = new Building('libraries', 'book-cover.png', 'unlockLibraries', {resource: lumber, amount: 4}, [{resource: research, amount: 5, type: 'additive'}], []);
 
     function Technology(name, cost, prereq)
     {
@@ -336,6 +340,7 @@ export function getDefaultGameState()
         this.prereq = prereq;
     }
 
+    //technologies
     const farming = new Technology('farming', {resource: research, amount: 1}, 'unlockLevelOneTech');
     const woodConstruction = new Technology('woodConstruction', {resource: research, amount: 2}, 'unlockLevelOneTech');
     const stoneConstruction = new Technology('stoneConstruction', {resource: research, amount: 5}, 'unlockLevelOneTech');
@@ -348,6 +353,7 @@ export function getDefaultGameState()
         this.requirement = requirement;
     }
 
+    //prereqs
     const unlockHuts = new Prereq('unlockHuts', {resource: 'food', amount: 1});
     const unlockVillagers = new Prereq('unlockVillagers', {resource: 'villagers', amount: 1});
     const unlockLevelOneTech = new Prereq('unlockLevelOneTech', {resource: 'research', amount: 1});
@@ -355,13 +361,15 @@ export function getDefaultGameState()
     const unlockWoodConstruction = new Prereq('unlockWoodConstruction', {technology: 'woodConstruction'});
     const unlockStoneConstruction = new Prereq('unlockStoneConstruction', {technology: 'stoneConstruction'});
     const unlockWheel = new Prereq('unlockWheel', {technology: 'wheel'});
+    const unlockSchools = new Prereq('unlockSchools', {resource: 'villagers', amount: 30});
+    const unlockLibraries = new Prereq('unlockLibraries', {resource: 'villagers', amount: 50});
 
     const resources = {food: food, lumber: lumber, research: research, villagers: villagers, stone: stone};
-    const buildings = {huts: huts, farms: farms, lumberMills: lumberMills, storerooms: storerooms, quarries: quarries, schools: schools};
+    const buildings = {huts: huts, farms: farms, lumberMills: lumberMills, storerooms: storerooms, quarries: quarries, schools: schools, libraries: libraries};
     const jobs = {idlers: idlers, farmers: farmers, foresters: foresters, hunters: hunters, miners: miners, builders: builders, thinkers: thinkers};
     const technologies = {farming: farming, woodConstruction: woodConstruction, stoneConstruction: stoneConstruction, wheel: wheel};
     const progress = {unlockHuts: unlockHuts, unlockVillagers: unlockVillagers, unlockLevelOneTech: unlockLevelOneTech, unlockFarming: unlockFarming,
-        unlockWoodConstruction: unlockWoodConstruction, unlockStoneConstruction: unlockStoneConstruction};
+        unlockWoodConstruction: unlockWoodConstruction, unlockStoneConstruction: unlockStoneConstruction, unlockSchools: unlockSchools, unlockLibraries: unlockLibraries};
 
     return {
         resources: resources,
