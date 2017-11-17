@@ -5,16 +5,16 @@
                 <th class="text-left">Resource</th><th class="text-right">Quantity</th><th class="text-right">Rate</th>
             </tr>
             <tr v-for="resource in resources" v-if="resource.status !== 'hidden'" v-bind:key="resource.name + 'Row'">
-                <td class="text-left">
+                <td class="text-left" style="white-space: nowrap">
                     <img v-bind:src="'ico/' + resource.image" style="height: 32px;"/>
                     {{ camelToTitle(resource.name) }}
                 </td>
-                <td class="text-right">
+                <td class="text-right" style="white-space: nowrap">
                     <span v-bind:id="resource.name">{{myRound(resource.amount, 2)}}</span>
                     /
                     <span v-bind:id="resource.name + 'Limit'">{{resource.limit}}</span>
                 </td>
-                <td class="text-right" v-bind:id="resource.name + 'Rate'">
+                <td class="text-right"  style="white-space: nowrap" v-bind:id="resource.name + 'Rate'">
                     <button class="btn btn-outline-primary btn-sm" v-if="resource.name === 'food'" v-on:click="harvestFood">Harvest</button>
                     {{resource.rate}}
                 </td>

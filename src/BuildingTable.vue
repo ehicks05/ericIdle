@@ -6,7 +6,7 @@
                 <th class="text-left">Structure</th><th class="text-right">Quantity</th><th class="text-right" style="width: 90px;">Price</th><th></th>
             </tr>
             <tr v-for="building in buildings" v-if="building.status !== 'hidden'" v-bind:key="building.name + 'Row'">
-                <td class="text-left">
+                <td class="text-left" style="white-space: nowrap">
                     <a tabindex="0" data-html="true" data-toggle="popover"
                        :data-title="getBuildingPopoverTitle(building)"
                        :data-content="getBuildingPopoverContent(building)" data-trigger="hover">
@@ -21,7 +21,7 @@
                             v-bind:id="building.name">
                     </resource-cost>
                 </td>
-                <td class="text-center">
+                <td class="text-center" style="white-space: nowrap">
                     <input type="button" class="btn btn-outline-secondary btn-sm"
                            value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
                     <input type="button" class="btn btn-outline-secondary btn-sm"
