@@ -326,7 +326,7 @@ export function getDefaultGameState()
     const quarries = new Building('quarries',  'gold-mine.png', 'unlockStoneConstruction', {resource: lumber, amount: 2}, [], [{resource: stone, amount: 0.06}]);
     const huntingCamps = new Building('huntingCamps', 'watch.png', 'unlockHunting', {resource: lumber, amount: 2}, [], []);
     const smithies = new Building('smithies', 'watch.png', 'unlockSmithies', {resource: lumber, amount: 3}, [], []);
-    const schools = new Building('schools', 'greek-temple.png', 'unlockSchools', {resource: lumber, amount: 3}, [], [{resource: research, amount: 0.06}]);
+    const schools = new Building('schools', 'graduate-cap.png', 'unlockSchools', {resource: lumber, amount: 3}, [], [{resource: research, amount: 0.06}]);
     const libraries = new Building('libraries', 'book-cover.png', 'unlockLibraries', {resource: lumber, amount: 4}, [{resource: research, amount: 5, type: 'additive'}], []);
 
     function Technology(name, cost, prereq)
