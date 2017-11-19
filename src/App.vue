@@ -11,7 +11,7 @@
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="pause" v-on:click="pause()" id="pauseButton" />
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="export" data-toggle="modal" data-target="#dialog-export" v-on:click="showExport()" />
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="import" data-toggle="modal" data-target="#dialog-import" />
-                    <input type="button" class="mx-1 btn btn-outline-danger btn-sm" value="reset" v-on:click="reset()" />
+                    <input type="button" class="mx-1 btn btn-outline-danger btn-sm"    value="reset"  data-toggle="modal" data-target="#dialog-reset" />
                     <input type="button" class="mx-1 btn btn-outline-info btn-sm" value="night mode" id="nightModeButton" v-on:click="toggleNightMode()" />
                 </ul>
             </div>
@@ -103,6 +103,32 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+
+        <!-- Reset Confirm Dialog -->
+        <div id="dialog-reset" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button typ="button" class="close" data-dismiss="modal" area-label="Close">
+                            <span area-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to reset the game?
+                        <br/>
+                        All progress will be lost.
+                        <br/><br/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="confirmReset" class="btn btn-primary" v-on:click="reset">Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -221,6 +247,8 @@
                 const intervalId = game._intervalId;
                 merge(game, gameLogic.getDefaultGameState());
                 game._intervalId = intervalId;
+
+                $('#dialog-reset').modal('hide');
             },
             pause: function() {
                 pause();
