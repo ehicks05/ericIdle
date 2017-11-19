@@ -12,6 +12,7 @@
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="export" data-toggle="modal" data-target="#dialog-export" v-on:click="showExport()" />
                     <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="import" data-toggle="modal" data-target="#dialog-import" />
                     <input type="button" class="mx-1 btn btn-outline-danger btn-sm"    value="reset"  data-toggle="modal" data-target="#dialog-reset" />
+                    <input type="button" class="mx-1 btn btn-outline-secondary btn-sm" value="debug"  data-toggle="modal" data-target="#dialog-debug" />
                     <input type="button" class="mx-1 btn btn-outline-info btn-sm" value="night mode" id="nightModeButton" v-on:click="toggleNightMode()" />
                 </ul>
             </div>
@@ -114,8 +115,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Confirmation</h5>
-                        <button typ="button" class="close" data-dismiss="modal" area-label="Close">
-                            <span area-hidden="true">&times;</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -127,6 +128,28 @@
                     <div class="modal-footer">
                         <button type="button" id="confirmReset" class="btn btn-primary" v-on:click="reset">Confirm</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- debug Dialog -->
+        <div id="dialog-debug" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Debug</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Longest time taken in a single game tick: {{game.longestTickInMs}} ms
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -188,7 +211,7 @@
         mergeStateWorthSaving(game, parsedData);
     }
 
-    game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
+    game._intervalId = setInterval(intervalFunction, game.msPerTick);
 
     export default {
         components: {
@@ -245,7 +268,7 @@
             },
             reset: function() {
                 const intervalId = game._intervalId;
-                merge(game, gameLogic.getDefaultGameState());
+                $.extend(game, gameLogic.getDefaultGameState());
                 game._intervalId = intervalId;
 
                 $('#dialog-reset').modal('hide');
@@ -253,12 +276,8 @@
             pause: function() {
                 pause();
             },
-            showImport: function() {
-                showImportDialog();
-            },
             showExport: function() {
                 $( "#exportTextField").val(exportState(game));
-//                showExportDialog();
             },
             performImport: function () {
                 const textAreaValue = $("#importTextField").val();
@@ -277,21 +296,22 @@
 
     function intervalFunction()
     {
-        if (Date.now() - game.timeOfLastTick >= game.msPerTick)
-        {
-            gameLogic.checkProgress(game);
-            gameLogic.updateResourceLimits(game);
-            gameLogic.updateResources(game);
-            if (gameLogic.isCreateVillager(game))
-                gameLogic.createVillager(game);
+        let start = Date.now();
 
-            $('[data-toggle="popover"]').popover();
+        gameLogic.checkProgress(game);
+        gameLogic.updateResourceLimits(game);
+        gameLogic.updateResources(game);
+        if (gameLogic.isCreateVillager(game))
+            gameLogic.createVillager(game);
 
-            game.timeOfLastTick = Date.now();
-        }
+        $('[data-toggle="popover"]').popover();
 
         if (typeof(Storage) !== "undefined")
             localStorage.setItem('persistedGame', JSON.stringify(getStateWorthSaving(game)));
+
+        let end = Date.now();
+        if (end - start > game.longestTickInMs)
+            game.longestTickInMs = end - start;
     }
 
     // when document ready
@@ -309,7 +329,7 @@
     {
         if (!game._intervalId)
         {
-            game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
+            game._intervalId = setInterval(intervalFunction, game.msPerTick);
             $('#pauseButton').text('pause').val('pause');
         }
         else

@@ -1,17 +1,24 @@
 <template>
     <div class="resourceCost">
-        {{coster.cost.amount}}
+        {{cost}}
         <img v-bind:src="'ico/' + coster.cost.resource.image"/>
     </div>
 </template>
 
 <script>
+    import * as gameLogic from './game.js'
+
     export default {
         name: 'resource-cost',
         props: ['coster'],
         data: function () {
             return {
                 text: 'some-text'
+            }
+        },
+        computed: {
+            cost: function () {
+                return gameLogic.getBuildingCost(this.coster);
             }
         }
     }

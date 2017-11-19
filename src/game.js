@@ -379,9 +379,8 @@ export function getDefaultGameState()
         progress: progress,
 
         // system
-        fps: 10,  // determines how often the function passed to 'setInterval' is called
         msPerTick: 1000,  // how long to wait between ticks
-        timeOfLastTick: Date.now(),
+        longestTickInMs: 0,
         timeOfLastVillagerCreation: Date.now(),
         creatingAVillager: false,
         nightMode: false,
@@ -389,20 +388,26 @@ export function getDefaultGameState()
     };
 }
 
+export function getBuildingCost(building) {
+    const multiFactor = building.name === 'huts' ? 1.14 : 1.07;
+    let cost = building.cost.amount;
+    if (building.amount > 0)
+        cost *= Math.pow(multiFactor, building.amount);
+
+    return util.myRound(cost, 2);
+}
+
 // logic ported from App.vue
 export function buildBuilding(game, buildingName)
 {
     const building = game.buildings[buildingName];
     const costResource = building.cost.resource;
-    const costAmount = building.cost.amount;
-
-    const priceIncreaseMultiplier = building.name === 'huts' ? 1.14 : 1.07;
+    const costAmount = getBuildingCost(building);
 
     const canAfford = costResource.amount >= costAmount;
     if (canAfford)
     {
         updateResource(game, costResource.name, -costAmount);
-        building.cost.amount = util.myRound(costAmount * priceIncreaseMultiplier, 2);
         building.amount += 1;
     }
 }
@@ -411,21 +416,14 @@ export function reclaimBuilding(game, buildingName)
 {
     const building = game.buildings[buildingName];
     const costResource = building.cost.resource;
-    const costAmount = building.cost.amount;
-
-    const priceIncreaseMultiplier = building.name === 'huts' ? 1.14 : 1.07;
 
     const canReclaim = building.amount >= 1;
     if (canReclaim)
     {
-        //update reclaimed resource
-        let newAmount = building.cost.amount;
-        newAmount = util.myRound(newAmount, 2);
-        game.resources[costResource.name].amount += newAmount;
-
-        //update reclaimed building cost
-        building.cost.amount = util.myRound(costAmount / priceIncreaseMultiplier, 2);
         //update reclaimed building amount
         building.amount -= 1;
+
+        //update reclaimed resource
+        game.resources[costResource.name].amount += getBuildingCost(building);
     }
 }

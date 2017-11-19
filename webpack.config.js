@@ -69,6 +69,7 @@ module.exports = {
     },
     plugins: [
         new Visualizer(),
+        new webpack.NamedModulesPlugin(),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
