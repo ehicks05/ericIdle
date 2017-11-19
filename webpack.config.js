@@ -3,11 +3,14 @@ var webpack = require('webpack')
 var Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = {
-    entry: './src/main.js',
+    entry: {
+        app: "./src/main.js",
+        vendor: ["jquery", 'bootstrap', 'vue', 'popper.js'],
+    },
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist/',
-        filename: 'build.js'
+        filename: '[name].bundle.js'
     },
     module: {
         rules: [
@@ -71,7 +74,8 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default'],
-        })
+        }),
+        new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' })
     ],
     resolve: {
         alias: {

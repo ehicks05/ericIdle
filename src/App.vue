@@ -135,7 +135,6 @@
 
 <script>
     import Vue from 'vue'
-    import merge from 'lodash/merge'
     import $ from 'jquery'
 
     import 'bootstrap'
@@ -160,7 +159,7 @@
         console.log('parsed data');
 
         // merge saved state on top of the defaults
-        merge(game, parsedData);
+        mergeStateWorthSaving(game, parsedData);
     }
 
     game._intervalId = setInterval(intervalFunction, 1000 / game.fps);
@@ -252,19 +251,22 @@
     {
         if (Date.now() - game.timeOfLastTick >= game.msPerTick)
         {
-            gameLogic.updateResources(game);
+            gameLogic.checkProgress(game);
             gameLogic.updateResourceLimits(game);
+            gameLogic.updateResources(game);
             if (gameLogic.isCreateVillager(game))
                 gameLogic.createVillager(game);
-            gameLogic.checkProgress(game);
+
+            $('[data-toggle="popover"]').popover();
 
             game.timeOfLastTick = Date.now();
         }
 
         if (typeof(Storage) !== "undefined")
-            localStorage.setItem('persistedGame', JSON.stringify(game));
+            localStorage.setItem('persistedGame', JSON.stringify(getStateWorthSaving(game)));
     }
 
+    // when document ready
     $(function () {
         $('[data-toggle="popover"]').popover();
 
@@ -290,9 +292,101 @@
         }
     }
 
+    function getStateWorthSaving(state)
+    {
+        let stateWorthSaving = {};
+
+        stateWorthSaving.resources = {};
+        stateWorthSaving.buildings = {};
+        stateWorthSaving.jobs = {};
+        stateWorthSaving.technologies = {};
+        stateWorthSaving.progress = {};
+
+        Object.keys(state.resources).forEach(function(key) {
+            const myObject = state.resources[key];
+            stateWorthSaving.resources[key] = {};
+
+            if (myObject.hasOwnProperty('amount'))
+                stateWorthSaving.resources[key].amount = myObject.amount;
+        });
+
+        Object.keys(state.buildings).forEach(function(key) {
+            const myObject = state.buildings[key];
+            stateWorthSaving.buildings[key] = {};
+
+            if (myObject.hasOwnProperty('amount'))
+                stateWorthSaving.buildings[key].amount = myObject.amount;
+        });
+
+        Object.keys(state.jobs).forEach(function(key) {
+            const myObject = state.jobs[key];
+            stateWorthSaving.jobs[key] = {};
+
+            if (myObject.hasOwnProperty('amount'))
+                stateWorthSaving.jobs[key].amount = myObject.amount;
+        });
+
+        Object.keys(state.technologies).forEach(function(key) {
+            const myObject = state.technologies[key];
+            stateWorthSaving.technologies[key] = {};
+
+            if (myObject.hasOwnProperty('discovered'))
+                stateWorthSaving.technologies[key].discovered = myObject.discovered;
+        });
+
+        Object.keys(state.progress).forEach(function(key) {
+            const myObject = state.progress[key];
+            stateWorthSaving.progress[key] = {};
+
+            if (myObject.hasOwnProperty('unlocked'))
+                stateWorthSaving.progress[key].unlocked = myObject.unlocked;
+        });
+
+        return stateWorthSaving;
+    }
+
+    function mergeStateWorthSaving(gameState, stateWorthSaving)
+    {
+        Object.keys(stateWorthSaving.resources).forEach(function(key) {
+            const myObject = stateWorthSaving.resources[key];
+
+            if (myObject.hasOwnProperty('amount'))
+                gameState.resources[key].amount = myObject.amount;
+        });
+
+        Object.keys(stateWorthSaving.buildings).forEach(function(key) {
+            const myObject = stateWorthSaving.buildings[key];
+
+            if (myObject.hasOwnProperty('amount'))
+                gameState.buildings[key].amount = myObject.amount;
+        });
+
+        Object.keys(stateWorthSaving.jobs).forEach(function(key) {
+            const myObject = stateWorthSaving.jobs[key];
+
+            if (myObject.hasOwnProperty('amount'))
+                gameState.jobs[key].amount = myObject.amount;
+        });
+
+        Object.keys(stateWorthSaving.technologies).forEach(function(key) {
+            const myObject = stateWorthSaving.technologies[key];
+
+            if (myObject.hasOwnProperty('discovered'))
+                gameState.technologies[key].discovered = myObject.discovered;
+        });
+
+        Object.keys(stateWorthSaving.progress).forEach(function(key) {
+            const myObject = stateWorthSaving.progress[key];
+
+            if (myObject.hasOwnProperty('unlocked'))
+                gameState.progress[key].unlocked = myObject.unlocked;
+        });
+    }
+
     function exportState(state)
     {
-        const stateAsString = JSON.stringify(state);
+        const stateWorthSaving = getStateWorthSaving(state);
+        const stateAsString = JSON.stringify(stateWorthSaving);
         return btoa(stateAsString);
     }
 
@@ -301,7 +395,7 @@
         const deEncodedState = atob(encodedState);
         const parsedGame = JSON.parse(deEncodedState);
 
-        merge(game, parsedGame);
+        mergeStateWorthSaving(game, parsedGame);
 
         console.log('imported game state, food: ' + parsedGame.resources.food.amount);
     }
