@@ -208,8 +208,7 @@ export function isCreateVillager(game)
 
         const timeSinceLastVillagerInMS = Date.now() - game.timeOfLastVillagerCreation;
 
-        const rand = Math.random() * (20 * 1000);
-
+        const rand = Math.random() * (20000 * (1000 / game.msPerTick));
         return rand < timeSinceLastVillagerInMS;
     }
     return false;
@@ -379,7 +378,7 @@ export function getDefaultGameState()
         progress: progress,
 
         // system
-        msPerTick: 1000,  // how long to wait between ticks
+        msPerTick: 100,  // how long to wait between ticks
         longestTickInMs: 0,
         timeOfLastVillagerCreation: Date.now(),
         creatingAVillager: false,

@@ -23,7 +23,7 @@
                 </td>
                 <td class="text-center" style="white-space: nowrap">
                     <input type="button" class="btn btn-outline-secondary btn-sm"
-                           value="Build" v-bind:disabled="building.cost.amount > building.cost.resource.amount" v-on:click="buildBuilding(building.name)"/>
+                           value="Build" v-bind:disabled="!canAffordBuilding(building)" v-on:click="buildBuilding(building.name)"/>
                     <input type="button" class="btn btn-outline-secondary btn-sm"
                            value="Reclaim" v-bind:disabled="building.amount == 0" v-on:click="reclaimBuilding(building.name)"/>
                 </td>
@@ -49,6 +49,9 @@
             camelToTitle: function (value) {
                 const result = value.replace(/([A-Z])/g, " $1");
                 return result.charAt(0).toUpperCase() + result.slice(1);
+            },
+            canAffordBuilding: function (building) {
+                return building.cost.resource.amount >= gameLogic.getBuildingCost(building);
             },
             buildBuilding: function(buildingName){
                 this.$emit('buildBuilding', buildingName);
