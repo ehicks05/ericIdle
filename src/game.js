@@ -265,6 +265,25 @@ export function getDefaultGameState()
             this.status = 'visible';
     }
 
+
+    var game =
+        {
+            resources: {
+                food: {
+                    name: "food"
+                    , amount: 0
+                    , limit: 40
+                    , rate: 0
+                    , baseLimit: 40
+                    , image: "wheat.png"
+                    , prereq: ""
+                    , status: 'hidden'
+                }
+            },
+
+            workers: {}
+        };
+
     // resources
     const food = new Resource('food', 40, 'wheat.png', '');
     const lumber = new Resource('lumber', 24, 'wood-pile.png', 'unlockWoodConstruction');
@@ -317,16 +336,24 @@ export function getDefaultGameState()
     }
 
     // buildings
-    const huts = new Building('huts', 'tipi.png', 'unlockHuts', {resource: food, amount: 1}, [{resource: villagers, amount: 2, type: 'additive'}], []);
-    const farms = new Building('farms', 'barn.png', 'unlockFarming', {resource: lumber, amount: 1}, [], [{resource: food, amount: 0.05}]);
-    const lumberMills = new Building('lumberMills', 'circular-saw.png', 'unlockWoodConstruction', {resource: lumber, amount: 2}, [], [{resource: lumber, amount: 0.1}]);
-    const storerooms = new Building('storerooms', 'block-house.png', 'unlockStoneConstruction', {resource: lumber, amount: 5},
-        [{resource: food, amount: 5, type: 'additive'},{resource: lumber, amount: 5, type: 'additive'},{resource: stone, amount: 5, type: 'additive'}], []);
-    const quarries = new Building('quarries',  'gold-mine.png', 'unlockStoneConstruction', {resource: lumber, amount: 2}, [], [{resource: stone, amount: 0.06}]);
+    const huts = new Building('huts', 'tipi.png', 'unlockHuts', {resource: food, amount: 1},
+        [{resource: villagers, amount: 2, type: 'additive'}], []);
+    const farms = new Building('farms', 'barn.png', 'unlockFarming', {resource: lumber, amount: 1}, [],
+        [{resource: food, amount: 0.05}]);
+    const lumberMills = new Building('lumberMills', 'circular-saw.png', 'unlockWoodConstruction',
+        {resource: lumber, amount: 2}, [], [{resource: lumber, amount: 0.1}]);
+    const storerooms = new Building('storerooms', 'block-house.png', 'unlockStoneConstruction',
+        {resource: lumber, amount: 5},
+        [{resource: food, amount: 5, type: 'additive'},{resource: lumber, amount: 5, type: 'additive'},
+            {resource: stone, amount: 5, type: 'additive'}], []);
+    const quarries = new Building('quarries',  'gold-mine.png', 'unlockStoneConstruction', {resource: lumber, amount: 2},
+        [], [{resource: stone, amount: 0.06}]);
+    const schools = new Building('schools', 'graduate-cap.png', 'unlockSchools', {resource: lumber, amount: 3}, [],
+        [{resource: research, amount: 0.06}]);
+    const libraries = new Building('libraries', 'book-cover.png', 'unlockLibraries', {resource: lumber, amount: 4},
+        [{resource: research, amount: 5, type: 'additive'}], []);
     const huntingCamps = new Building('huntingCamps', 'watch.png', 'unlockHunting', {resource: lumber, amount: 2}, [], []);
     const smithies = new Building('smithies', 'watch.png', 'unlockSmithies', {resource: lumber, amount: 3}, [], []);
-    const schools = new Building('schools', 'graduate-cap.png', 'unlockSchools', {resource: lumber, amount: 3}, [], [{resource: research, amount: 0.06}]);
-    const libraries = new Building('libraries', 'book-cover.png', 'unlockLibraries', {resource: lumber, amount: 4}, [{resource: research, amount: 5, type: 'additive'}], []);
 
     function Technology(name, cost, prereq)
     {
@@ -378,7 +405,7 @@ export function getDefaultGameState()
         progress: progress,
 
         // system
-        msPerTick: 100,  // how long to wait between ticks
+        msPerTick: 200,  // how long to wait between ticks
         longestTickInMs: 0,
         timeOfLastVillagerCreation: Date.now(),
         creatingAVillager: false,
