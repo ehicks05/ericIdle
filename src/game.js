@@ -10,8 +10,7 @@ export const doGameTick = (game, updateGame) => {
 const checkProgress = (game, updateGame) => {
   Object.values(game.progress)
     .filter(
-      (progress) =>
-        progress.requirement && progress.requirement.unlocked === false
+      (progress) => progress.requirement && !progress.requirement.unlocked
     )
     .forEach((progress) => {
       const requirement = progress.requirement;
@@ -23,7 +22,6 @@ const checkProgress = (game, updateGame) => {
           game.technologies[requirement.technology].discovered);
 
       if (unlockIt) {
-        progress.unlocked = true;
         updateGame((draft) => {
           draft.progress[progress.name].unlocked = true;
           return;

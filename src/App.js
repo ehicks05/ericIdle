@@ -24,6 +24,7 @@ function App() {
       let start = Date.now();
 
       gameLogic.doGameTick(game, updateGame);
+      console.log("tick");
       localStorage.setItem("persistedGame", JSON.stringify(game));
 
       let end = Date.now();
@@ -32,9 +33,9 @@ function App() {
 
     if (isLoading && game.resources) {
       if (localStorage["persistedGame"])
-        updateGame((draft) =>
-          JSON.parse(localStorage.getItem("persistedGame"))
-        );
+        updateGame((draft) => {
+          return JSON.parse(localStorage.getItem("persistedGame"));
+        });
       intervalId.current = setInterval(intervalFunction, msPerTick);
       setIsLoading(false);
     }
@@ -114,7 +115,8 @@ function App() {
         <section>
           Buildings:
           <Buildings
-            buildings={Object.values(game.buildings) || []}
+            game={game}
+            updateGame={updateGame}
             buildBuilding="buildBuilding"
             reclaimBuilding="reclaimBuilding"
           />
