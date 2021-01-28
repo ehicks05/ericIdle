@@ -20,9 +20,19 @@ const Technologies = ({technologies}) => {
 }
 
 const Technology = ({technology}) => {
-    const makeDiscovery = (technologyName) => {
-        // $emit('makeDiscovery', technologyName);
-    };
+  const makeDiscovery = (technologyName) => {
+    // const canAfford =
+    //   game.resources.research.amount >=
+    //   game.technologies[technologyName].cost.amount;
+    // if (canAfford) {
+    //   gameLogic.updateResource(
+    //     game,
+    //     "research",
+    //     -game.technologies[technologyName].cost.amount
+    //   );
+    //   game.technologies[technologyName].discovered = true;
+    // }
+  };
 
     return (
         <tr>

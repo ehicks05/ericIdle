@@ -25,12 +25,12 @@ const Building = ({building}) => {
     const canAffordBuilding = (building) => {
         return building.cost.resource.amount >= gameLogic.getBuildingCost(building);
     };
-    const buildBuilding = (buildingName) => {
-        // $emit('buildBuilding', buildingName);
-    };
-    const reclaimBuilding = (buildingName) => {
-        // $emit('reclaimBuilding', buildingName)
-    };
+  const buildBuilding = (buildingName) => {
+    // gameLogic.buildBuilding(game, buildingName);
+  };
+  const reclaimBuilding = (buildingName) => {
+    // gameLogic.reclaimBuilding(game, buildingName);
+  };
     const getBuildingPopoverTitle = (building) => {
         return '<div style="font-weight: bold;">' + util.camelToTitle(building.name) + '</div>';
     };

@@ -1,399 +1,520 @@
-import * as util from './util.js'
+import * as util from "./util.js";
 
-export function updateResources(game)
-{
-    Object.values(game.resources).forEach(resource => {
-        let totalBonusMultiFromBuildings = 0;
-        Object.values(game.buildings).forEach(building => {
-            building.bonus.forEach(bonus => {
-                if (bonus.resource.name === resource.name)
-                    totalBonusMultiFromBuildings += building.amount * bonus.amount;
-            });
+export const doGameTick = (game, updateGame) => {
+  checkProgress(game, updateGame);
+  updateResourceLimits(game, updateGame);
+  updateResources(game, updateGame);
+  if (isCreateVillager(game)) createVillager(game, updateGame);
+};
+
+const checkProgress = (game, updateGame) => {
+  Object.values(game.progress)
+    .filter(
+      (progress) =>
+        progress.requirement && progress.requirement.unlocked === false
+    )
+    .forEach((progress) => {
+      const requirement = progress.requirement;
+
+      const unlockIt =
+        (requirement.resource &&
+          game.resources[requirement.resource].amount >= requirement.amount) ||
+        (requirement.technology &&
+          game.technologies[requirement.technology].discovered);
+
+      if (unlockIt) {
+        progress.unlocked = true;
+        updateGame((draft) => {
+          draft.progress[progress.name].unlocked = true;
+          return;
         });
-
-        let totalProductionFromWorkers = 0;
-        Object.values(game.jobs).forEach(job => {
-            job.production.forEach(production => {
-                if (production.resource.name === resource.name)
-                    totalProductionFromWorkers += job.amount * production.amount;
-            });
-        });
-
-        let newRate = totalProductionFromWorkers * (1 + totalBonusMultiFromBuildings);
-
-        // villagers gotta eat
-        if (resource.name === 'food')
-            newRate = newRate - .45 * game.resources.villagers.amount;
-
-        // apply arbitrary global multiplier
-        newRate = 0.1 * newRate ;
-        resource.rate = util.formatRate(newRate); // rate is for display and is per second
-        updateResource(game, resource.name, newRate * (game.msPerTick / 1000)); // apply rate per tick
+        applyProgress(game, updateGame, progress.name);
+      }
     });
-
-    // Starvation
-    if (game.resources.food.amount < 0 && game.resources.villagers.amount > 0)
-    {
-        updateVillagerCount(game, -1);
-        removeWorker(game);
-        game.resources.food.amount = .5; // ...
-    }
-
-    // Homelessness
-    let workerCount = 0;
-    Object.values(game.jobs).forEach(job => {
-        workerCount += job.amount;
-    });
-
-    if (workerCount > game.resources.villagers.amount)
-        removeWorker(game);
-}
-
-export function createVillager(game)
-{
-    const spacesAvailable = game.resources.villagers.limit - game.resources.villagers.amount;
-
-    let villagersToCreate = Math.floor(Math.sqrt(game.resources.villagers.amount)) - 1;
-    villagersToCreate = Math.min(villagersToCreate, spacesAvailable);
-    if (villagersToCreate < 1)
-        villagersToCreate = 1;
-
-    updateVillagerCount(game, villagersToCreate);
-    assignIdler(game, villagersToCreate);
-
-    game.creatingAVillager = false;
-}
-
-export function checkProgress(game)
-{
-    Object.keys(game.progress).forEach(function (progressKey)
-    {
-        const progressObject = game.progress[progressKey];
-
-        if (progressObject.hasOwnProperty('requirement'))
-        {
-            const requirementObject = progressObject.requirement;
-            if (requirementObject.unlocked === true)
-                return;
-
-            let unlockIt = false;
-            if (requirementObject.hasOwnProperty('resource'))
-            {
-                if (game.resources[requirementObject.resource].amount >= requirementObject.amount)
-                    unlockIt = true;
-            }
-            if (requirementObject.hasOwnProperty('technology'))
-            {
-                if (game.technologies[requirementObject.technology].discovered === true)
-                    unlockIt = true;
-            }
-
-            if (unlockIt)
-            {
-                progressObject.unlocked = true;
-                applyProgress(game, progressObject.name);
-            }
-        }
-    });
-}
-
-export function updateResourceLimits(game)
-{
-    Object.keys(game.resources).forEach(function (resourceKey)
-    {
-        let totalMultForResource = 0;
-        let totalAddForResource = 0;
-        Object.keys(game.buildings).forEach(function (buildingKey)
-        {
-            const building = game.buildings[buildingKey];
-
-            if (building.hasOwnProperty('resourceLimitModifier'))
-            {
-                building.resourceLimitModifier.forEach(function (resourceLimitObject)
-                {
-                    const resource = resourceLimitObject.resource;
-                    if (resource.name === game.resources[resourceKey].name)
-                    {
-                        if (resourceLimitObject.type === 'multi')
-                            totalMultForResource += building.amount * resourceLimitObject.amount;
-                        if (resourceLimitObject.type === 'additive')
-                            totalAddForResource += building.amount * resourceLimitObject.amount;
-                    }
-                });
-            }
-        });
-
-        game.resources[resourceKey].limit = (game.resources[resourceKey].baseLimit + totalAddForResource) * (1 + totalMultForResource);
-    });
-}
-
-export function updateResource(game, name, amount)
-{
-    let newAmount = game.resources[name].amount + amount;
-    newAmount = util.myRound(newAmount, 4);
-    if (newAmount > game.resources[name].limit)
-        game.resources[name].amount = game.resources[name].limit; // set it to the limit
-    else
-        game.resources[name].amount = newAmount;
-}
-
-export function removeWorker(game)
-{
-    if (game.jobs.idlers.amount > 0)
-    {
-        assignIdler(game, -1);
-        return;
-    }
-    if (game.jobs.foresters.amount > 0)
-    {
-        if (game.jobs.foresters.amount > 0)
-            game.jobs.foresters.amount -= 1;
-        return;
-    }
-    if (game.jobs.thinkers.amount > 0)
-    {
-        if (game.jobs.thinkers.amount > 0)
-            game.jobs.thinkers.amount -= 1;
-        return;
-    }
-    if (game.jobs.farmers.amount > 0)
-    {
-        if (game.jobs.farmers.amount > 0)
-            game.jobs.farmers.amount -= 1;
-        return;
-    }
-}
-
-// Villager
-export function updateVillagerCount(game, amount)
-{
-    game.resources.villagers.amount += amount;
-}
-
-// Worker
-export function assignIdler(game, amount)
-{
-    game.jobs.idlers.amount += amount;
-}
-
-export function isCreateVillager(game)
-{
-    if (game.resources.villagers.limit > game.resources.villagers.amount && game.resources.food.amount > 0)
-    {
-        if (game.creatingAVillager === false)
-        {
-            game.creatingAVillager = true;
-            game.timeOfLastVillagerCreation = Date.now();
-        }
-
-        const timeSinceLastVillagerInMS = Date.now() - game.timeOfLastVillagerCreation;
-
-        const rand = Math.random() * (20000 * (1000 / game.msPerTick));
-        return rand < timeSinceLastVillagerInMS;
-    }
-    return false;
-}
+};
 
 // go through every game object, looking for ones whose prereq = this progressObject. Make it visible
 // todo: consider what happens if you have multiple prereqs
-export function applyProgress(game, progressObject)
-{
-    Object.entries(game).forEach(({gameObjectCategoryKey, gameObjectCategory}) => {
-        Object.entries(gameObjectCategory).forEach(({gameObjectKey, gameObject}) => {
-            if (gameObject.prereq === progressObject)
-                gameObject.status = 'visible';
-        })
-    })
-}
-
-
-const DEFAULT_GAME_STATE = {
-    resources: {
-        food: {
-            name: "food",
-            baseLimit: 40,
-            limit: 40,
-            image: "wheat.png",
-            prereq: "",
-            amount: 0,
-            rate: 0,
-            status: 'visible',
-        },
-    },
+const applyProgress = (game, updateGame, progressObject) => {
+  Object.entries(game).forEach(([categoryKey, category]) => {
+    Object.entries(category).forEach(([gameObjectKey, gameObject]) => {
+      if (gameObject.prereq === progressObject)
+        updateGame((draft) => {
+          draft[categoryKey][gameObjectKey].status = "visible";
+          return;
+        });
+    });
+  });
 };
 
-export function getDefaultGameState()
-{
-    function Resource(name, baseLimit, image, prereq)
-    {
-        this.name = name;
-        this.amount = 0;
-        this.limit = baseLimit;
-        this.rate = 0;
-        this.baseLimit = baseLimit;
-        this.image = image;
-        this.prereq = prereq;
-        this.status = 'hidden';
+const updateResourceLimits = (game, updateGame) => {
+  Object.entries(game.resources).forEach(([resourceKey, resource]) => {
+    let multiplicativeMod = 0;
+    let additiveMod = 0;
+    Object.values(game.buildings)
+      .filter((building) => building.resourceLimitModifier)
+      .forEach((building) => {
+        building.resourceLimitModifier
+          .filter(
+            (resourceLimitMod) =>
+              resourceLimitMod.resource.name === resource.name
+          )
+          .forEach((resourceLimitMod) => {
+            if (resourceLimitMod.type === "multi")
+              multiplicativeMod += building.amount * resourceLimitMod.amount;
+            if (resourceLimitMod.type === "additive")
+              additiveMod += building.amount * resourceLimitMod.amount;
+          });
+      });
 
-        if (this.name === 'food')
-            this.status = 'visible';
+    const newLimit =
+      (resource.baseLimit + additiveMod) * (1 + multiplicativeMod);
+    updateGame((draft) => {
+      draft.resources[resourceKey].limit = newLimit;
+      return;
+    });
+  });
+};
+
+const updateResources = (game, updateGame) => {
+  Object.values(game.resources).forEach((resource) => {
+    let multiplicativeMod = 0;
+    Object.values(game.buildings).forEach((building) => {
+      building.bonus.forEach((bonus) => {
+        if (bonus.resource.name === resource.name)
+          multiplicativeMod += building.amount * bonus.amount;
+      });
+    });
+
+    let additiveMod = 0;
+    Object.values(game.jobs).forEach((job) => {
+      job.production.forEach((production) => {
+        if (production.resource.name === resource.name)
+          additiveMod += job.amount * production.amount;
+      });
+    });
+
+    let newRate = additiveMod * (1 + multiplicativeMod);
+
+    // villagers gotta eat
+    if (resource.name === "food")
+      newRate = newRate - 0.45 * game?.resources?.villagers?.amount;
+
+    // apply arbitrary global multiplier
+    newRate = 0.1 * newRate;
+    updateGame((draft) => {
+      draft.resources[resource.name].rate = util.formatRate(newRate);
+      return;
+    });
+    updateResource(game, updateGame, resource.name, newRate * (200 / 1000)); // apply rate per tick
+  });
+
+  // Starvation
+  if (game.resources.food.amount < 0 && game.resources.villagers.amount > 0) {
+    updateVillagerCount(game, updateGame, -1);
+    removeWorker(game, updateGame);
+    game.resources.food.amount = 0.5; // ...
+  }
+
+  const workerCount = Object.values(game.jobs).reduce(
+    (sum, job) => sum + job.amount,
+    0
+  );
+
+  // more workers than villagers
+  if (workerCount > game.resources.villagers.amount)
+    removeWorker(game, updateGame);
+};
+
+export const updateResource = (game, updateGame, name, amount) => {
+  updateGame((draft) => {
+    const newAmount = Math.min(
+      util.myRound(draft.resources[name].amount + amount, 4),
+      draft.resources[name].limit
+    );
+    draft.resources[name].amount = newAmount;
+    return;
+  });
+};
+
+const createVillager = (game, updateGame) => {
+  const spacesAvailable =
+    game.resources.villagers.limit - game.resources.villagers.amount;
+
+  let villagersToCreate =
+    Math.floor(Math.sqrt(game.resources.villagers.amount)) - 1;
+  villagersToCreate = Math.min(villagersToCreate, spacesAvailable);
+  if (villagersToCreate < 1) villagersToCreate = 1;
+
+  updateVillagerCount(game, updateGame, villagersToCreate);
+  assignIdler(game, updateGame, villagersToCreate);
+  updateGame((draft) => {
+    draft.creatingAVillager = false;
+    return;
+  });
+};
+
+export const removeWorker = (game, updateGame) => {
+  if (game.jobs.idlers.amount > 0) {
+    updateGame((draft) => {
+      draft.jobs.idlers.amount -= 1;
+      return;
+    });
+    return;
+  }
+
+  const job = Object.values(game.jobs).find(
+    (job) => job.name !== "idler" && job.amount > 0
+  );
+  if (job)
+    updateGame((draft) => {
+      draft.jobs[job.name].amount -= 1;
+      return;
+    });
+};
+
+// Villager
+export const updateVillagerCount = (game, updateGame, amount) => {
+  updateGame((draft) => {
+    draft.resources.villagers.amount += amount;
+    return;
+  });
+};
+
+// Worker
+export const assignIdler = (game, updateGame, amount) => {
+  updateGame((draft) => {
+    draft.jobs.idlers.amount += amount;
+    return;
+  });
+};
+
+export const isCreateVillager = (game, updateGame) => {
+  const isVillagerCreationPossible =
+    game.resources.villagers.amount < game.resources.villagers.limit &&
+    game.resources.food.amount > 0;
+  if (isVillagerCreationPossible) {
+    if (game.creatingAVillager === false) {
+      updateGame((draft) => {
+        draft.creatingAVillager = true;
+        draft.timeOfLastVillagerCreation = Date.now();
+        return;
+      });
     }
 
-    // resources
-    const food = new Resource('food', 40, 'wheat.png', '');
-    const lumber = new Resource('lumber', 24, 'wood-pile.png', 'unlockWoodConstruction');
-    const leather = new Resource('leather', 20, 'animal-hide.png', 'unlockHunting');
-    const stone = new Resource('stone', 10, 'stone-pile.png', 'unlockStoneConstruction');
-    const research = new Resource('research', 20, 'coma.png', 'unlockVillagers');
-    const villagers = new Resource('villagers', 0, 'backup.png', 'unlockVillagers');
+    const msSinceLastVillager = Date.now() - game.timeOfLastVillagerCreation;
 
-    function Job(name, image, prereq, productionList)
-    {
-        this.name = name;
-        this.amount = 0;
-        this.image = image;
-        this.status = 'hidden';
-        this.prereq = prereq;
+    const rand = Math.random() * (20000 * (1000 / game.msPerTick));
+    return rand < msSinceLastVillager;
+  }
+  return false;
+};
 
-        this.production = [];
-        if (productionList)
-            for (let production of productionList)
-                this.production.push(production);
-    }
+export const getBuildingCost = (building) => {
+  const scalingFactor = building.name === "huts" ? 1.14 : 1.07;
+  const cost = building.cost.amount * Math.pow(scalingFactor, building.amount);
+  return util.myRound(cost, 2);
+};
 
-    // workers
-    const idlers = new Job('idlers', 'watch.png', 'unlockVillagers');
-    const farmers = new Job('farmers', 'farmer.png', 'unlockVillagers', [{resource: food, amount: 0.5}]);
-    const thinkers = new Job('thinkers', 'think.png', 'unlockVillagers', [{resource: research, amount: 0.2}]);
-    const foresters = new Job('foresters', 'hand-saw.png', 'unlockWoodConstruction', [{resource: lumber, amount: 0.3}]);
-    const hunters = new Job('hunters', 'watch.png', 'unlockHunting');
-    const miners = new Job('miners', 'watch.png', 'unlockStoneConstruction', [{resource: stone, amount: 0.1}]);
-    const builders = new Job('builders', 'watch.png', 'unlockBuilders');
+export const buildBuilding = (game, updateGame, buildingName) => {
+  const building = game.buildings[buildingName];
+  const costResource = building.cost.resource;
+  const costAmount = getBuildingCost(building);
 
-    function Building(name, image, prereq, cost, limitModifiers, bonusList)
-    {
-        this.name = name;
-        this.amount = 0;
-        this.image = image;
-        this.status = 'hidden';
-        this.prereq = prereq;
-        this.cost = cost;
+  const canAfford = costResource.amount >= costAmount;
+  if (canAfford) {
+    updateResource(game, costResource.name, -costAmount);
+    updateGame((draft) => {
+      draft.buildings[buildingName].amount += 1;
+      return;
+    });
+  }
+};
 
-        this.resourceLimitModifier = [];
-        if (limitModifiers)
-            for (let limitModifier of limitModifiers)
-                this.resourceLimitModifier.push(limitModifier);
+export const reclaimBuilding = (game, updateGame, buildingName) => {
+  const building = game.buildings[buildingName];
+  const costResource = building.cost.resource;
 
-        this.bonus = [];
-        if (bonusList)
-            for (let bonus of bonusList)
-                this.bonus.push(bonus);
-    }
+  const canReclaim = building.amount >= 1;
+  if (canReclaim) {
+    updateGame((draft) => {
+      draft.buildings[buildingName].amount -= 1;
+      return;
+    });
+    updateResource(game, costResource.name, getBuildingCost(building));
+  }
+};
 
-    // buildings
-    const huts = new Building('huts', 'tipi.png', 'unlockHuts', {resource: food, amount: 1},
-        [{resource: villagers, amount: 2, type: 'additive'}], []);
-    const farms = new Building('farms', 'barn.png', 'unlockFarming', {resource: lumber, amount: 1}, [],
-        [{resource: food, amount: 0.05}]);
-    const lumberMills = new Building('lumberMills', 'circular-saw.png', 'unlockWoodConstruction',
-        {resource: lumber, amount: 2}, [], [{resource: lumber, amount: 0.1}]);
-    const storerooms = new Building('storerooms', 'block-house.png', 'unlockStoneConstruction',
-        {resource: lumber, amount: 5},
-        [{resource: food, amount: 5, type: 'additive'},{resource: lumber, amount: 5, type: 'additive'},
-            {resource: stone, amount: 5, type: 'additive'}], []);
-    const quarries = new Building('quarries',  'gold-mine.png', 'unlockStoneConstruction', {resource: lumber, amount: 2},
-        [], [{resource: stone, amount: 0.06}]);
-    const schools = new Building('schools', 'graduate-cap.png', 'unlockSchools', {resource: lumber, amount: 3}, [],
-        [{resource: research, amount: 0.06}]);
-    const libraries = new Building('libraries', 'book-cover.png', 'unlockLibraries', {resource: lumber, amount: 4},
-        [{resource: research, amount: 5, type: 'additive'}], []);
-    const huntingCamps = new Building('huntingCamps', 'watch.png', 'unlockHunting', {resource: lumber, amount: 2}, [], []);
-    const smithies = new Building('smithies', 'watch.png', 'unlockSmithies', {resource: lumber, amount: 3}, [], []);
+export const getDefaultGameState = () => {
+  function Resource(name, baseLimit, image, prereq) {
+    this.name = name;
+    this.limit = baseLimit;
+    this.baseLimit = baseLimit;
+    this.image = image;
+    this.prereq = prereq;
+    this.status = name === "food" ? "visible" : "hidden";
+    this.amount = 0;
+    this.rate = 0;
+  }
 
-    function Technology(name, cost, prereq)
-    {
-        this.name = name;
-        this.discovered = false;
-        this.cost = cost;
-        this.status = 'hidden';
-        this.image = 'enlightenment.png';
-        this.buttonLabel = 'Discover';
-        this.prereq = prereq;
-    }
+  // resources
+  const food = new Resource("food", 40, "wheat.png", "");
+  const lumber = new Resource(
+    "lumber",
+    24,
+    "wood-pile.png",
+    "unlockWoodConstruction"
+  );
+  const leather = new Resource(
+    "leather",
+    20,
+    "animal-hide.png",
+    "unlockHunting"
+  );
+  const stone = new Resource(
+    "stone",
+    10,
+    "stone-pile.png",
+    "unlockStoneConstruction"
+  );
+  const research = new Resource("research", 20, "coma.png", "unlockVillagers");
+  const villagers = new Resource(
+    "villagers",
+    0,
+    "backup.png",
+    "unlockVillagers"
+  );
 
-    //technologies
-    const farming = new Technology('farming', {resource: research, amount: 1}, 'unlockLevelOneTech');
-    const woodConstruction = new Technology('woodConstruction', {resource: research, amount: 2}, 'unlockLevelOneTech');
-    const stoneConstruction = new Technology('stoneConstruction', {resource: research, amount: 5}, 'unlockLevelOneTech');
-    const wheel = new Technology('wheel', {resource: research, amount: 5}, 'unlockLevelOneTech');
+  function Job(name, image, prereq, productionList) {
+    this.name = name;
+    this.image = image;
+    this.prereq = prereq;
+    this.status = "hidden";
+    this.production = productionList || [];
+    this.amount = 0;
+  }
 
-    function Prereq(name, requirement)
-    {
-        this.name = name;
-        this.unlocked = false;
-        this.requirement = requirement;
-    }
+  // workers
+  const idlers = new Job("idlers", "watch.png", "unlockVillagers");
+  const farmers = new Job("farmers", "farmer.png", "unlockVillagers", [
+    { resource: food, amount: 0.5 },
+  ]);
+  const thinkers = new Job("thinkers", "think.png", "unlockVillagers", [
+    { resource: research, amount: 0.2 },
+  ]);
+  const foresters = new Job(
+    "foresters",
+    "hand-saw.png",
+    "unlockWoodConstruction",
+    [{ resource: lumber, amount: 0.3 }]
+  );
+  const hunters = new Job("hunters", "watch.png", "unlockHunting");
+  const miners = new Job("miners", "watch.png", "unlockStoneConstruction", [
+    { resource: stone, amount: 0.1 },
+  ]);
+  const builders = new Job("builders", "watch.png", "unlockBuilders");
 
-    //prereqs
-    const unlockHuts = new Prereq('unlockHuts', {resource: 'food', amount: 1});
-    const unlockVillagers = new Prereq('unlockVillagers', {resource: 'villagers', amount: 1});
-    const unlockLevelOneTech = new Prereq('unlockLevelOneTech', {resource: 'research', amount: 1});
-    const unlockFarming = new Prereq('unlockFarming', {technology: 'farming'});
-    const unlockWoodConstruction = new Prereq('unlockWoodConstruction', {technology: 'woodConstruction'});
-    const unlockStoneConstruction = new Prereq('unlockStoneConstruction', {technology: 'stoneConstruction'});
-    const unlockWheel = new Prereq('unlockWheel', {technology: 'wheel'});
-    const unlockSchools = new Prereq('unlockSchools', {resource: 'villagers', amount: 30});
-    const unlockLibraries = new Prereq('unlockLibraries', {resource: 'villagers', amount: 50});
+  function Building(name, image, prereq, cost, limitModifiers, bonusList) {
+    this.name = name;
+    this.image = image;
+    this.prereq = prereq;
+    this.cost = cost;
+    this.resourceLimitModifier = limitModifiers || [];
+    this.bonus = bonusList || [];
+    this.status = "hidden";
+    this.amount = 0;
+  }
 
-    const resources = {food: food, lumber: lumber, research: research, villagers: villagers, stone: stone};
-    const buildings = {huts: huts, farms: farms, lumberMills: lumberMills, storerooms: storerooms, quarries: quarries, schools: schools, libraries: libraries};
-    const jobs = {idlers: idlers, farmers: farmers, foresters: foresters, hunters: hunters, miners: miners, builders: builders, thinkers: thinkers};
-    const technologies = {farming: farming, woodConstruction: woodConstruction, stoneConstruction: stoneConstruction, wheel: wheel};
-    const progress = {unlockHuts: unlockHuts, unlockVillagers: unlockVillagers, unlockLevelOneTech: unlockLevelOneTech, unlockFarming: unlockFarming,
-        unlockWoodConstruction: unlockWoodConstruction, unlockStoneConstruction: unlockStoneConstruction, unlockSchools: unlockSchools, unlockLibraries: unlockLibraries};
+  // buildings
+  const huts = new Building(
+    "huts",
+    "tipi.png",
+    "unlockHuts",
+    { resource: food, amount: 1 },
+    [{ resource: villagers, amount: 2, type: "additive" }],
+    []
+  );
+  const farms = new Building(
+    "farms",
+    "barn.png",
+    "unlockFarming",
+    { resource: lumber, amount: 1 },
+    [],
+    [{ resource: food, amount: 0.05 }]
+  );
+  const lumberMills = new Building(
+    "lumberMills",
+    "circular-saw.png",
+    "unlockWoodConstruction",
+    { resource: lumber, amount: 2 },
+    [],
+    [{ resource: lumber, amount: 0.1 }]
+  );
+  const storerooms = new Building(
+    "storerooms",
+    "block-house.png",
+    "unlockStoneConstruction",
+    { resource: lumber, amount: 5 },
+    [
+      { resource: food, amount: 5, type: "additive" },
+      { resource: lumber, amount: 5, type: "additive" },
+      { resource: stone, amount: 5, type: "additive" },
+    ],
+    []
+  );
+  const quarries = new Building(
+    "quarries",
+    "gold-mine.png",
+    "unlockStoneConstruction",
+    { resource: lumber, amount: 2 },
+    [],
+    [{ resource: stone, amount: 0.06 }]
+  );
+  const schools = new Building(
+    "schools",
+    "graduate-cap.png",
+    "unlockSchools",
+    { resource: lumber, amount: 3 },
+    [],
+    [{ resource: research, amount: 0.06 }]
+  );
+  const libraries = new Building(
+    "libraries",
+    "book-cover.png",
+    "unlockLibraries",
+    { resource: lumber, amount: 4 },
+    [{ resource: research, amount: 5, type: "additive" }],
+    []
+  );
+  const huntingCamps = new Building(
+    "huntingCamps",
+    "watch.png",
+    "unlockHunting",
+    { resource: lumber, amount: 2 },
+    [],
+    []
+  );
+  const smithies = new Building(
+    "smithies",
+    "watch.png",
+    "unlockSmithies",
+    { resource: lumber, amount: 3 },
+    [],
+    []
+  );
 
-    return {
-        resources: resources,
-        buildings: buildings,
-        jobs: jobs,
-        technologies: technologies,
-        progress: progress,
-    };
-}
+  function Technology(name, cost, prereq) {
+    this.name = name;
+    this.cost = cost;
+    this.prereq = prereq;
+    this.status = "hidden";
+    this.image = "enlightenment.png";
+    this.buttonLabel = "Discover";
+    this.discovered = false;
+  }
 
-export function getBuildingCost(building) {
-    const multiFactor = building.name === 'huts' ? 1.14 : 1.07;
-    const cost = building.cost.amount * Math.pow(multiFactor, building.amount)
-    return util.myRound(cost, 2);
-}
+  //technologies
+  const farming = new Technology(
+    "farming",
+    { resource: research, amount: 1 },
+    "unlockLevelOneTech"
+  );
+  const woodConstruction = new Technology(
+    "woodConstruction",
+    { resource: research, amount: 2 },
+    "unlockLevelOneTech"
+  );
+  const stoneConstruction = new Technology(
+    "stoneConstruction",
+    { resource: research, amount: 5 },
+    "unlockLevelOneTech"
+  );
+  const wheel = new Technology(
+    "wheel",
+    { resource: research, amount: 5 },
+    "unlockLevelOneTech"
+  );
 
-// logic ported from App.vue
-export function buildBuilding(game, buildingName)
-{
-    const building = game.buildings[buildingName];
-    const costResource = building.cost.resource;
-    const costAmount = getBuildingCost(building);
+  function Prereq(name, requirement) {
+    this.name = name;
+    this.requirement = requirement;
+    this.unlocked = false;
+  }
 
-    const canAfford = costResource.amount >= costAmount;
-    if (canAfford)
-    {
-        updateResource(game, costResource.name, -costAmount);
-        building.amount += 1;
-    }
-}
+  //prereqs
+  const unlockHuts = new Prereq("unlockHuts", { resource: "food", amount: 1 });
+  const unlockVillagers = new Prereq("unlockVillagers", {
+    resource: "villagers",
+    amount: 1,
+  });
+  const unlockLevelOneTech = new Prereq("unlockLevelOneTech", {
+    resource: "research",
+    amount: 1,
+  });
+  const unlockFarming = new Prereq("unlockFarming", { technology: "farming" });
+  const unlockWoodConstruction = new Prereq("unlockWoodConstruction", {
+    technology: "woodConstruction",
+  });
+  const unlockStoneConstruction = new Prereq("unlockStoneConstruction", {
+    technology: "stoneConstruction",
+  });
+  const unlockWheel = new Prereq("unlockWheel", { technology: "wheel" });
+  const unlockSchools = new Prereq("unlockSchools", {
+    resource: "villagers",
+    amount: 30,
+  });
+  const unlockLibraries = new Prereq("unlockLibraries", {
+    resource: "villagers",
+    amount: 50,
+  });
 
-export function reclaimBuilding(game, buildingName)
-{
-    const building = game.buildings[buildingName];
-    const costResource = building.cost.resource;
+  const resources = {
+    food: food,
+    lumber: lumber,
+    research: research,
+    villagers: villagers,
+    stone: stone,
+  };
+  const buildings = {
+    huts: huts,
+    farms: farms,
+    lumberMills: lumberMills,
+    storerooms: storerooms,
+    quarries: quarries,
+    schools: schools,
+    libraries: libraries,
+  };
+  const jobs = {
+    idlers: idlers,
+    farmers: farmers,
+    foresters: foresters,
+    hunters: hunters,
+    miners: miners,
+    builders: builders,
+    thinkers: thinkers,
+  };
+  const technologies = {
+    farming: farming,
+    woodConstruction: woodConstruction,
+    stoneConstruction: stoneConstruction,
+    wheel: wheel,
+  };
+  const progress = {
+    unlockHuts: unlockHuts,
+    unlockVillagers: unlockVillagers,
+    unlockLevelOneTech: unlockLevelOneTech,
+    unlockFarming: unlockFarming,
+    unlockWoodConstruction: unlockWoodConstruction,
+    unlockStoneConstruction: unlockStoneConstruction,
+    unlockSchools: unlockSchools,
+    unlockLibraries: unlockLibraries,
+  };
 
-    const canReclaim = building.amount >= 1;
-    if (canReclaim)
-    {
-        //update reclaimed building amount
-        building.amount -= 1;
-
-        //update reclaimed resource
-        game.resources[costResource.name].amount += getBuildingCost(building);
-    }
-}
+  return {
+    resources: resources,
+    buildings: buildings,
+    jobs: jobs,
+    technologies: technologies,
+    progress: progress,
+  };
+};

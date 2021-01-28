@@ -19,12 +19,18 @@ const Jobs = ({jobs}) => {
 }
 
 const Job = ({jobs, job}) => {
-    const assignWorker = (jobName) => {
-        // $emit('assignWorker', jobName);
-    };
-    const unAssignWorker = (jobName) => {
-        // $emit('unAssignWorker', jobName);
-    };
+  const assignWorker = (jobName) => {
+    // if (game.jobs.idlers.amount > 0) {
+    //   game.jobs[jobName].amount += 1;
+    //   game.jobs.idlers.amount -= 1;
+    // }
+  };
+  const unAssignWorker = (jobName) => {
+    // if (game.jobs[jobName].amount > 0) {
+    //   game.jobs[jobName].amount -= 1;
+    //   game.jobs.idlers.amount += 1;
+    // }
+  };
 
     return (
         <tr>
