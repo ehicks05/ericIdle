@@ -1,9 +1,8 @@
-import { useState } from "react";
 import * as util from "./util.js";
 import * as gameLogic from "./game.js";
 import ResourceCost from "./ResourceCost";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // optional
+import "tippy.js/dist/tippy.css";
 
 const Buildings = ({ game, updateGame }) => {
   return (
@@ -53,7 +52,7 @@ const Building = ({ game, updateGame, building }) => {
       <table>
         <thead>
           <tr>
-            <td colspan="2">Production Bonuses</td>
+            <td colSpan="2">Production Bonuses</td>
           </tr>
           <tr>
             <td>Resource</td>
@@ -75,7 +74,7 @@ const Building = ({ game, updateGame, building }) => {
       <table>
         <thead>
           <tr>
-            <td colspan="3">Resource Limit Mods</td>
+            <td colSpan="3">Resource Limit Mods</td>
           </tr>
           <tr>
             <td>Resource</td>
@@ -84,7 +83,6 @@ const Building = ({ game, updateGame, building }) => {
           </tr>
         </thead>
         <tbody>
-          {" "}
           {building.resourceLimitModifier.map((mod) => (
             <tr key={mod.resource}>
               <td>{mod.resource.name}</td>

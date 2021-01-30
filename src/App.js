@@ -48,7 +48,7 @@ function App() {
   }
 
   function importState(state) {
-    updateGame((draft) => JSON.parse(atob(state)));
+    updateGame((_draft) => JSON.parse(atob(state)));
   }
 
   const reset = () => {
@@ -57,7 +57,7 @@ function App() {
         "Are you sure you want to reset the game? All progress will be lost."
       )
     )
-      updateGame((draft) => gameLogic.getDefaultGameState());
+      updateGame((_draft) => gameLogic.getDefaultGameState());
   };
 
   const showExport = () => {

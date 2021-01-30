@@ -219,9 +219,9 @@ export const buildBuilding = (game, updateGame, buildingName) => {
   const costResource = building.cost.resource;
   const costAmount = getBuildingCost(building);
 
-  const canAfford = costResource.amount >= costAmount;
+  const canAfford = game.resources[costResource.name].amount >= costAmount;
   if (canAfford) {
-    updateResource(game, costResource.name, -costAmount);
+    updateResource(game, updateGame, costResource.name, -costAmount);
     updateGame((draft) => {
       draft.buildings[buildingName].amount += 1;
       return;
@@ -239,7 +239,12 @@ export const reclaimBuilding = (game, updateGame, buildingName) => {
       draft.buildings[buildingName].amount -= 1;
       return;
     });
-    updateResource(game, costResource.name, getBuildingCost(building));
+    updateResource(
+      game,
+      updateGame,
+      costResource.name,
+      getBuildingCost(building)
+    );
   }
 };
 
