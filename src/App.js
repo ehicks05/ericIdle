@@ -6,6 +6,7 @@ import Resources from "./Resources";
 import Technologies from "./Technologies";
 import Villagers from "./Villagers";
 import * as gameLogic from "./game.js";
+import { BsMoon, BsSun } from "react-icons/bs";
 import "./App.css";
 
 const MS_PER_TICK = 200;
@@ -157,23 +158,45 @@ function App() {
                       className="button"
                       onClick={() => setDarkMode(!darkMode)}
                     >
-                      {darkMode ? "☀️" : "🌙"}
+                      <a className="icon">
+                        {darkMode ? <BsSun /> : <BsMoon />}
+                      </a>
                     </button>
                   </div>
-                  <section>
+                  <hr />
+                  <p>
                     Longest time taken in a single game tick:{" "}
                     {longestTickInMs.current} ms
-                  </section>
+                  </p>
+                  <hr />
+                  <h1>Export Save</h1>
+                  <label htmlFor="exportTextField">Copy this:</label>
+                  <br />
+                  <textarea
+                    id="exportTextField"
+                    rows="12"
+                    cols="44"
+                    readOnly
+                    value={exportState(game)}
+                  />
+                  <hr />
+                  <h1>Import Save</h1>
+                  <label htmlFor="exportTextField">Paste save here:</label>
+                  <br />
+                  <textarea id="importTextField" rows="12" cols="44" />
+                  <br />
+                  <button
+                    className="button is-small"
+                    onClick={() =>
+                      importState(
+                        document.getElementById("importTextField").value
+                      )
+                    }
+                  >
+                    Import
+                  </button>
                 </>
               )}
-
-              {/*<h1>Export Save</h1>*/}
-              {/*<label htmlFor="exportTextField">Copy this:</label><br />*/}
-              {/*<textarea id="exportTextField" rows="12" cols="44" readOnly />*/}
-
-              {/*<h1>Import Save</h1>*/}
-              {/*<label htmlFor="exportTextField">Paste save here:</label><br />*/}
-              {/*<textarea id="importTextField" rows="12" cols="44" />*/}
             </div>
           </div>
         </div>

@@ -3,29 +3,22 @@ import * as gameLogic from "./game.js";
 
 const Jobs = ({ game, updateGame }) => {
   return (
-    <div id="villagersContainer">
-      <table className="table is-narrow">
-        <thead>
-          <tr>
-            <th className="has-text-left">Villagers</th>
-            <th className="has-text-right">Quantity</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(game.jobs)
-            .filter((job) => job.status !== "hidden")
-            .map((job) => (
-              <Job
-                key={job.name}
-                game={game}
-                updateGame={updateGame}
-                job={job}
-              />
-            ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="table is-narrow">
+      <thead>
+        <tr>
+          <th className="has-text-left">Villagers</th>
+          <th className="has-text-right">Quantity</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {Object.values(game.jobs)
+          .filter((job) => job.status !== "hidden")
+          .map((job) => (
+            <Job key={job.name} game={game} updateGame={updateGame} job={job} />
+          ))}
+      </tbody>
+    </table>
   );
 };
 // export const assignJob = (game, updateGame, name, amount) => {

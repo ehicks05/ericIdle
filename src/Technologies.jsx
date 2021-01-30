@@ -4,29 +4,27 @@ import ResourceCost from "./ResourceCost";
 
 const Technologies = ({ game, updateGame }) => {
   return (
-    <div id="technologiesContainer">
-      <table className="table is-narrow">
-        <thead>
-          <tr>
-            <th className="has-text-left">Technology</th>
-            <th className="has-text-right">Price</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(game.technologies)
-            .filter((technology) => technology.status !== "hidden")
-            .map((technology) => (
-              <Technology
-                key={technology.name}
-                game={game}
-                updateGame={updateGame}
-                technology={technology}
-              />
-            ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="table is-narrow">
+      <thead>
+        <tr>
+          <th className="has-text-left">Technology</th>
+          <th className="has-text-right">Price</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {Object.values(game.technologies)
+          .filter((technology) => technology.status !== "hidden")
+          .map((technology) => (
+            <Technology
+              key={technology.name}
+              game={game}
+              updateGame={updateGame}
+              technology={technology}
+            />
+          ))}
+      </tbody>
+    </table>
   );
 };
 

@@ -7,32 +7,30 @@ import "tippy.js/dist/tippy.css";
 
 const Buildings = ({ game, updateGame }) => {
   return (
-    <div id="buildingsContainer">
-      <table className="table is-narrow">
-        <thead>
-          <tr className="noTopBorder">
-            <th className="has-text-left">Structure</th>
-            <th className="has-text-right">Quantity</th>
-            <th className="has-text-right" style={{ width: "90px" }}>
-              Price
-            </th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(game.buildings)
-            .filter((building) => building.status !== "hidden")
-            .map((building) => (
-              <Building
-                key={building.name}
-                game={game}
-                updateGame={updateGame}
-                building={building}
-              />
-            ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="table is-narrow">
+      <thead>
+        <tr className="noTopBorder">
+          <th className="has-text-left">Structure</th>
+          <th className="has-text-right">Quantity</th>
+          <th className="has-text-right" style={{ width: "90px" }}>
+            Price
+          </th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {Object.values(game.buildings)
+          .filter((building) => building.status !== "hidden")
+          .map((building) => (
+            <Building
+              key={building.name}
+              game={game}
+              updateGame={updateGame}
+              building={building}
+            />
+          ))}
+      </tbody>
+    </table>
   );
 };
 
