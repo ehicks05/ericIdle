@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useImmer } from "use-immer";
+import useInterval from "./useInterval";
 import Buildings from "./Buildings";
 import Resources from "./Resources";
 import Technologies from "./Technologies";
 import Villagers from "./Villagers";
 import * as gameLogic from "./game.js";
 import "./App.css";
-import { useImmer } from "use-immer";
 
 function App() {
   const [game, updateGame] = useImmer(gameLogic.getDefaultGameState());
@@ -15,42 +16,28 @@ function App() {
 
   const [darkMode, setDarkMode] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   let longestTickInMs = useRef(0);
-  const intervalId = useRef(0);
 
-  useEffect(() => {
-    function intervalFunction() {
+  useInterval(
+    () => {
       let start = Date.now();
 
       gameLogic.doGameTick(game, updateGame);
-      console.log("tick");
       localStorage.setItem("persistedGame", JSON.stringify(game));
       console.log(game.resources.food.amount);
-      console.log(
-        JSON.parse(localStorage.getItem("persistedGame")).resources.food.amount
-      );
 
       let end = Date.now();
       if (end - start > longestTickInMs) longestTickInMs.current = end - start;
-    }
+    },
+    paused ? null : msPerTick
+  );
 
-    if (isLoading && game.resources) {
-      if (localStorage.getItem("persistedGame"))
-        updateGame((draft) => {
-          return JSON.parse(localStorage.getItem("persistedGame"));
-        });
-      intervalId.current = setInterval(intervalFunction, msPerTick);
-      setIsLoading(false);
-    }
-    // if (paused) {
-    //   window.clearInterval(intervalId.current);
-    //   intervalId.current = 0;
-    // }
-    // if (!paused) {
-    //   intervalId.current = setInterval(intervalFunction, msPerTick);
-    // }
-  }, [isLoading, game, updateGame, paused]);
+  useEffect(() => {
+    if (localStorage.getItem("persistedGame"))
+      updateGame((draft) => {
+        return JSON.parse(localStorage.getItem("persistedGame"));
+      });
+  }, [updateGame]);
 
   function pause() {
     setPaused(!paused);
@@ -89,27 +76,19 @@ function App() {
     document.getElementById("dialog-import").modal("hide");
   };
 
-  if (
-    isLoading ||
-    !game.resources ||
-    !game.buildings ||
-    !game.jobs ||
-    !game.technologies ||
-    !game.progress
-  )
-    return "Loading...";
-
   return (
     <div id="app">
       <nav>
         <span>Eric</span>
         <span style={{ color: "green" }}>Idle</span>
-        <button onClick={pause}>pause</button>
+        <button onClick={pause}>{paused ? "Resume" : "Pause"}</button>
         <button onClick={showExport}>export</button>
         <button onClick={showImport}>import</button>
         <button onClick={reset}>reset</button>
         <button onClick={showDebug}>debug</button>
-        <button onClick={() => setDarkMode(!darkMode)}>darkMode</button>
+        <button onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? "☀️" : "🌙"}
+        </button>
       </nav>
       <section>
         Resources:
