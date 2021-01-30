@@ -266,6 +266,25 @@ export const reclaimBuilding = (game, updateGame, buildingName) => {
   }
 };
 
+// tech
+export const makeDiscovery = (game, updateGame, name) => {
+  const canAfford =
+    game.resources.research.amount >= game.technologies[name].cost.amount;
+
+  if (!game.technologies[name].discovered && canAfford) {
+    updateResource(
+      game,
+      updateGame,
+      "research",
+      -game.technologies[name].cost.amount
+    );
+    updateGame((draft) => {
+      draft.technologies[name].discovered = true;
+      return;
+    });
+  }
+};
+
 export const getDefaultGameState = () => {
   function Resource(name, baseLimit, image, prereq) {
     this.name = name;

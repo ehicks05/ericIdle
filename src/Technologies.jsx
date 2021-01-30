@@ -2,7 +2,7 @@ import * as util from "./util.js";
 import * as gameLogic from "./game.js";
 import ResourceCost from "./ResourceCost";
 
-const Technologies = ({ technologies }) => {
+const Technologies = ({ game, updateGame }) => {
   return (
     <div id="technologiesContainer">
       <table
@@ -16,10 +16,15 @@ const Technologies = ({ technologies }) => {
             <th className="text-right">Price</th>
             <th />
           </tr>
-          {technologies
+          {Object.values(game.technologies)
             .filter((technology) => technology.status !== "hidden")
             .map((technology) => (
-              <Technology key={technology.name} technology={technology} />
+              <Technology
+                key={technology.name}
+                game={game}
+                updateGame={updateGame}
+                technology={technology}
+              />
             ))}
         </tbody>
       </table>
@@ -27,19 +32,13 @@ const Technologies = ({ technologies }) => {
   );
 };
 
-const Technology = ({ technology }) => {
+const Technology = ({ game, updateGame, technology }) => {
+  const canAfford =
+    game.resources.research.amount >=
+    game.technologies[technology.name].cost.amount;
+
   const makeDiscovery = (technologyName) => {
-    // const canAfford =
-    //   game.resources.research.amount >=
-    //   game.technologies[technologyName].cost.amount;
-    // if (canAfford) {
-    //   gameLogic.updateResource(
-    //     game,
-    //     "research",
-    //     -game.technologies[technologyName].cost.amount
-    //   );
-    //   game.technologies[technologyName].discovered = true;
-    // }
+    gameLogic.makeDiscovery(game, updateGame, technologyName);
   };
 
   return (
@@ -60,9 +59,7 @@ const Technology = ({ technology }) => {
           type="button"
           className="btn btn-outline-secondary btn-sm"
           value={technology.discovered ? "Discovered" : "Discover"}
-          disabled={
-            technology.discovered || technology.cost.amount > technology.amount
-          }
+          disabled={technology.discovered || !canAfford}
           onClick={() => makeDiscovery(technology.name)}
         />
       </td>

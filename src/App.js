@@ -115,11 +115,7 @@ function App() {
       {game.progress.unlockLevelOneTech.unlocked && (
         <section>
           Research:
-          <Technologies
-            technologies={Object.values(game.technologies) || []}
-            research="game.resources.research"
-            makeDiscovery="makeDiscovery"
-          />
+          <Technologies game={game} updateGame={updateGame} />
         </section>
       )}
       <section>

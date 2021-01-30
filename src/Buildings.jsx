@@ -61,7 +61,7 @@ const Building = ({ game, updateGame, building }) => {
         </thead>
         <tbody>
           {building.bonus.map((bonus) => (
-            <tr key={bonus.resource}>
+            <tr key={bonus.resource.name}>
               <td>{bonus.resource.name}</td>
               <td>{bonus.amount * 100}</td>
             </tr>
@@ -84,7 +84,7 @@ const Building = ({ game, updateGame, building }) => {
         </thead>
         <tbody>
           {building.resourceLimitModifier.map((mod) => (
-            <tr key={mod.resource}>
+            <tr key={mod.resource.name}>
               <td>{mod.resource.name}</td>
               <td>{mod.amount}</td>
               <td>{mod.type}</td>
