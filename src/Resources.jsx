@@ -3,30 +3,28 @@ import { updateResource } from "./game";
 
 const Resources = ({ game, updateGame }) => {
   return (
-    <div>
-      <table className="table is-narrow">
-        <thead>
-          <tr>
-            <th className="has-text-left">Resource</th>
-            <th className="has-text-right">Quantity</th>
-            <th className="has-text-right">Rate</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.values(game.resources)
-            .filter((resource) => resource.status !== "hidden")
-            .map((resource) => (
-              <Resource
-                key={resource.name}
-                game={game}
-                updateGame={updateGame}
-                resource={resource}
-              />
-            ))}
-        </tbody>
-      </table>
-    </div>
+    <table className="table is-narrow">
+      <thead>
+        <tr>
+          <th className="has-text-left">Resource</th>
+          <th className="has-text-right">Quantity</th>
+          <th className="has-text-right">Rate</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.values(game.resources)
+          .filter((resource) => resource.status !== "hidden")
+          .map((resource) => (
+            <Resource
+              key={resource.name}
+              game={game}
+              updateGame={updateGame}
+              resource={resource}
+            />
+          ))}
+      </tbody>
+    </table>
   );
 };
 

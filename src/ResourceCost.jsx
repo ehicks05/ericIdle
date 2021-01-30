@@ -5,7 +5,7 @@ const ResourceCost = ({ coster }) => {
   return (
     <div className="tag">
       <span>{cost}</span>
-      <figure class="image is-24x24" style={{ marginLeft: ".5rem" }}>
+      <figure className="image is-24x24" style={{ marginLeft: ".5rem" }}>
         <img src={`ico/${coster.cost.resource.image}`} alt="cost" />
       </figure>
     </div>

@@ -84,97 +84,101 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <nav>
-        <span>Eric</span>
-        <span style={{ color: "green" }}>Idle</span>
-      </nav>
-
-      <div className="columns">
-        <div className="column">
-          <section>
-            <Resources game={game} updateGame={updateGame} />
-          </section>
+    <>
+      <section>
+        <div className="container">
+          <div className="title">
+            <span>Eric</span>
+            <span style={{ color: "green" }}>Idle</span>
+          </div>
         </div>
-        <div className="column">
-          <section>
-            <div className="tabs">
-              <ul>
-                {["Buildings", "Villagers", "Technologies", "Settings"].map(
-                  (tab) => {
-                    return (
-                      <li
-                        key={tab}
-                        className={activeTab === tab ? "is-active" : undefined}
-                      >
-                        <a href="/#" onClick={() => setActiveTab(tab)}>
-                          {tab}
-                        </a>
-                      </li>
-                    );
-                  }
-                )}
-              </ul>
+      </section>
+
+      <section>
+        <div className="container">
+          <div className="columns">
+            <div className="column">
+              <Resources game={game} updateGame={updateGame} />
             </div>
-          </section>
-          {game.progress.unlockHuts.unlocked && activeTab === "Buildings" && (
-            <section>
-              <Buildings game={game} updateGame={updateGame} />
-            </section>
-          )}
-          {game.progress.unlockVillagers.unlocked && activeTab === "Villagers" && (
-            <section>
-              <Villagers game={game} updateGame={updateGame} />
-            </section>
-          )}
-          {game.progress.unlockLevelOneTech.unlocked &&
-            activeTab === "Technologies" && (
+            <div className="column">
               <section>
-                <Technologies game={game} updateGame={updateGame} />
+                <div className="tabs">
+                  <ul>
+                    {["Buildings", "Villagers", "Technologies", "Settings"].map(
+                      (tab) => {
+                        return (
+                          <li
+                            key={tab}
+                            className={
+                              activeTab === tab ? "is-active" : undefined
+                            }
+                          >
+                            <a href="/#" onClick={() => setActiveTab(tab)}>
+                              {tab}
+                            </a>
+                          </li>
+                        );
+                      }
+                    )}
+                  </ul>
+                </div>
               </section>
-            )}
-          {activeTab === "Settings" && (
-            <>
-              <div className="buttons">
-                <button className="button" onClick={pause}>
-                  {paused ? "Resume" : "Pause"}
-                </button>
-                <button className="button" onClick={showExport}>
-                  Export
-                </button>
-                <button className="button" onClick={showImport}>
-                  Import
-                </button>
-                <button className="button" onClick={reset}>
-                  Reset
-                </button>
-                <button className="button" onClick={showDebug}>
-                  Debug
-                </button>
-                <button
-                  className="button"
-                  onClick={() => setDarkMode(!darkMode)}
-                >
-                  {darkMode ? "☀️" : "🌙"}
-                </button>
-              </div>
-              <section>
-                Longest time taken in a single game tick:{" "}
-                {longestTickInMs.current} ms
-              </section>
-            </>
-          )}
+              {game.progress.unlockHuts.unlocked &&
+                activeTab === "Buildings" && (
+                  <Buildings game={game} updateGame={updateGame} />
+                )}
+              {game.progress.unlockVillagers.unlocked &&
+                activeTab === "Villagers" && (
+                  <Villagers game={game} updateGame={updateGame} />
+                )}
+              {game.progress.unlockLevelOneTech.unlocked &&
+                activeTab === "Technologies" && (
+                  <Technologies game={game} updateGame={updateGame} />
+                )}
+              {activeTab === "Settings" && (
+                <>
+                  <div className="buttons">
+                    <button className="button" onClick={pause}>
+                      {paused ? "Resume" : "Pause"}
+                    </button>
+                    <button className="button" onClick={showExport}>
+                      Export
+                    </button>
+                    <button className="button" onClick={showImport}>
+                      Import
+                    </button>
+                    <button className="button" onClick={reset}>
+                      Reset
+                    </button>
+                    <button className="button" onClick={showDebug}>
+                      Debug
+                    </button>
+                    <button
+                      className="button"
+                      onClick={() => setDarkMode(!darkMode)}
+                    >
+                      {darkMode ? "☀️" : "🌙"}
+                    </button>
+                  </div>
+                  <section>
+                    Longest time taken in a single game tick:{" "}
+                    {longestTickInMs.current} ms
+                  </section>
+                </>
+              )}
 
-          {/*<h1>Export Save</h1>*/}
-          {/*<label htmlFor="exportTextField">Copy this:</label><br />*/}
-          {/*<textarea id="exportTextField" rows="12" cols="44" readOnly />*/}
+              {/*<h1>Export Save</h1>*/}
+              {/*<label htmlFor="exportTextField">Copy this:</label><br />*/}
+              {/*<textarea id="exportTextField" rows="12" cols="44" readOnly />*/}
 
-          {/*<h1>Import Save</h1>*/}
-          {/*<label htmlFor="exportTextField">Paste save here:</label><br />*/}
-          {/*<textarea id="importTextField" rows="12" cols="44" />*/}
+              {/*<h1>Import Save</h1>*/}
+              {/*<label htmlFor="exportTextField">Paste save here:</label><br />*/}
+              {/*<textarea id="importTextField" rows="12" cols="44" />*/}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
 
