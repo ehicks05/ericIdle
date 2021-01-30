@@ -23,7 +23,13 @@ function App() {
   const [activeTab, setActiveTab] = useState("Buildings");
   const [darkMode, setDarkMode] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [copyResult, setCopyResult] = useState("unknown");
   let longestTickInMs = useRef(0);
+
+  useEffect(() => {
+    if (["success", "error"].includes(copyResult))
+      setTimeout(() => setCopyResult("unknown"), 750);
+  }, [copyResult]);
 
   useInterval(
     () => {
@@ -68,21 +74,25 @@ function App() {
       updateGame((_draft) => gameLogic.getDefaultGameState());
   };
 
-  const showExport = () => {
-    document.getElementById("exportTextField").val(exportState(game));
-  };
-  const showImport = () => {
-    // document.getElementById("exportTextField").val(exportState(game));
-  };
-  const showDebug = () => {
-    // document.getElementById("exportTextField").val(exportState(game));
-  };
   const performImport = () => {
-    const textAreaValue = document.getElementById("importTextField").val();
-    importState(textAreaValue);
-    document.getElementById("importTextField").val("");
-    document.getElementById("dialog-import").modal("hide");
+    importState(document.getElementById("importTextField").value);
+    document.getElementById("importTextField").value = "";
   };
+
+  function copy() {
+    updateClipboard(exportState(game));
+  }
+
+  function updateClipboard(newClip) {
+    navigator.clipboard.writeText(newClip).then(
+      function () {
+        setCopyResult("success");
+      },
+      function () {
+        setCopyResult("error");
+      }
+    );
+  }
 
   return (
     <>
@@ -142,17 +152,8 @@ function App() {
                     <button className="button" onClick={pause}>
                       {paused ? "Resume" : "Pause"}
                     </button>
-                    <button className="button" onClick={showExport}>
-                      Export
-                    </button>
-                    <button className="button" onClick={showImport}>
-                      Import
-                    </button>
                     <button className="button" onClick={reset}>
                       Reset
-                    </button>
-                    <button className="button" onClick={showDebug}>
-                      Debug
                     </button>
                     <button
                       className="button"
@@ -170,29 +171,26 @@ function App() {
                   </p>
                   <hr />
                   <h1>Export Save</h1>
-                  <label htmlFor="exportTextField">Copy this:</label>
-                  <br />
-                  <textarea
-                    id="exportTextField"
-                    rows="12"
-                    cols="44"
-                    readOnly
-                    value={exportState(game)}
-                  />
+                  <button
+                    className={`button ${
+                      copyResult === "success"
+                        ? "is-success"
+                        : copyResult === "error"
+                        ? "is-danger"
+                        : "is-info"
+                    }`}
+                    onClick={copy}
+                  >
+                    Click Here
+                  </button>
+                  <input type="hidden" />
                   <hr />
                   <h1>Import Save</h1>
                   <label htmlFor="exportTextField">Paste save here:</label>
                   <br />
                   <textarea id="importTextField" rows="12" cols="44" />
                   <br />
-                  <button
-                    className="button is-small"
-                    onClick={() =>
-                      importState(
-                        document.getElementById("importTextField").value
-                      )
-                    }
-                  >
+                  <button className="button is-small" onClick={performImport}>
                     Import
                   </button>
                 </>
@@ -202,6 +200,12 @@ function App() {
         </div>
       </section>
     </>
+  );
+}
+
+const Settings = () => {
+  return (
+    
   );
 }
 
