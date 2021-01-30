@@ -1,16 +1,19 @@
 import * as util from "./util.js";
-import { updateResource } from './game'
+import { updateResource } from "./game";
 
 const Resources = ({ game, updateGame }) => {
   return (
     <div>
-      <table>
-        <tbody>
+      <table className="table is-narrow">
+        <thead>
           <tr>
-            <th className="text-left">Resource</th>
-            <th className="text-right">Quantity</th>
-            <th className="text-right">Rate</th>
+            <th className="has-text-left">Resource</th>
+            <th className="has-text-right">Quantity</th>
+            <th className="has-text-right">Rate</th>
+            <th></th>
           </tr>
+        </thead>
+        <tbody>
           {Object.values(game.resources)
             .filter((resource) => resource.status !== "hidden")
             .map((resource) => (
@@ -29,7 +32,7 @@ const Resources = ({ game, updateGame }) => {
 
 const Resource = ({ game, updateGame, resource }) => {
   const harvestFood = () => {
-    updateResource(game, updateGame, 'food', 1);
+    updateResource(game, updateGame, "food", 1);
   };
 
   const { image, name, limit, rate } = resource;
@@ -38,22 +41,23 @@ const Resource = ({ game, updateGame, resource }) => {
   return (
     <tr>
       <td>
-        <img
+        {/* <img
           src={`ico/${image}`}
-          style={{ height: "32px" }}
+          style={{ height: "16px" }}
           alt="resourceIcon"
-        />
+        /> */}
         {name}
       </td>
-      <td>
-        <span>{amount}</span>/
-        <span>{limit}</span>
+      <td className="has-text-right">
+        <span>{amount}</span>/<span>{limit}</span>
       </td>
+      <td className="has-text-right">{rate}</td>
       <td>
         {name === "food" && (
-          <button onClick={harvestFood}>Harvest</button>
+          <button className="button is-small" onClick={harvestFood}>
+            Harvest
+          </button>
         )}
-        {rate}
       </td>
     </tr>
   );

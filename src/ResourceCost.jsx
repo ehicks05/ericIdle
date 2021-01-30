@@ -1,14 +1,15 @@
-import * as gameLogic from './game.js'
+import * as gameLogic from "./game.js";
 
-const ResourceCost = ({coster}) => {
-    const cost = gameLogic.getBuildingCost(coster);
-    return (
-        <div className="resourceCost"
-             style={{whiteSpace: 'nowrap', backgroundColor: 'transparent', textAlign: 'right', paddingLeft: '5px'}}>
-            {cost}
-            <img src={`ico/${coster.cost.resource.image}`} style={{height: '32px', verticalAlign: 'middle'}} alt='cost'/>
-        </div>
-    );
-}
+const ResourceCost = ({ coster }) => {
+  const cost = gameLogic.getBuildingCost(coster);
+  return (
+    <div className="tag">
+      <span>{cost}</span>
+      <figure class="image is-24x24" style={{ marginLeft: ".5rem" }}>
+        <img src={`ico/${coster.cost.resource.image}`} alt="cost" />
+      </figure>
+    </div>
+  );
+};
 
 export default ResourceCost;

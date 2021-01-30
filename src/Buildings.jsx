@@ -2,21 +2,24 @@ import * as util from "./util.js";
 import * as gameLogic from "./game.js";
 import ResourceCost from "./ResourceCost";
 import Tippy from "@tippyjs/react";
+import { followCursor } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
 const Buildings = ({ game, updateGame }) => {
   return (
     <div id="buildingsContainer">
-      <table className="table table-sm table-responsive-sm">
-        <tbody>
+      <table className="table is-narrow">
+        <thead>
           <tr className="noTopBorder">
-            <th className="text-left">Structure</th>
-            <th className="text-right">Quantity</th>
-            <th className="text-right" style={{ width: "90px" }}>
+            <th className="has-text-left">Structure</th>
+            <th className="has-text-right">Quantity</th>
+            <th className="has-text-right" style={{ width: "90px" }}>
               Price
             </th>
             <th />
           </tr>
+        </thead>
+        <tbody>
           {Object.values(game.buildings)
             .filter((building) => building.status !== "hidden")
             .map((building) => (
@@ -49,14 +52,14 @@ const Building = ({ game, updateGame, building }) => {
 
   const BuildingStats = ({ building }) => {
     const bonuses = building.bonus.length ? (
-      <table>
+      <table className="table is-narrow">
         <thead>
           <tr>
             <td colSpan="2">Production Bonuses</td>
           </tr>
           <tr>
-            <td>Resource</td>
-            <td>Amount</td>
+            <th>Resource</th>
+            <th>Amount</th>
           </tr>
         </thead>
         <tbody>
@@ -71,15 +74,15 @@ const Building = ({ game, updateGame, building }) => {
     ) : undefined;
 
     const resourceLimitMods = building.resourceLimitModifier.length ? (
-      <table>
+      <table className="table is-narrow">
         <thead>
           <tr>
             <td colSpan="3">Resource Limit Mods</td>
           </tr>
           <tr>
-            <td>Resource</td>
-            <td>Amount</td>
-            <td>Type</td>
+            <th>Resource</th>
+            <th>Amount</th>
+            <th>Type</th>
           </tr>
         </thead>
         <tbody>
@@ -107,35 +110,38 @@ const Building = ({ game, updateGame, building }) => {
   return (
     <tr>
       <td className="text-left" style={{ whiteSpace: "nowrap" }}>
-        <Tippy content={<BuildingStats building={building} />}>
-          <img
+        {/* <img
             src={`ico/${building.image}`}
             alt="building"
             style={{ height: "32px" }}
-          />
+          /> */}
+        <Tippy
+          content={<BuildingStats building={building} />}
+          followCursor={true}
+          plugins={[followCursor]}
+        >
+          <span>{building.name}</span>
         </Tippy>
-
-        {building.name}
       </td>
-      <td className="text-right">{building.amount}</td>
-      <td className="text-right">
+      <td className="has-text-right">{building.amount}</td>
+      <td className="has-text-right">
         <ResourceCost key="building.name" coster={building} />
       </td>
-      <td className="text-center" style={{ whiteSpace: "nowrap" }}>
-        <input
-          type="button"
-          className="btn btn-outline-secondary btn-sm"
-          value="Build"
+      <td className="has-text-center" style={{ whiteSpace: "nowrap" }}>
+        <button
+          className="button is-small"
           disabled={!canAffordBuilding(building)}
           onClick={() => buildBuilding(building.name)}
-        />
-        <input
-          type="button"
-          className="btn btn-outline-secondary btn-sm"
-          value="Reclaim"
+        >
+          Build
+        </button>
+        <button
+          className="button is-small"
           disabled={building.amount === 0}
           onClick={() => reclaimBuilding(building.name)}
-        />
+        >
+          Reclaim
+        </button>
       </td>
     </tr>
   );

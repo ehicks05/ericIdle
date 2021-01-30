@@ -19,6 +19,7 @@ function App() {
   });
 
   // ui state
+  const [activeTab, setActiveTab] = useState("Buildings");
   const [darkMode, setDarkMode] = useState(false);
   const [paused, setPaused] = useState(false);
   let longestTickInMs = useRef(0);
@@ -83,52 +84,96 @@ function App() {
   };
 
   return (
-    <div id="app">
+    <div className="container">
       <nav>
         <span>Eric</span>
         <span style={{ color: "green" }}>Idle</span>
-        <button onClick={pause}>{paused ? "Resume" : "Pause"}</button>
-        <button onClick={showExport}>Export</button>
-        <button onClick={showImport}>Import</button>
-        <button onClick={reset}>Reset</button>
-        <button onClick={showDebug}>Debug</button>
-        <button onClick={() => setDarkMode(!darkMode)}>
-          {darkMode ? "☀️" : "🌙"}
-        </button>
       </nav>
-      <section>
-        Resources:
-        <Resources game={game} updateGame={updateGame} />
-      </section>
-      {game.progress.unlockHuts.unlocked && (
-        <section>
-          Buildings:
-          <Buildings game={game} updateGame={updateGame} />
-        </section>
-      )}
-      {game.progress.unlockVillagers.unlocked && (
-        <section>
-          Villagers:
-          <Villagers game={game} updateGame={updateGame} />
-        </section>
-      )}
-      {game.progress.unlockLevelOneTech.unlocked && (
-        <section>
-          Research:
-          <Technologies game={game} updateGame={updateGame} />
-        </section>
-      )}
-      <section>
-        Longest time taken in a single game tick: {longestTickInMs.current} ms
-      </section>
 
-      {/*<h1>Export Save</h1>*/}
-      {/*<label htmlFor="exportTextField">Copy this:</label><br />*/}
-      {/*<textarea id="exportTextField" rows="12" cols="44" readOnly />*/}
+      <div className="columns">
+        <div className="column">
+          <section>
+            <Resources game={game} updateGame={updateGame} />
+          </section>
+        </div>
+        <div className="column">
+          <section>
+            <div className="tabs">
+              <ul>
+                {["Buildings", "Villagers", "Technologies", "Settings"].map(
+                  (tab) => {
+                    return (
+                      <li
+                        key={tab}
+                        className={activeTab === tab ? "is-active" : undefined}
+                      >
+                        <a href="/#" onClick={() => setActiveTab(tab)}>
+                          {tab}
+                        </a>
+                      </li>
+                    );
+                  }
+                )}
+              </ul>
+            </div>
+          </section>
+          {game.progress.unlockHuts.unlocked && activeTab === "Buildings" && (
+            <section>
+              <Buildings game={game} updateGame={updateGame} />
+            </section>
+          )}
+          {game.progress.unlockVillagers.unlocked && activeTab === "Villagers" && (
+            <section>
+              <Villagers game={game} updateGame={updateGame} />
+            </section>
+          )}
+          {game.progress.unlockLevelOneTech.unlocked &&
+            activeTab === "Technologies" && (
+              <section>
+                <Technologies game={game} updateGame={updateGame} />
+              </section>
+            )}
+          {activeTab === "Settings" && (
+            <>
+              <div className="buttons">
+                <button className="button" onClick={pause}>
+                  {paused ? "Resume" : "Pause"}
+                </button>
+                <button className="button" onClick={showExport}>
+                  Export
+                </button>
+                <button className="button" onClick={showImport}>
+                  Import
+                </button>
+                <button className="button" onClick={reset}>
+                  Reset
+                </button>
+                <button className="button" onClick={showDebug}>
+                  Debug
+                </button>
+                <button
+                  className="button"
+                  onClick={() => setDarkMode(!darkMode)}
+                >
+                  {darkMode ? "☀️" : "🌙"}
+                </button>
+              </div>
+              <section>
+                Longest time taken in a single game tick:{" "}
+                {longestTickInMs.current} ms
+              </section>
+            </>
+          )}
 
-      {/*<h1>Import Save</h1>*/}
-      {/*<label htmlFor="exportTextField">Paste save here:</label><br />*/}
-      {/*<textarea id="importTextField" rows="12" cols="44" />*/}
+          {/*<h1>Export Save</h1>*/}
+          {/*<label htmlFor="exportTextField">Copy this:</label><br />*/}
+          {/*<textarea id="exportTextField" rows="12" cols="44" readOnly />*/}
+
+          {/*<h1>Import Save</h1>*/}
+          {/*<label htmlFor="exportTextField">Paste save here:</label><br />*/}
+          {/*<textarea id="importTextField" rows="12" cols="44" />*/}
+        </div>
+      </div>
     </div>
   );
 }
