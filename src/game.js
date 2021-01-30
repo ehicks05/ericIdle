@@ -145,7 +145,7 @@ const createVillager = (game, updateGame) => {
   if (villagersToCreate < 1) villagersToCreate = 1;
 
   updateVillagerCount(game, updateGame, villagersToCreate);
-  assignIdler(game, updateGame, villagersToCreate);
+  addNewIdler(game, updateGame, villagersToCreate);
   updateGame((draft) => {
     draft.creatingAVillager = false;
     return;
@@ -180,9 +180,22 @@ export const updateVillagerCount = (game, updateGame, amount) => {
 };
 
 // Worker
-export const assignIdler = (game, updateGame, amount) => {
+export const addNewIdler = (game, updateGame, amount) => {
   updateGame((draft) => {
     draft.jobs.idlers.amount += amount;
+    return;
+  });
+};
+
+export const assignJob = (game, updateGame, name, amount) => {
+  updateGame((draft) => {
+    if (amount > 0 && draft.jobs.idlers.amount >= amount) {
+      draft.jobs[name].amount += amount;
+      draft.jobs.idlers -= amount;
+    } else if (amount < 0 && draft.jobs[name].amount >= amount) {
+      draft.jobs[name].amount -= amount;
+      draft.jobs.idlers += amount;
+    }
     return;
   });
 };

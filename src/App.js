@@ -11,8 +11,8 @@ import "./App.css";
 function App() {
   const [game, updateGame] = useImmer(gameLogic.getDefaultGameState());
   const msPerTick = 200;
-  let timeOfLastVillagerCreation = Date.now();
-  let creatingAVillager = false;
+  let villagerCreatedAt = Date.now();
+  let isIncomingVillager = false;
 
   const [darkMode, setDarkMode] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -82,10 +82,10 @@ function App() {
         <span>Eric</span>
         <span style={{ color: "green" }}>Idle</span>
         <button onClick={pause}>{paused ? "Resume" : "Pause"}</button>
-        <button onClick={showExport}>export</button>
-        <button onClick={showImport}>import</button>
-        <button onClick={reset}>reset</button>
-        <button onClick={showDebug}>debug</button>
+        <button onClick={showExport}>Export</button>
+        <button onClick={showImport}>Import</button>
+        <button onClick={reset}>Reset</button>
+        <button onClick={showDebug}>Debug</button>
         <button onClick={() => setDarkMode(!darkMode)}>
           {darkMode ? "☀️" : "🌙"}
         </button>
@@ -97,22 +97,13 @@ function App() {
       {game.progress.unlockHuts.unlocked && (
         <section>
           Buildings:
-          <Buildings
-            game={game}
-            updateGame={updateGame}
-            buildBuilding="buildBuilding"
-            reclaimBuilding="reclaimBuilding"
-          />
+          <Buildings game={game} updateGame={updateGame} />
         </section>
       )}
       {game.progress.unlockVillagers.unlocked && (
         <section>
           Villagers:
-          <Villagers
-            jobs={Object.values(game.jobs) || []}
-            assignWorker="assignWorker"
-            unAssignWorker="unAssignWorker"
-          />
+          <Villagers game={game} updateGame={updateGame} />
         </section>
       )}
       {game.progress.unlockLevelOneTech.unlocked && (
