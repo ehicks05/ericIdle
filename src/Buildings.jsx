@@ -21,7 +21,12 @@ const Buildings = ({ game, updateGame }) => {
           {Object.values(game.buildings)
             .filter((building) => building.status !== "hidden")
             .map((building) => (
-              <Building key={building.name} game={game} updateGame={updateGame} building={building} />
+              <Building
+                key={building.name}
+                game={game}
+                updateGame={updateGame}
+                building={building}
+              />
             ))}
         </tbody>
       </table>
@@ -31,7 +36,10 @@ const Buildings = ({ game, updateGame }) => {
 
 const Building = ({ game, updateGame, building }) => {
   const canAffordBuilding = (building) => {
-    return game.resources[building.cost.resource.name].amount >= gameLogic.getBuildingCost(building);
+    return (
+      game.resources[building.cost.resource.name].amount >=
+      gameLogic.getBuildingCost(building)
+    );
   };
   const buildBuilding = (buildingName) => {
     gameLogic.buildBuilding(game, updateGame, buildingName);
@@ -43,39 +51,48 @@ const Building = ({ game, updateGame, building }) => {
   const BuildingStats = ({ building }) => {
     const bonuses = building.bonus.length ? (
       <table>
-        <tr>
-          <td colspan="2">Production Bonuses</td>
-        </tr>
-        <tr>
-          <td>Resource</td>
-          <td>Amount</td>
-        </tr>
-        {building.bonus.map((bonus) => (
+        <thead>
           <tr>
-            <td>{bonus.resource.name}</td>
-            <td>{bonus.amount * 100}</td>
+            <td colspan="2">Production Bonuses</td>
           </tr>
-        ))}
+          <tr>
+            <td>Resource</td>
+            <td>Amount</td>
+          </tr>
+        </thead>
+        <tbody>
+          {building.bonus.map((bonus) => (
+            <tr key={bonus.resource}>
+              <td>{bonus.resource.name}</td>
+              <td>{bonus.amount * 100}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     ) : undefined;
 
     const resourceLimitMods = building.resourceLimitModifier.length ? (
       <table>
-        <tr>
-          <td colspan="3">Resource Limit Mods</td>
-        </tr>
-        <tr>
-          <td>Resource</td>
-          <td>Amount</td>
-          <td>Type</td>
-        </tr>
-        {building.resourceLimitModifier.map((mod) => (
+        <thead>
           <tr>
-            <td>{mod.resource.name}</td>
-            <td>{mod.amount}</td>
-            <td>{mod.type}</td>
+            <td colspan="3">Resource Limit Mods</td>
           </tr>
-        ))}
+          <tr>
+            <td>Resource</td>
+            <td>Amount</td>
+            <td>Type</td>
+          </tr>
+        </thead>
+        <tbody>
+          {" "}
+          {building.resourceLimitModifier.map((mod) => (
+            <tr key={mod.resource}>
+              <td>{mod.resource.name}</td>
+              <td>{mod.amount}</td>
+              <td>{mod.type}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     ) : undefined;
 

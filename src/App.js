@@ -26,26 +26,30 @@ function App() {
       gameLogic.doGameTick(game, updateGame);
       console.log("tick");
       localStorage.setItem("persistedGame", JSON.stringify(game));
+      console.log(game.resources.food.amount);
+      console.log(
+        JSON.parse(localStorage.getItem("persistedGame")).resources.food.amount
+      );
 
       let end = Date.now();
       if (end - start > longestTickInMs) longestTickInMs.current = end - start;
     }
 
     if (isLoading && game.resources) {
-      if (localStorage["persistedGame"])
+      if (localStorage.getItem("persistedGame"))
         updateGame((draft) => {
           return JSON.parse(localStorage.getItem("persistedGame"));
         });
       intervalId.current = setInterval(intervalFunction, msPerTick);
       setIsLoading(false);
     }
-    if (paused) {
-      window.clearInterval(intervalId.current);
-      intervalId.current = 0;
-    }
-    if (!paused) {
-      intervalId.current = setInterval(intervalFunction, msPerTick);
-    }
+    // if (paused) {
+    //   window.clearInterval(intervalId.current);
+    //   intervalId.current = 0;
+    // }
+    // if (!paused) {
+    //   intervalId.current = setInterval(intervalFunction, msPerTick);
+    // }
   }, [isLoading, game, updateGame, paused]);
 
   function pause() {
