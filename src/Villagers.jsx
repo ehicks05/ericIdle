@@ -26,25 +26,20 @@ const Jobs = ({ game, updateGame }) => {
     </div>
   );
 };
+// export const assignJob = (game, updateGame, name, amount) => {
 
 const Job = ({ game, updateGame, job }) => {
   const assignWorker = (jobName) => {
-    if (game.jobs.idlers.amount > 0) {
-      game.jobs[jobName].amount += 1;
-      game.jobs.idlers.amount -= 1;
-    }
+    gameLogic.assignJob(game, updateGame, jobName, 1);
   };
   const unAssignWorker = (jobName) => {
-    if (game.jobs[jobName].amount > 0) {
-      game.jobs[jobName].amount -= 1;
-      game.jobs.idlers.amount += 1;
-    }
+    gameLogic.assignJob(game, updateGame, jobName, -1);
   };
 
   return (
     <tr>
       <td className="text-left">
-        <img src={`ico/${job.image}`} alt="job" />
+        <img src={`ico/${job.image}`} alt="job" style={{ height: "32px" }} />
         {job.name}
       </td>
       <td className="text-right">{job.amount}</td>
@@ -55,14 +50,14 @@ const Job = ({ game, updateGame, job }) => {
               type="button"
               className="btn btn-outline-secondary btn-sm"
               value="+"
-              disabled={game.jobs.idlers.amount === 0}
+              disabled={game.jobs.idlers.amount <= 0}
               onClick={() => assignWorker(job.name)}
             />
             <input
               type="button"
               className="btn btn-outline-secondary btn-sm"
               value="-"
-              disabled={job.amount === 0}
+              disabled={job.amount <= 0}
               onClick={() => unAssignWorker(job.name)}
             />
           </span>

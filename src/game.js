@@ -4,7 +4,7 @@ export const doGameTick = (game, updateGame) => {
   checkProgress(game, updateGame);
   updateResourceLimits(game, updateGame);
   updateResources(game, updateGame);
-  if (isCreateVillager(game)) createVillager(game, updateGame);
+  if (isCreateVillager(game, updateGame)) createVillager(game, updateGame);
 };
 
 const checkProgress = (game, updateGame) => {
@@ -35,13 +35,15 @@ const checkProgress = (game, updateGame) => {
 // todo: consider what happens if you have multiple prereqs
 const applyProgress = (game, updateGame, progressObject) => {
   Object.entries(game).forEach(([categoryKey, category]) => {
-    Object.entries(category).forEach(([gameObjectKey, gameObject]) => {
-      if (gameObject.prereq === progressObject)
-        updateGame((draft) => {
-          draft[categoryKey][gameObjectKey].status = "visible";
-          return;
-        });
-    });
+    Object.entries(category)
+      .filter(([gameObjectKey, gameObject]) => typeof gameObject === "object")
+      .forEach(([gameObjectKey, gameObject]) => {
+        if (gameObject.prereq === progressObject)
+          updateGame((draft) => {
+            draft[categoryKey][gameObjectKey].status = "visible";
+            return;
+          });
+      });
   });
 };
 
@@ -86,10 +88,11 @@ const updateResources = (game, updateGame) => {
 
     let additiveMod = 0;
     Object.values(game.jobs).forEach((job) => {
-      job.production.forEach((production) => {
-        if (production.resource.name === resource.name)
-          additiveMod += job.amount * production.amount;
-      });
+      job.production &&
+        job.production.forEach((production) => {
+          if (production.resource.name === resource.name)
+            additiveMod += job.amount * production.amount;
+        });
     });
 
     let newRate = additiveMod * (1 + multiplicativeMod);
@@ -147,7 +150,7 @@ const createVillager = (game, updateGame) => {
   updateVillagerCount(game, updateGame, villagersToCreate);
   addNewIdler(game, updateGame, villagersToCreate);
   updateGame((draft) => {
-    draft.creatingAVillager = false;
+    draft.isIncomingVillager = false;
     return;
   });
 };
@@ -191,10 +194,10 @@ export const assignJob = (game, updateGame, name, amount) => {
   updateGame((draft) => {
     if (amount > 0 && draft.jobs.idlers.amount >= amount) {
       draft.jobs[name].amount += amount;
-      draft.jobs.idlers -= amount;
+      draft.jobs.idlers.amount -= amount;
     } else if (amount < 0 && draft.jobs[name].amount >= amount) {
-      draft.jobs[name].amount -= amount;
-      draft.jobs.idlers += amount;
+      draft.jobs[name].amount += amount;
+      draft.jobs.idlers.amount -= amount;
     }
     return;
   });
@@ -205,15 +208,15 @@ export const isCreateVillager = (game, updateGame) => {
     game.resources.villagers.amount < game.resources.villagers.limit &&
     game.resources.food.amount > 0;
   if (isVillagerCreationPossible) {
-    if (game.creatingAVillager === false) {
+    if (game.isIncomingVillager === false) {
       updateGame((draft) => {
-        draft.creatingAVillager = true;
-        draft.timeOfLastVillagerCreation = Date.now();
+        draft.isIncomingVillager = true;
+        draft.villagerCreatedAt = Date.now();
         return;
       });
     }
 
-    const msSinceLastVillager = Date.now() - game.timeOfLastVillagerCreation;
+    const msSinceLastVillager = Date.now() - game.villagerCreatedAt;
 
     const rand = Math.random() * (20000 * (1000 / game.msPerTick));
     return rand < msSinceLastVillager;
@@ -221,9 +224,11 @@ export const isCreateVillager = (game, updateGame) => {
   return false;
 };
 
+// todo this also handles technology cost
 export const getBuildingCost = (building) => {
   const scalingFactor = building.name === "huts" ? 1.14 : 1.07;
-  const cost = building.cost.amount * Math.pow(scalingFactor, building.amount);
+  const cost =
+    building.cost.amount * Math.pow(scalingFactor, building.amount || 0);
   return util.myRound(cost, 2);
 };
 

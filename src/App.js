@@ -8,12 +8,17 @@ import Villagers from "./Villagers";
 import * as gameLogic from "./game.js";
 import "./App.css";
 
-function App() {
-  const [game, updateGame] = useImmer(gameLogic.getDefaultGameState());
-  const msPerTick = 200;
-  let villagerCreatedAt = Date.now();
-  let isIncomingVillager = false;
+const MS_PER_TICK = 200;
 
+function App() {
+  const [game, updateGame] = useImmer({
+    ...gameLogic.getDefaultGameState(),
+    villagerCreatedAt: Date.now(),
+    isIncomingVillager: false,
+    msPerTick: MS_PER_TICK,
+  });
+
+  // ui state
   const [darkMode, setDarkMode] = useState(false);
   const [paused, setPaused] = useState(false);
   let longestTickInMs = useRef(0);
@@ -27,9 +32,10 @@ function App() {
       console.log(game.resources.food.amount);
 
       let end = Date.now();
-      if (end - start > longestTickInMs) longestTickInMs.current = end - start;
+      if (end - start > longestTickInMs.current)
+        longestTickInMs.current = end - start;
     },
-    paused ? null : msPerTick
+    paused ? null : game.msPerTick
   );
 
   useEffect(() => {
