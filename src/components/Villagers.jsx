@@ -1,5 +1,5 @@
-import * as util from "./util.js";
-import * as gameLogic from "./game.js";
+import * as util from "../util.js";
+import * as gameLogic from "../game.js";
 
 const Jobs = ({ game, updateGame }) => {
   return (

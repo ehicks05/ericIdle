@@ -1,4 +1,4 @@
-import * as gameLogic from "./game.js";
+import * as gameLogic from "../game.js";
 
 const ResourceCost = ({ coster }) => {
   const cost = gameLogic.getBuildingCost(coster);

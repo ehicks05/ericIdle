@@ -1,3 +1,4 @@
+import { MS_PER_TICK } from "./constants";
 import * as util from "./util.js";
 
 export const doGameTick = (game, updateGame) => {
@@ -218,7 +219,7 @@ export const isCreateVillager = (game, updateGame) => {
 
     const msSinceLastVillager = Date.now() - game.villagerCreatedAt;
 
-    const rand = Math.random() * (20000 * (1000 / game.msPerTick));
+    const rand = Math.random() * (20000 * (1000 / MS_PER_TICK));
     return rand < msSinceLastVillager;
   }
   return false;

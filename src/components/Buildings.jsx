@@ -1,5 +1,5 @@
-import * as util from "./util.js";
-import * as gameLogic from "./game.js";
+import * as util from "../util.js";
+import * as gameLogic from "../game.js";
 import ResourceCost from "./ResourceCost";
 import Tippy from "@tippyjs/react";
 import { followCursor } from "tippy.js";

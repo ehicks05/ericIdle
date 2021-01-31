@@ -1,5 +1,5 @@
-import * as util from "./util.js";
-import { updateResource } from "./game";
+import * as util from "../util.js";
+import { updateResource } from "../game";
 
 const Resources = ({ game, updateGame }) => {
   return (
