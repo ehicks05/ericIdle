@@ -8,7 +8,9 @@ const Resources = ({ game, updateGame }) => {
         <tr>
           <th className="has-text-left">Resource</th>
           <th className="has-text-right">Quantity</th>
-          <th className="has-text-right">Rate</th>
+          <th className="has-text-right" style={{ width: "4rem" }}>
+            Rate
+          </th>
           <th></th>
         </tr>
       </thead>
