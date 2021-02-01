@@ -55,7 +55,6 @@ function App() {
           </div>
         </div>
       </section>
-
       <section>
         <div className="container">
           <div className="columns">
@@ -164,8 +163,10 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
       window.confirm(
         "Are you sure you want to reset the game? All progress will be lost."
       )
-    )
+    ) {
       updateGame((_draft) => gameLogic.getDefaultGameState());
+      window.location.reload(); // otherwise view detaches from state
+    }
   };
 
   const performImport = () => {
