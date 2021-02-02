@@ -41,60 +41,65 @@ function App() {
 
   return (
     <>
-      <section>
-        <div className="container">
+      <section className="section">
+        <div>
           <div className="title">
             <span>Eric</span>
             <span style={{ color: "green" }}>Idle</span>
           </div>
         </div>
       </section>
-      <section>
-        <div className="container">
-          <div className="columns">
-            <div className="column">
+      <section className="section pt-0">
+        <div>
+          <div className="columns is-variable is-0-mobile">
+            <div className="column" style={{ maxWidth: "24rem" }}>
+              <div className="tabs is-small">
+                <ul>
+                  <li className="is-active">
+                    <a href="/#">Resources</a>
+                  </li>
+                </ul>
+              </div>
               <Resources game={game} updateGame={updateGame} />
             </div>
             <div className="column">
-              <section>
-                <div className="tabs">
-                  <ul>
-                    {[
-                      {
-                        name: "Buildings",
-                        unlocked: game.progress.unlockHuts.unlocked,
-                      },
-                      {
-                        name: "Villagers",
-                        unlocked: game.progress.unlockVillagers.unlocked,
-                      },
-                      {
-                        name: "Technologies",
-                        unlocked: game.progress.unlockLevelOneTech.unlocked,
-                      },
-                      {
-                        name: "Settings",
-                        unlocked: true,
-                      },
-                    ]
-                      .filter((tab) => tab.unlocked)
-                      .map((tab) => {
-                        return (
-                          <li
-                            key={tab.name}
-                            className={
-                              activeTab === tab.name ? "is-active" : undefined
-                            }
-                          >
-                            <a href="/#" onClick={() => setActiveTab(tab.name)}>
-                              {tab.name}
-                            </a>
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
-              </section>
+              <div className="tabs is-small">
+                <ul>
+                  {[
+                    {
+                      name: "Buildings",
+                      unlocked: game.progress.unlockHuts.unlocked,
+                    },
+                    {
+                      name: "Villagers",
+                      unlocked: game.progress.unlockVillagers.unlocked,
+                    },
+                    {
+                      name: "Technologies",
+                      unlocked: game.progress.unlockLevelOneTech.unlocked,
+                    },
+                    {
+                      name: "Settings",
+                      unlocked: true,
+                    },
+                  ]
+                    .filter((tab) => tab.unlocked)
+                    .map((tab) => {
+                      return (
+                        <li
+                          key={tab.name}
+                          className={
+                            activeTab === tab.name ? "is-active" : undefined
+                          }
+                        >
+                          <a href="/#" onClick={() => setActiveTab(tab.name)}>
+                            {tab.name}
+                          </a>
+                        </li>
+                      );
+                    })}
+                </ul>
+              </div>
               {game.progress.unlockHuts.unlocked &&
                 activeTab === "Buildings" && (
                   <Buildings game={game} updateGame={updateGame} />
