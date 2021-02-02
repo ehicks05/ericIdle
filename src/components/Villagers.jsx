@@ -1,5 +1,8 @@
-import * as util from "../util.js";
+import EffectsTable from "./EffectsTable";
+import Tippy from "@tippyjs/react";
 import * as gameLogic from "../game.js";
+import { followCursor } from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 const Jobs = ({ game, updateGame }) => {
   return (
@@ -35,7 +38,13 @@ const Job = ({ game, updateGame, job }) => {
     <tr>
       <td className="text-left">
         {/* <img src={`ico/${job.image}`} alt="job" style={{ height: "32px" }} /> */}
-        {job.name}
+        <Tippy
+          content={<EffectsTable gameObject={job} />}
+          followCursor={true}
+          plugins={[followCursor]}
+        >
+          <span>{job.name}</span>
+        </Tippy>
       </td>
       <td className="has-text-right">{job.amount}</td>
       <td className="text-center">
