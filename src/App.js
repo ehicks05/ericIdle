@@ -189,7 +189,7 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
     <>
       <h1 className="subtitle mt-4">Import/Export/Reset</h1>
       <textarea
-        className="textarea"
+        className="textarea is-small"
         placeholder="Paste save here..."
         value={importText}
         onChange={(e) => setImportText(e.target.value)}
