@@ -37,3 +37,24 @@ $family-sans-serif: "Nunito", sans-serif;
 // @import "../node_modules/bulma/sass/layout/section.sass";
 @import "../node_modules/bulma/bulma.sass";
 @import "../node_modules/bulma-prefers-dark/bulma-prefers-dark.sass";
+
+/* SCROLLBAR */
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}

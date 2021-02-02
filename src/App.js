@@ -216,7 +216,7 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
           Reset
         </button>
       </div>
-      <hr />
+      <h1 className="subtitle mt-4">Debug Info</h1>
       <p>
         Longest time taken in a single game tick: {longestTickInMs.current} ms
       </p>
