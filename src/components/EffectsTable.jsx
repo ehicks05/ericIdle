@@ -24,7 +24,7 @@ const buildTable = ({ title, columns }, data) => {
         </tr>
         <tr>
           {columns.map((column) => (
-            <th>{camelToTitle(column)}</th>
+            <th key={column}>{camelToTitle(column)}</th>
           ))}
         </tr>
       </thead>

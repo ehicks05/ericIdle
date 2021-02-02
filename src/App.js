@@ -18,18 +18,25 @@ function App() {
 
   // ui state
   const [activeTab, setActiveTab] = useState("Buildings");
-  let longestTickInMs = useRef(0);
+  // let tickDurations = useRef({ max: 0, recent: [] });
+  let [perf, setPerf] = useState({ max: 0, recent: [] });
+
+  const updatePerf = (start) => {
+    console.log("tick");
+    const tickDuration = Date.now() - start;
+    const newRecent = [...perf.recent];
+    newRecent.push(tickDuration);
+    setPerf({ ...perf, recent: newRecent });
+    if (perf.recent.length > 100)
+      setPerf({ ...perf, recent: [...perf.recent].slice(1, 101) });
+    if (tickDuration > perf.max) setPerf({ ...perf, max: tickDuration });
+  };
 
   useInterval(() => {
     let start = Date.now();
-
     gameLogic.doGameTick(game, updateGame);
     localStorage.setItem("persistedGame", JSON.stringify(game));
-    console.log("tick");
-
-    let end = Date.now();
-    if (end - start > longestTickInMs.current)
-      longestTickInMs.current = end - start;
+    updatePerf(start);
   }, MS_PER_TICK);
 
   useEffect(() => {
@@ -113,11 +120,7 @@ function App() {
                   <Technologies game={game} updateGame={updateGame} />
                 )}
               {activeTab === "Settings" && (
-                <Settings
-                  game={game}
-                  updateGame={updateGame}
-                  longestTickInMs={longestTickInMs}
-                />
+                <Settings game={game} updateGame={updateGame} perf={perf} />
               )}
             </div>
           </div>
@@ -127,7 +130,7 @@ function App() {
   );
 }
 
-const Settings = ({ game, updateGame, longestTickInMs }) => {
+const Settings = ({ game, updateGame, perf }) => {
   const [copyResult, setCopyResult] = useState("unknown");
   const [importText, setImportText] = useState("");
   const [isImportTextValid, setIsImportTextValid] = useState(false);
@@ -223,7 +226,13 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
       </div>
       <h1 className="subtitle mt-4">Debug Info</h1>
       <p>
-        Longest time taken in a single game tick: {longestTickInMs.current} ms
+        Average tick duration:{" "}
+        {(
+          perf.recent.reduce((agg, cur) => agg + cur) / perf.recent.length
+        ).toFixed(2)}{" "}
+        ms
+        <br />
+        Max: {perf.max} ms
       </p>
     </>
   );
