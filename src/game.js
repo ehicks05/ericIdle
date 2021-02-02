@@ -549,53 +549,47 @@ export const getDefaultGameState = () => {
     amount: 50,
   });
 
-  const resources = {
-    food: food,
-    lumber: lumber,
-    research: research,
-    villagers: villagers,
-    stone: stone,
-  };
-  const buildings = {
-    huts: huts,
-    farms: farms,
-    lumberMills: lumberMills,
-    storerooms: storerooms,
-    quarries: quarries,
-    schools: schools,
-    libraries: libraries,
-  };
-  const jobs = {
-    idlers: idlers,
-    farmers: farmers,
-    foresters: foresters,
-    hunters: hunters,
-    miners: miners,
-    builders: builders,
-    thinkers: thinkers,
-  };
-  const technologies = {
-    farming: farming,
-    woodConstruction: woodConstruction,
-    stoneConstruction: stoneConstruction,
-    wheel: wheel,
-  };
-  const progress = {
-    unlockHuts: unlockHuts,
-    unlockVillagers: unlockVillagers,
-    unlockLevelOneTech: unlockLevelOneTech,
-    unlockFarming: unlockFarming,
-    unlockWoodConstruction: unlockWoodConstruction,
-    unlockStoneConstruction: unlockStoneConstruction,
-    unlockSchools: unlockSchools,
-    unlockLibraries: unlockLibraries,
-  };
-
   return {
-    resources: resources,
-    buildings: buildings,
-    jobs: jobs,
-    technologies: technologies,
-    progress: progress,
+    resources: {
+      food: food,
+      lumber: lumber,
+      research: research,
+      villagers: villagers,
+      stone: stone,
+    },
+    buildings: {
+      huts: huts,
+      farms: farms,
+      lumberMills: lumberMills,
+      storerooms: storerooms,
+      quarries: quarries,
+      schools: schools,
+      libraries: libraries,
+    },
+    jobs: {
+      idlers: idlers,
+      farmers: farmers,
+      foresters: foresters,
+      hunters: hunters,
+      miners: miners,
+      builders: builders,
+      thinkers: thinkers,
+    },
+    technologies: {
+      farming: farming,
+      woodConstruction: woodConstruction,
+      stoneConstruction: stoneConstruction,
+      wheel: wheel,
+    },
+    progress: {
+      unlockHuts: unlockHuts,
+      unlockVillagers: unlockVillagers,
+      unlockLevelOneTech: unlockLevelOneTech,
+      unlockFarming: unlockFarming,
+      unlockWoodConstruction: unlockWoodConstruction,
+      unlockStoneConstruction: unlockStoneConstruction,
+      unlockSchools: unlockSchools,
+      unlockLibraries: unlockLibraries,
+    },
   };
 };
