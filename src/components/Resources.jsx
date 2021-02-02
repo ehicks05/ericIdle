@@ -41,11 +41,11 @@ const Resource = ({ game, updateGame, resource }) => {
   return (
     <tr>
       <td>
-        {/* <img
+        <img
           src={`ico/${image}`}
-          style={{ height: "16px" }}
+          style={{ height: "24px" }}
           alt="resourceIcon"
-        /> */}
+        />
         {name}
       </td>
       <td className="has-text-right">

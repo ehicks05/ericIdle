@@ -48,7 +48,7 @@ const Technology = ({ game, updateGame, technology }) => {
         {technology.name}
       </td>
       <td className="has-text-right">
-        <ResourceCost key={technology.name} coster={technology} />
+        <ResourceCost key={technology.name} game={game} coster={technology} />
       </td>
       <td className="text-left">
         <button

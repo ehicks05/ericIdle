@@ -53,7 +53,7 @@ const Building = ({ game, updateGame, building }) => {
       </td>
       <td className="has-text-right">{building.amount}</td>
       <td className="has-text-right">
-        <ResourceCost key="building.name" coster={building} />
+        <ResourceCost key="building.name" game={game} coster={building} />
       </td>
       <td className="has-text-center" style={{ whiteSpace: "nowrap" }}>
         <button

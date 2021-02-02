@@ -37,7 +37,7 @@ const Job = ({ game, updateGame, job }) => {
   return (
     <tr>
       <td className="text-left">
-        {/* <img src={`ico/${job.image}`} alt="job" style={{ height: "32px" }} /> */}
+        <img src={`ico/${job.image}`} alt="job" style={{ height: "24px" }} />
         <Tippy
           content={<EffectsTable gameObject={job} />}
           followCursor={true}
