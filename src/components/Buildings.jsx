@@ -35,63 +35,6 @@ const Buildings = ({ game, updateGame }) => {
 };
 
 const Building = ({ game, updateGame, building }) => {
-  const BuildingStats = ({ building }) => {
-    const bonuses = building.bonus.length ? (
-      <table className="table is-narrow">
-        <thead>
-          <tr>
-            <td colSpan="2">Production Bonuses</td>
-          </tr>
-          <tr>
-            <th>Resource</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {building.bonus.map((bonus) => (
-            <tr key={bonus.resource.name}>
-              <td>{bonus.resource.name}</td>
-              <td>{bonus.amount * 100}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    ) : undefined;
-
-    const resourceLimitMods = building.resourceLimitModifier.length ? (
-      <table className="table is-narrow">
-        <thead>
-          <tr>
-            <td colSpan="3">Resource Limit Mods</td>
-          </tr>
-          <tr>
-            <th>Resource</th>
-            <th>Amount</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {building.resourceLimitModifier.map((mod) => (
-            <tr key={mod.resource.name}>
-              <td>{mod.resource.name}</td>
-              <td>{mod.amount}</td>
-              <td>{mod.type}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    ) : undefined;
-
-    return (
-      <>
-        <div style={{ fontWeight: "bold" }}>
-          {util.camelToTitle(building.name)}
-        </div>
-        {bonuses} {resourceLimitMods}
-      </>
-    );
-  };
-
   return (
     <tr>
       <td className="text-left" style={{ whiteSpace: "nowrap" }}>
@@ -101,7 +44,7 @@ const Building = ({ game, updateGame, building }) => {
             style={{ height: "32px" }}
           /> */}
         <Tippy
-          content={<BuildingStats building={building} />}
+          content={<EffectsTable building={building} />}
           followCursor={true}
           plugins={[followCursor]}
         >
@@ -116,23 +59,76 @@ const Building = ({ game, updateGame, building }) => {
         <button
           className="button is-small"
           disabled={!gameLogic.canAffordBuilding(game, building)}
-          onClick={() =>
-            gameLogic.buildBuilding(game, updateGame, building.name)
-          }
+          onClick={() => gameLogic.buildBuilding(game, updateGame, building)}
         >
           Build
         </button>
         <button
           className="button is-small"
           disabled={building.amount === 0}
-          onClick={() =>
-            gameLogic.reclaimBuilding(game, updateGame, building.name)
-          }
+          onClick={() => gameLogic.reclaimBuilding(game, updateGame, building)}
         >
           Reclaim
         </button>
       </td>
     </tr>
+  );
+};
+
+const EffectsTable = ({ building }) => {
+  const bonuses = building.bonus.length ? (
+    <table className="table is-narrow">
+      <thead>
+        <tr>
+          <td colSpan="2">Production Bonuses</td>
+        </tr>
+        <tr>
+          <th>Resource</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {building.bonus.map((bonus) => (
+          <tr key={bonus.resource.name}>
+            <td>{bonus.resource.name}</td>
+            <td>{bonus.amount * 100}%</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : undefined;
+
+  const resourceLimitMods = building.resourceLimitModifier.length ? (
+    <table className="table is-narrow">
+      <thead>
+        <tr>
+          <td colSpan="3">Resource Limit Mods</td>
+        </tr>
+        <tr>
+          <th>Resource</th>
+          <th>Amount</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {building.resourceLimitModifier.map((mod) => (
+          <tr key={mod.resource.name}>
+            <td>{mod.resource.name}</td>
+            <td>{mod.amount}</td>
+            <td>{mod.type}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : undefined;
+
+  return (
+    <>
+      <div style={{ fontWeight: "bold" }}>
+        {util.camelToTitle(building.name)}
+      </div>
+      {bonuses} {resourceLimitMods}
+    </>
   );
 };
 
