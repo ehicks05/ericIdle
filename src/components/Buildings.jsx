@@ -35,19 +35,6 @@ const Buildings = ({ game, updateGame }) => {
 };
 
 const Building = ({ game, updateGame, building }) => {
-  const canAffordBuilding = (building) => {
-    return (
-      game.resources[building.cost.resource.name].amount >=
-      gameLogic.getBuildingCost(building)
-    );
-  };
-  const buildBuilding = (buildingName) => {
-    gameLogic.buildBuilding(game, updateGame, buildingName);
-  };
-  const reclaimBuilding = (buildingName) => {
-    gameLogic.reclaimBuilding(game, updateGame, buildingName);
-  };
-
   const BuildingStats = ({ building }) => {
     const bonuses = building.bonus.length ? (
       <table className="table is-narrow">
@@ -128,15 +115,19 @@ const Building = ({ game, updateGame, building }) => {
       <td className="has-text-center" style={{ whiteSpace: "nowrap" }}>
         <button
           className="button is-small"
-          disabled={!canAffordBuilding(building)}
-          onClick={() => buildBuilding(building.name)}
+          disabled={!gameLogic.canAffordBuilding(game, building)}
+          onClick={() =>
+            gameLogic.buildBuilding(game, updateGame, building.name)
+          }
         >
           Build
         </button>
         <button
           className="button is-small"
           disabled={building.amount === 0}
-          onClick={() => reclaimBuilding(building.name)}
+          onClick={() =>
+            gameLogic.reclaimBuilding(game, updateGame, building.name)
+          }
         >
           Reclaim
         </button>
