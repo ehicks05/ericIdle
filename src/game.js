@@ -288,6 +288,45 @@ export const makeDiscovery = (game, updateGame, name) => {
 };
 
 export const getDefaultGameState = () => {
+  function GameObject({
+    name,
+    baseLimit,
+    image,
+    prereq,
+    productionList,
+    cost,
+    limitMods,
+    bonusList,
+    requirement,
+  }) {
+    // common
+    this.name = name;
+    this.image = image;
+    this.prereq = prereq;
+    this.status = name === "food" ? "visible" : "hidden";
+    this.amount = 0;
+
+    // resource
+    this.rate = 0;
+    this.limit = baseLimit;
+    this.baseLimit = baseLimit;
+
+    //villager
+    this.production = productionList || [];
+
+    // building
+    this.cost = cost;
+    this.resourceLimitModifier = limitMods || [];
+    this.bonus = bonusList || [];
+
+    // technology
+    this.discovered = false;
+
+    // progress
+    this.requirement = requirement;
+    this.unlocked = false;
+  }
+
   function Resource(name, baseLimit, image, prereq) {
     this.name = name;
     this.limit = baseLimit;
