@@ -124,6 +124,7 @@ function App() {
 
 const Settings = ({ game, updateGame, longestTickInMs }) => {
   const [copyResult, setCopyResult] = useState("unknown");
+  const [importText, setImportText] = useState("");
 
   useEffect(() => {
     if (["success", "error"].includes(copyResult))
@@ -150,8 +151,8 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
   };
 
   const performImport = () => {
-    importState(document.getElementById("importTextField").value);
-    document.getElementById("importTextField").value = "";
+    importState(importText);
+    setImportText("");
   };
 
   function copy() {
@@ -174,11 +175,16 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
       <h1 className="subtitle mt-4">Import/Export/Reset</h1>
       <textarea
         className="textarea"
-        id="importTextField"
         placeholder="Paste save here..."
+        value={importText}
+        onChange={(e) => setImportText(e.target.value)}
       />
       <div className="mt-4 buttons">
-        <button className="button is-small" onClick={performImport}>
+        <button
+          className="button is-small"
+          disabled={!importText}
+          onClick={performImport}
+        >
           Import
         </button>
         <button
