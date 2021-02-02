@@ -56,20 +56,24 @@ const Building = ({ game, updateGame, building }) => {
         <ResourceCost key="building.name" game={game} coster={building} />
       </td>
       <td className="has-text-center" style={{ whiteSpace: "nowrap" }}>
-        <button
-          className="button is-small"
-          disabled={!gameLogic.canAffordBuilding(game, building)}
-          onClick={() => gameLogic.buildBuilding(game, updateGame, building)}
-        >
-          Build
-        </button>
-        <button
-          className="button is-small"
-          disabled={building.amount === 0}
-          onClick={() => gameLogic.reclaimBuilding(game, updateGame, building)}
-        >
-          Reclaim
-        </button>
+        <div className="buttons">
+          <button
+            className="button is-small"
+            disabled={!gameLogic.canAffordBuilding(game, building)}
+            onClick={() => gameLogic.buildBuilding(game, updateGame, building)}
+          >
+            Build
+          </button>
+          <button
+            className="button is-small"
+            disabled={building.amount === 0}
+            onClick={() =>
+              gameLogic.reclaimBuilding(game, updateGame, building)
+            }
+          >
+            Reclaim
+          </button>
+        </div>
       </td>
     </tr>
   );

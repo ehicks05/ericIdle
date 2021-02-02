@@ -48,7 +48,7 @@ const Job = ({ game, updateGame, job }) => {
       <td className="has-text-right">{job.amount}</td>
       <td className="text-center">
         {job.name !== "idlers" && (
-          <span>
+          <div className="buttons">
             <button
               className="button is-small"
               disabled={game.jobs.idlers.amount <= 0}
@@ -63,7 +63,7 @@ const Job = ({ game, updateGame, job }) => {
             >
               -
             </button>
-          </span>
+          </div>
         )}
       </td>
     </tr>
