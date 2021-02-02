@@ -24,12 +24,11 @@ function App() {
   const updatePerf = (start) => {
     console.log("tick");
     const tickDuration = Date.now() - start;
-    const newRecent = [...perf.recent];
-    newRecent.push(tickDuration);
-    setPerf({ ...perf, recent: newRecent });
-    if (perf.recent.length > 100)
-      setPerf({ ...perf, recent: [...perf.recent].slice(1, 101) });
-    if (tickDuration > perf.max) setPerf({ ...perf, max: tickDuration });
+    const draft = { ...perf };
+    draft.recent.push(tickDuration);
+    if (draft.recent.length > 100) draft.recent = draft.recent.slice(1, 101);
+    if (tickDuration > perf.max) draft.max = tickDuration;
+    setPerf(draft);
   };
 
   useInterval(() => {
