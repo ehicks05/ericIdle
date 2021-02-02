@@ -125,11 +125,21 @@ function App() {
 const Settings = ({ game, updateGame, longestTickInMs }) => {
   const [copyResult, setCopyResult] = useState("unknown");
   const [importText, setImportText] = useState("");
+  const [isImportTextValid, setIsImportTextValid] = useState(false);
 
   useEffect(() => {
     if (["success", "error"].includes(copyResult))
       setTimeout(() => setCopyResult("unknown"), 750);
   }, [copyResult]);
+
+  useEffect(() => {
+    try {
+      JSON.parse(atob(importText));
+      setIsImportTextValid(true);
+    } catch (e) {
+      setIsImportTextValid(false);
+    }
+  }, [importText]);
 
   function exportState(state) {
     return btoa(JSON.stringify(state));
@@ -181,8 +191,11 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
       />
       <div className="mt-4 buttons">
         <button
-          className="button is-small"
-          disabled={!importText}
+          className={`button is-small ${
+            importText && !isImportTextValid ? "is-danger" : undefined
+          }`}
+          title={importText && !isImportTextValid ? "Invalid input" : undefined}
+          disabled={!importText || !isImportTextValid}
           onClick={performImport}
         >
           Import
