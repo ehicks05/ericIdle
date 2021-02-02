@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useImmer } from "use-immer";
-import { BsMoon, BsSun } from "react-icons/bs";
 import { MS_PER_TICK } from "./constants";
 import useInterval from "./hooks/useInterval";
 import Buildings from "./components/Buildings";
@@ -15,28 +14,23 @@ function App() {
     ...gameLogic.getDefaultGameState(),
     villagerCreatedAt: Date.now(),
     isIncomingVillager: false,
-    darkMode: false,
-    paused: false,
   });
 
   // ui state
   const [activeTab, setActiveTab] = useState("Buildings");
   let longestTickInMs = useRef(0);
 
-  useInterval(
-    () => {
-      let start = Date.now();
+  useInterval(() => {
+    let start = Date.now();
 
-      gameLogic.doGameTick(game, updateGame);
-      localStorage.setItem("persistedGame", JSON.stringify(game));
-      console.log(game.resources.food.amount);
+    gameLogic.doGameTick(game, updateGame);
+    localStorage.setItem("persistedGame", JSON.stringify(game));
+    console.log("tick");
 
-      let end = Date.now();
-      if (end - start > longestTickInMs.current)
-        longestTickInMs.current = end - start;
-    },
-    game.paused ? null : MS_PER_TICK
-  );
+    let end = Date.now();
+    if (end - start > longestTickInMs.current)
+      longestTickInMs.current = end - start;
+  }, MS_PER_TICK);
 
   useEffect(() => {
     if (localStorage.getItem("persistedGame"))
@@ -136,20 +130,6 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
       setTimeout(() => setCopyResult("unknown"), 750);
   }, [copyResult]);
 
-  function pause() {
-    updateGame((draft) => {
-      draft.paused = !draft.paused;
-      return;
-    });
-  }
-
-  function toggleDarkMode() {
-    updateGame((draft) => {
-      draft.darkMode = !draft.darkMode;
-      return;
-    });
-  }
-
   function exportState(state) {
     return btoa(JSON.stringify(state));
   }
@@ -191,49 +171,36 @@ const Settings = ({ game, updateGame, longestTickInMs }) => {
 
   return (
     <>
-      <hr />
-      <div className="buttons">
-        <button className="button is-small" onClick={pause}>
-          {game.paused ? "Resume" : "Pause"}
+      <h1 className="subtitle mt-4">Import/Export/Reset</h1>
+      <textarea
+        className="textarea"
+        id="importTextField"
+        placeholder="Paste save here..."
+      />
+      <div className="mt-4 buttons">
+        <button className="button is-small" onClick={performImport}>
+          Import
+        </button>
+        <button
+          className={`button is-small ${
+            copyResult === "success"
+              ? "is-success"
+              : copyResult === "error"
+              ? "is-danger"
+              : undefined
+          }`}
+          onClick={copy}
+        >
+          Export
         </button>
         <button className="button is-small" onClick={reset}>
           Reset
-        </button>
-        <button className="button is-small" onClick={toggleDarkMode}>
-          <span className="icon">{game.darkMode ? <BsSun /> : <BsMoon />}</span>
         </button>
       </div>
       <hr />
       <p>
         Longest time taken in a single game tick: {longestTickInMs.current} ms
       </p>
-      <hr />
-      <h1>Export Save</h1>
-      <button
-        className={`button is-small ${
-          copyResult === "success"
-            ? "is-success"
-            : copyResult === "error"
-            ? "is-danger"
-            : "is-info"
-        }`}
-        onClick={copy}
-      >
-        Export
-      </button>
-      <input type="hidden" />
-      <hr />
-      <h1>Import Save</h1>
-      <textarea
-        id="importTextField"
-        rows="6"
-        cols="44"
-        placeholder="Paste save here..."
-      />
-      <br />
-      <button className="button is-small" onClick={performImport}>
-        Import
-      </button>
     </>
   );
 };
