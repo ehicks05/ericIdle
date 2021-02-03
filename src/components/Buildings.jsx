@@ -62,17 +62,19 @@ const Building = ({ game, updateGame, building }) => {
             disabled={!gameLogic.canAffordBuilding(game, building)}
             onClick={() => gameLogic.buildBuilding(game, updateGame, building)}
           >
-            Build
+            +
           </button>
-          <button
-            className="button is-small"
-            disabled={building.amount === 0}
-            onClick={() =>
-              gameLogic.reclaimBuilding(game, updateGame, building)
-            }
-          >
-            Reclaim
-          </button>
+          {building.sellable && (
+            <button
+              className="button is-small"
+              disabled={building.amount === 0}
+              onClick={() =>
+                gameLogic.reclaimBuilding(game, updateGame, building)
+              }
+            >
+              -
+            </button>
+          )}
         </div>
       </td>
     </tr>

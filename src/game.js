@@ -395,7 +395,15 @@ export const getDefaultGameState = () => {
   ]);
   const builders = new Job("builders", "watch.png", "unlockBuilders");
 
-  function Building(name, image, prereq, cost, limitModifiers, bonusList) {
+  function Building(
+    name,
+    image,
+    prereq,
+    cost,
+    limitModifiers,
+    bonusList,
+    sellable
+  ) {
     this.name = name;
     this.image = image;
     this.prereq = prereq;
@@ -404,6 +412,7 @@ export const getDefaultGameState = () => {
     this.bonus = bonusList || [];
     this.status = "hidden";
     this.amount = 0;
+    this.sellable = sellable || false;
   }
 
   // buildings
@@ -413,7 +422,8 @@ export const getDefaultGameState = () => {
     "unlockHuts",
     { resource: "food", amount: 1 },
     [{ resource: "villagers", amount: 2, type: "additive" }],
-    []
+    [],
+    true
   );
   const farms = new Building(
     "farms",
