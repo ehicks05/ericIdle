@@ -8,7 +8,7 @@ const Resources = ({ game, updateGame }) => {
         <tr>
           <th className="has-text-left">Resource</th>
           <th className="has-text-right">Quantity</th>
-          <th className="has-text-right" style={{ width: "4rem" }}>
+          <th className="has-text-right" style={{ width: "8rem" }}>
             Rate
           </th>
           <th></th>
@@ -51,11 +51,11 @@ const Resource = ({ game, updateGame, resource }) => {
       <td className="has-text-right">
         <span>{amount}</span>/<span>{limit}</span>
       </td>
-      <td className="has-text-right">{rate}</td>
+      <td className="has-text-right">{rate}/s</td>
       <td>
         {name === "food" && (
           <button className="button is-small" onClick={harvestFood}>
-            Harvest
+            +
           </button>
         )}
       </td>
