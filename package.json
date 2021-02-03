@@ -17,6 +17,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.1.0",
+    "react-json-view": "^1.20.5",
     "react-scripts": "4.0.1",
     "sass": "^1.32.5",
     "tippy.js": "^6.2.7",
