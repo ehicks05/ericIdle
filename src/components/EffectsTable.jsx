@@ -32,7 +32,7 @@ const buildTable = ({ title, columns }, data) => {
         {data.map((rowData) => (
           <tr key={rowData.resource}>
             {columns.map((column) => (
-              <td>{rowData[column]}</td>
+              <td key={column}>{rowData[column]}</td>
             ))}
           </tr>
         ))}
