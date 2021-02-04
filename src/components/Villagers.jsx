@@ -1,16 +1,17 @@
 import EffectsTable from "./EffectsTable";
 import Tippy from "@tippyjs/react";
 import * as gameLogic from "../game.js";
+import Button from "./Button";
 import { followCursor } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
 const Jobs = ({ game, updateGame }) => {
   return (
-    <table className="table is-narrow">
+    <table className="">
       <thead>
         <tr>
-          <th className="has-text-left">Villagers</th>
-          <th className="has-text-right">Quantity</th>
+          <th className="text-left">Villagers</th>
+          <th className="text-right">Quantity</th>
           <th />
         </tr>
       </thead>
@@ -36,7 +37,7 @@ const Job = ({ game, updateGame, job }) => {
 
   return (
     <tr>
-      <td className="text-left">
+      <td>
         <Tippy
           content={<EffectsTable gameObject={job} />}
           followCursor={true}
@@ -45,7 +46,7 @@ const Job = ({ game, updateGame, job }) => {
           <span
             style={{ cursor: "pointer" }}
             className={
-              game.defaultJob === job.name ? "has-text-warning" : undefined
+              game.defaultJob === job.name ? "text-yellow-300" : undefined
             }
             onClick={() => gameLogic.setDefaultJob(game, updateGame, job.name)}
           >
@@ -53,24 +54,22 @@ const Job = ({ game, updateGame, job }) => {
           </span>
         </Tippy>
       </td>
-      <td className="has-text-right">{job.amount}</td>
+      <td className="text-right">{job.amount}</td>
       <td className="text-center">
         {job.name !== "idlers" && (
-          <div className="buttons">
-            <button
-              className="button is-small"
+          <div className="space-x-2">
+            <Button
               disabled={game.jobs.idlers.amount <= 0}
               onClick={() => assignWorker(job.name)}
             >
               +
-            </button>
-            <button
-              className="button is-small"
+            </Button>
+            <Button
               disabled={job.amount <= 0}
               onClick={() => unAssignWorker(job.name)}
             >
               -
-            </button>
+            </Button>
           </div>
         )}
       </td>

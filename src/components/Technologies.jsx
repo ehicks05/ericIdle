@@ -1,13 +1,14 @@
 import * as gameLogic from "../game.js";
+import Button from "./Button.jsx";
 import ResourceCost from "./ResourceCost";
 
 const Technologies = ({ game, updateGame }) => {
   return (
-    <table className="table is-narrow">
+    <table className="">
       <thead>
         <tr>
-          <th className="has-text-left">Technology</th>
-          <th className="has-text-right">Price</th>
+          <th className="text-left">Technology</th>
+          <th className="text-right">Price</th>
           <th />
         </tr>
       </thead>
@@ -38,25 +39,26 @@ const Technology = ({ game, updateGame, technology }) => {
 
   return (
     <tr>
-      <td className="text-left">
-        {/* <img
-          src={`ico/${technology.image}`}
-          alt="technology"
-          style={{ height: "32px" }}
-        /> */}
-        {technology.name}
+      <td>
+        <div className="flex">
+          <img
+            className="w-6 h-6 mr-1"
+            src={`ico/${technology.image}`}
+            alt="technology"
+          />
+          {technology.name}
+        </div>
       </td>
-      <td className="has-text-right">
+      <td className="text-right">
         <ResourceCost key={technology.name} game={game} coster={technology} />
       </td>
-      <td className="text-left">
-        <button
-          className="button is-small"
+      <td>
+        <Button
           disabled={technology.discovered || !canAfford}
           onClick={() => makeDiscovery(technology.name)}
         >
           {technology.discovered ? "Discovered" : "Discover"}
-        </button>
+        </Button>
       </td>
     </tr>
   );

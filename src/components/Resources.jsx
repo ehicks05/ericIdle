@@ -1,16 +1,15 @@
 import * as util from "../util.js";
 import { updateResource } from "../game";
+import Button from "./Button";
 
 const Resources = ({ game, updateGame }) => {
   return (
-    <table className="table is-narrow">
+    <table>
       <thead>
         <tr>
-          <th className="has-text-left">Resource</th>
-          <th className="has-text-right">Quantity</th>
-          <th className="has-text-right" style={{ width: "8rem" }}>
-            Rate
-          </th>
+          <th className="text-left">Resource</th>
+          <th className="text-right">Quantity</th>
+          <th className="text-right w-32">Rate</th>
           <th></th>
         </tr>
       </thead>
@@ -41,24 +40,21 @@ const Resource = ({ game, updateGame, resource }) => {
   return (
     <tr>
       <td>
-        <div className="tag">
-          <figure className="image is-24x24" style={{ marginRight: ".5rem" }}>
-            <img src={`ico/${image}`} alt="cost" />
-          </figure>
+        <div className="flex flex-row">
+          <img
+            className="w-6 h-6"
+            style={{ marginRight: ".5rem" }}
+            src={`ico/${image}`}
+            alt="cost"
+          />
           <span>{name}</span>
         </div>
       </td>
-      <td className="has-text-right">
+      <td className="text-right">
         <span>{amount}</span>/<span>{limit}</span>
       </td>
-      <td className="has-text-right">{rate}/s</td>
-      <td>
-        {name === "food" && (
-          <button className="button is-small" onClick={harvestFood}>
-            +
-          </button>
-        )}
-      </td>
+      <td className="text-right">{rate}/s</td>
+      <td>{name === "food" && <Button onClick={harvestFood}>+</Button>}</td>
     </tr>
   );
 };
