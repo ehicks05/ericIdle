@@ -7,8 +7,8 @@ const Technologies = ({ game, updateGame }) => {
     <table className="">
       <thead>
         <tr>
-          <th className="text-left">Technology</th>
-          <th className="text-right">Price</th>
+          <th className="px-2 text-left">Technology</th>
+          <th className="px-2 text-right">Price</th>
           <th />
         </tr>
       </thead>
@@ -39,7 +39,7 @@ const Technology = ({ game, updateGame, technology }) => {
 
   return (
     <tr>
-      <td>
+      <td className="px-2">
         <div className="flex">
           <img
             className="w-6 h-6 mr-1"
@@ -49,10 +49,10 @@ const Technology = ({ game, updateGame, technology }) => {
           {technology.name}
         </div>
       </td>
-      <td className="text-right">
+      <td className="px-2 text-right">
         <ResourceCost key={technology.name} game={game} coster={technology} />
       </td>
-      <td>
+      <td className="px-2">
         <Button
           disabled={technology.discovered || !canAfford}
           onClick={() => makeDiscovery(technology.name)}

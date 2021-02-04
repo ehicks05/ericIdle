@@ -10,8 +10,8 @@ const Jobs = ({ game, updateGame }) => {
     <table className="">
       <thead>
         <tr>
-          <th className="text-left">Villagers</th>
-          <th className="text-right">Quantity</th>
+          <th className="px-2 text-left">Villagers</th>
+          <th className="px-2 text-right">Quantity</th>
           <th />
         </tr>
       </thead>
@@ -37,7 +37,7 @@ const Job = ({ game, updateGame, job }) => {
 
   return (
     <tr>
-      <td>
+      <td className="px-2">
         <Tippy
           content={<EffectsTable gameObject={job} />}
           followCursor={true}
@@ -54,8 +54,8 @@ const Job = ({ game, updateGame, job }) => {
           </span>
         </Tippy>
       </td>
-      <td className="text-right">{job.amount}</td>
-      <td className="text-center">
+      <td className="px-2 text-right">{job.amount}</td>
+      <td className="px-2 text-center">
         {job.name !== "idlers" && (
           <div className="space-x-2">
             <Button

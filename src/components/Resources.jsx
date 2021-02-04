@@ -7,9 +7,9 @@ const Resources = ({ game, updateGame }) => {
     <table>
       <thead>
         <tr>
-          <th className="text-left">Resource</th>
-          <th className="text-right">Quantity</th>
-          <th className="text-right w-32">Rate</th>
+          <th className="px-2 text-left">Resource</th>
+          <th className="px-2 text-right">Quantity</th>
+          <th className="px-2 text-right w-32">Rate</th>
           <th></th>
         </tr>
       </thead>
@@ -39,7 +39,7 @@ const Resource = ({ game, updateGame, resource }) => {
 
   return (
     <tr>
-      <td>
+      <td className="px-2">
         <div className="flex flex-row">
           <img
             className="w-6 h-6"
@@ -50,11 +50,13 @@ const Resource = ({ game, updateGame, resource }) => {
           <span>{name}</span>
         </div>
       </td>
-      <td className="text-right">
+      <td className="px-2 text-right">
         <span>{amount}</span>/<span>{limit}</span>
       </td>
-      <td className="text-right">{rate}/s</td>
-      <td>{name === "food" && <Button onClick={harvestFood}>+</Button>}</td>
+      <td className="px-2 text-right">{rate}/s</td>
+      <td className="px-2">
+        {name === "food" && <Button onClick={harvestFood}>+</Button>}
+      </td>
     </tr>
   );
 };

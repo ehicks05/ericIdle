@@ -11,9 +11,9 @@ const Buildings = ({ game, updateGame }) => {
     <table className="">
       <thead>
         <tr>
-          <th className="text-left">Structure</th>
-          <th className="text-right">Quantity</th>
-          <th className="text-right">Price</th>
+          <th className="px-2 text-left">Structure</th>
+          <th className="px-2 text-right">Quantity</th>
+          <th className="px-2 text-right">Price</th>
           <th />
         </tr>
       </thead>
@@ -36,7 +36,7 @@ const Buildings = ({ game, updateGame }) => {
 const Building = ({ game, updateGame, building }) => {
   return (
     <tr>
-      <td className="text-left">
+      <td className="px-2 text-left">
         <div className="flex flex-row">
           <img
             className="w-6 h-6 mr-1"
@@ -52,11 +52,11 @@ const Building = ({ game, updateGame, building }) => {
           </Tippy>
         </div>
       </td>
-      <td className="text-right">{building.amount}</td>
-      <td className="text-right">
+      <td className="px-2 text-right">{building.amount}</td>
+      <td className="px-2 text-right">
         <ResourceCost key="building.name" game={game} coster={building} />
       </td>
-      <td>
+      <td className="px-2">
         <div className="space-x-2">
           <Button
             disabled={!gameLogic.canAffordBuilding(game, building)}
