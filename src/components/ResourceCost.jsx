@@ -3,7 +3,7 @@ import * as gameLogic from "../game.js";
 const ResourceCost = ({ game, coster }) => {
   const cost = gameLogic.getBuildingCost(coster);
   return (
-    <div className="tag">
+    <div className="tag" title={coster.cost.resource}>
       <span>{cost}</span>
       <figure className="image is-24x24" style={{ marginLeft: ".5rem" }}>
         <img
