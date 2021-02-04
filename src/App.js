@@ -78,9 +78,7 @@ function App() {
             <div className="flex flex-row columns is-variable is-0-mobile">
               <div className="p-4">
                 <div className="border-b">
-                  <a className="border-b border-blue-600" href="/#">
-                    Resources
-                  </a>
+                  <a href="/#">Resources</a>
                 </div>
                 <Resources game={game} updateGame={updateGame} />
               </div>
@@ -94,9 +92,7 @@ function App() {
                           <li
                             key={tab.name}
                             className={
-                              activeTab === tab.name
-                                ? "border-b border-blue-600"
-                                : undefined
+                              activeTab === tab.name ? "" : "text-gray-400"
                             }
                           >
                             <a href="/#" onClick={() => setActiveTab(tab.name)}>
