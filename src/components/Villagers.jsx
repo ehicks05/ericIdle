@@ -42,7 +42,15 @@ const Job = ({ game, updateGame, job }) => {
           followCursor={true}
           plugins={[followCursor]}
         >
-          <span>{job.name}</span>
+          <span
+            style={{ cursor: "pointer" }}
+            className={
+              game.defaultJob === job.name ? "has-text-warning" : undefined
+            }
+            onClick={() => gameLogic.setDefaultJob(game, updateGame, job.name)}
+          >
+            {job.name}
+          </span>
         </Tippy>
       </td>
       <td className="has-text-right">{job.amount}</td>

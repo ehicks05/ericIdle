@@ -11,11 +11,7 @@ import * as gameLogic from "./game.js";
 import "./App.css";
 
 function App() {
-  const [game, updateGame] = useImmer({
-    ...gameLogic.getDefaultGameState(),
-    villagerCreatedAt: Date.now(),
-    isIncomingVillager: false,
-  });
+  const [game, updateGame] = useImmer(gameLogic.getDefaultGameState());
 
   // ui state
   const [activeTab, setActiveTab] = useState("Buildings");
@@ -225,9 +221,7 @@ const Settings = ({ game, updateGame, perf }) => {
         {(
           perf.recent.reduce((agg, cur) => agg + cur) / perf.recent.length
         ).toFixed(2)}{" "}
-        ms
-        <br />
-        Max: {perf.max} ms
+        ms (max: {perf.max} ms)
       </p>
       State: <ReactJson src={game} collapsed={1} theme="monokai" />
       State: <pre>{JSON.stringify(game, null, 2)}</pre>

@@ -148,9 +148,25 @@ const createVillager = (game, updateGame) => {
   if (villagersToCreate < 1) villagersToCreate = 1;
 
   updateVillagerCount(game, updateGame, villagersToCreate);
-  addNewIdler(game, updateGame, villagersToCreate);
+  addWorker(game, updateGame, villagersToCreate);
   updateGame((draft) => {
     draft.isIncomingVillager = false;
+    return;
+  });
+};
+
+// Villager
+export const updateVillagerCount = (game, updateGame, amount) => {
+  updateGame((draft) => {
+    draft.resources.villagers.amount += amount;
+    return;
+  });
+};
+
+// Worker
+export const addWorker = (game, updateGame, amount) => {
+  updateGame((draft) => {
+    draft.jobs[game.defaultJob].amount += amount;
     return;
   });
 };
@@ -164,9 +180,7 @@ export const removeWorker = (game, updateGame) => {
     return;
   }
 
-  const job = Object.values(game.jobs).find(
-    (job) => job.name !== "idler" && job.amount > 0
-  );
+  const job = Object.values(game.jobs).find((job) => job.amount > 0);
   if (job)
     updateGame((draft) => {
       draft.jobs[job.name].amount -= 1;
@@ -174,18 +188,9 @@ export const removeWorker = (game, updateGame) => {
     });
 };
 
-// Villager
-export const updateVillagerCount = (game, updateGame, amount) => {
+export const setDefaultJob = (game, updateGame, job) => {
   updateGame((draft) => {
-    draft.resources.villagers.amount += amount;
-    return;
-  });
-};
-
-// Worker
-export const addNewIdler = (game, updateGame, amount) => {
-  updateGame((draft) => {
-    draft.jobs.idlers.amount += amount;
+    draft.defaultJob = job;
     return;
   });
 };
@@ -601,5 +606,8 @@ export const getDefaultGameState = () => {
       unlockSchools: unlockSchools,
       unlockLibraries: unlockLibraries,
     },
+    defaultJob: "idlers",
+    villagerCreatedAt: Date.now(),
+    isIncomingVillager: false,
   };
 };
