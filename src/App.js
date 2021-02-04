@@ -75,7 +75,7 @@ function App() {
         </section>
         <section>
           <div>
-            <div className="flex flex-row columns is-variable is-0-mobile">
+            <div className="md:flex md:flex-row">
               <div className="p-4">
                 <div className="border-b">
                   <a href="/#">Resources</a>
@@ -186,7 +186,7 @@ const Settings = ({ game, updateGame, perf }) => {
     <>
       <h1 className="subtitle mt-4">Import/Export/Reset</h1>
       <textarea
-        className="text-black dark:text-white bg-white dark:bg-gray-800"
+        className="w-full text-black dark:text-white bg-white dark:bg-gray-800"
         placeholder="Paste save here..."
         value={importText}
         onChange={(e) => setImportText(e.target.value)}
