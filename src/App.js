@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useImmer } from "use-immer";
-import ReactJson from "react-json-view";
 import { MS_PER_TICK } from "./constants";
 import useInterval from "./hooks/useInterval";
 import Buildings from "./components/Buildings";
@@ -221,7 +220,6 @@ const Settings = ({ game, updateGame, perf }) => {
         ).toFixed(2)}{" "}
         ms (max: {perf.max} ms)
       </p>
-      {/* State: <ReactJson src={game} collapsed={1} theme="monokai" /> */}
       {/* State: <pre>{JSON.stringify(game, null, 2)}</pre> */}
     </>
   );
