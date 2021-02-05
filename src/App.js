@@ -63,7 +63,7 @@ function App() {
   ];
 
   return (
-    <div className="text-black dark:text-white bg-white dark:bg-gray-900">
+    <div className="font-mono text-black dark:text-white bg-white dark:bg-gray-900">
       <div className="min-h-screen flex flex-col container mx-auto space-y-6">
         <section>
           <div>
@@ -136,7 +136,7 @@ const Settings = ({ game, updateGame, perf }) => {
 
   useEffect(() => {
     if (["success", "error"].includes(copyResult))
-      setTimeout(() => setCopyResult("unknown"), 750);
+      setTimeout(() => setCopyResult("unknown"), 1500);
   }, [copyResult]);
 
   useEffect(() => {
@@ -202,17 +202,14 @@ const Settings = ({ game, updateGame, perf }) => {
         >
           Import
         </Button>
-        <Button
-          className={`${
+        <Button onClick={copy}>
+          {`${
             copyResult === "success"
-              ? "bg-green-700"
+              ? "Copied"
               : copyResult === "error"
-              ? "bg-red-700"
-              : undefined
+              ? "Error"
+              : "Export"
           }`}
-          onClick={copy}
-        >
-          Export
         </Button>
         <Button onClick={reset}>Reset</Button>
       </div>
