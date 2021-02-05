@@ -37,10 +37,15 @@ const RateInfo = ({ resource }) => {
       ? (resource.limit - resource.amount) / resource.rate
       : resource.amount / -resource.rate;
 
-  const message =
+  const until =
     resource.rate > 0 ? "seconds until full" : "seconds until empty";
 
-  return <div>{`${time.toFixed(0)} ${message}`}</div>;
+  const rateInfo =
+    resource.rate > 0 || resource.rate < 0
+      ? `${time.toFixed(0)} ${until}`
+      : "No change";
+
+  return <div>{rateInfo}</div>;
 };
 
 const Resource = ({ game, updateGame, resource }) => {
