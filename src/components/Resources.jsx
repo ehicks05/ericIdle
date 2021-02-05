@@ -1,6 +1,8 @@
 import * as util from "../util.js";
 import { updateResource } from "../game";
 import Button from "./Button";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 const Resources = ({ game, updateGame }) => {
   return (
@@ -29,6 +31,18 @@ const Resources = ({ game, updateGame }) => {
   );
 };
 
+const RateInfo = ({ resource }) => {
+  const time =
+    resource.rate > 0
+      ? (resource.limit - resource.amount) / resource.rate
+      : resource.amount / -resource.rate;
+
+  const message =
+    resource.rate > 0 ? "seconds until full" : "seconds until empty";
+
+  return <div>{`${time.toFixed(0)} ${message}`}</div>;
+};
+
 const Resource = ({ game, updateGame, resource }) => {
   const harvestFood = () => {
     updateResource(game, updateGame, "food", 1);
@@ -53,7 +67,11 @@ const Resource = ({ game, updateGame, resource }) => {
       <td className="px-2 text-right">
         <span>{amount}</span>/<span>{limit}</span>
       </td>
-      <td className="px-2 text-right">{rate}/s</td>
+      <td className="px-2 text-right">
+        <Tippy content={<RateInfo resource={resource} />}>
+          <span>{rate}/s</span>
+        </Tippy>
+      </td>
       <td className="px-2">
         {name === "food" && <Button onClick={harvestFood}>+</Button>}
       </td>
