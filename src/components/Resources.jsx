@@ -152,6 +152,14 @@ const RateInfo = ({ game, resource }) => {
       <tbody>
         {production}
         {mods}
+        {resource.name === "food" && (
+          <tr key="foodConsumption">
+            <td>Villagers</td>
+            <td className="pl-2 text-right">
+              -{(game.resources.villagers.amount * 0.045).toFixed(2)}
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
