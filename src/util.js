@@ -10,11 +10,6 @@ export function camelToTitle(value) {
   return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
-export function formatRate(rate) {
-  let sign = rate > 0 ? "+" : "";
-  return sign + Intl.NumberFormat().format(rate);
-}
-
 export const shortEnglishHumanizer = humanizeDuration.humanizer({
   language: "shortEn",
   languages: {

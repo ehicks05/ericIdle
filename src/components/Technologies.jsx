@@ -7,7 +7,7 @@ const Technologies = ({ game, updateGame }) => {
     <table className="">
       <thead>
         <tr>
-          <th className="px-2 text-left">Technology</th>
+          <th className="px-2 text-left"></th>
           <th className="px-2 text-right">Price</th>
           <th />
         </tr>

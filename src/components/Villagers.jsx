@@ -9,8 +9,8 @@ const Jobs = ({ game, updateGame }) => {
     <table className="">
       <thead>
         <tr>
-          <th className="px-2 text-left">Villagers</th>
-          <th className="px-2 text-right">Quantity</th>
+          <th className="px-2 text-left"></th>
+          <th className="px-2 text-right">#</th>
           <th />
         </tr>
       </thead>

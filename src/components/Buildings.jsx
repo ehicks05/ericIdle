@@ -10,8 +10,8 @@ const Buildings = ({ game, updateGame }) => {
     <table className="">
       <thead>
         <tr>
-          <th className="px-2 text-left">Structure</th>
-          <th className="px-2 text-right">Quantity</th>
+          <th className="px-2 text-left"></th>
+          <th className="px-2 text-right">#</th>
           <th className="px-2 text-right">Price</th>
           <th />
         </tr>

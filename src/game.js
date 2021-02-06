@@ -102,7 +102,7 @@ const updateResources = (game, updateGame) => {
       newRate = newRate - 0.045 * game?.resources?.villagers?.amount;
 
     updateGame((draft) => {
-      draft.resources[resource.name].rate = util.formatRate(newRate);
+      draft.resources[resource.name].rate = newRate;
       return;
     });
     updateResource(game, updateGame, resource.name, newRate * (200 / 1000)); // apply rate per tick

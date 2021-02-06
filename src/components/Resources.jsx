@@ -11,8 +11,8 @@ const Resources = ({ game, updateGame }) => {
       <thead>
         <tr>
           <th className="px-2 text-left">Resource</th>
-          <th className="px-2 text-right">Quantity</th>
-          <th className="px-2 text-right w-32">Rate</th>
+          <th className="px-2 text-right">#</th>
+          <th className="px-2 text-right w-24">Rate</th>
           <th></th>
         </tr>
       </thead>
@@ -205,7 +205,7 @@ const Resource = ({ game, updateGame, resource }) => {
       </td>
       <td className="px-2 text-right">
         <Tippy content={<RateInfo game={game} resource={resource} />}>
-          <span>{rate}/s</span>
+          <span>{`${rate > 0 ? "+" : ""}${rate.toFixed(2)}`}/s</span>
         </Tippy>
       </td>
       <td className="px-2">
