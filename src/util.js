@@ -1,3 +1,4 @@
+import humanizeDuration from "humanize-duration";
 // UTILITY
 export function myRound(value, places) {
   const multiplier = Math.pow(10, places);
@@ -13,3 +14,19 @@ export function formatRate(rate) {
   let sign = rate > 0 ? "+" : "";
   return sign + Intl.NumberFormat().format(rate);
 }
+
+export const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: "shortEn",
+  languages: {
+    shortEn: {
+      y: () => "y",
+      mo: () => "mo",
+      w: () => "w",
+      d: () => "d",
+      h: () => "h",
+      m: () => "m",
+      s: () => "s",
+      ms: () => "ms",
+    },
+  },
+});
