@@ -2,7 +2,6 @@ import * as gameLogic from "../game.js";
 import ResourceCost from "./ResourceCost";
 import EffectsTable from "./EffectsTable";
 import Tippy from "@tippyjs/react";
-import { followCursor } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import Button from "./Button.jsx";
 
@@ -43,11 +42,7 @@ const Building = ({ game, updateGame, building }) => {
             src={`ico/${building.image}`}
             alt="building"
           />
-          <Tippy
-            content={<EffectsTable gameObject={building} />}
-            followCursor={true}
-            plugins={[followCursor]}
-          >
+          <Tippy content={<EffectsTable gameObject={building} />}>
             <span>{building.name}</span>
           </Tippy>
         </div>

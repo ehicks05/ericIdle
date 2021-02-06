@@ -2,7 +2,6 @@ import EffectsTable from "./EffectsTable";
 import Tippy from "@tippyjs/react";
 import * as gameLogic from "../game.js";
 import Button from "./Button";
-import { followCursor } from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
 const Jobs = ({ game, updateGame }) => {
@@ -25,7 +24,6 @@ const Jobs = ({ game, updateGame }) => {
     </table>
   );
 };
-// export const assignJob = (game, updateGame, name, amount) => {
 
 const Job = ({ game, updateGame, job }) => {
   const assignWorker = (jobName) => {
@@ -38,11 +36,7 @@ const Job = ({ game, updateGame, job }) => {
   return (
     <tr>
       <td className="px-2">
-        <Tippy
-          content={<EffectsTable gameObject={job} />}
-          followCursor={true}
-          plugins={[followCursor]}
-        >
+        <Tippy content={<EffectsTable gameObject={job} />}>
           <span
             style={{ cursor: "pointer" }}
             className={
