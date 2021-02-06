@@ -2,7 +2,6 @@ import React from "react";
 import * as util from "../util.js";
 import { updateResource } from "../game";
 import Button from "./Button";
-import humanizeDuration from "humanize-duration/humanize-duration";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
@@ -81,11 +80,15 @@ const TimeUntil = ({ resource }) => {
       ? (resource.limit - resource.amount) / resource.rate
       : resource.amount / -resource.rate;
 
-  const until = resource.rate > 0 ? "full" : "empty";
+  const destination = resource.rate > 0 ? "full" : "empty";
 
   const rateInfo =
     resource.rate > 0 || resource.rate < 0
-      ? `${humanizeDuration(time * 1000, { round: true })} until ${until}`
+      ? `${destination} in ${util.shortEnglishHumanizer(time * 1000, {
+          round: true,
+          largest: 2,
+          spacer: "",
+        })}`
       : "No change";
 
   return <div>{rateInfo}</div>;
