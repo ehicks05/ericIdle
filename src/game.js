@@ -99,10 +99,8 @@ const updateResources = (game, updateGame) => {
 
     // villagers gotta eat
     if (resource.name === "food")
-      newRate = newRate - 0.45 * game?.resources?.villagers?.amount;
+      newRate = newRate - 0.045 * game?.resources?.villagers?.amount;
 
-    // apply arbitrary global multiplier
-    newRate = 0.1 * newRate;
     updateGame((draft) => {
       draft.resources[resource.name].rate = util.formatRate(newRate);
       return;
@@ -383,20 +381,20 @@ export const getDefaultGameState = () => {
   // workers
   const idlers = new Job("idlers", "watch.png", "unlockVillagers");
   const farmers = new Job("farmers", "farmer.png", "unlockVillagers", [
-    { resource: "food", amount: 0.5 },
+    { resource: "food", amount: 0.05 },
   ]);
   const thinkers = new Job("thinkers", "think.png", "unlockVillagers", [
-    { resource: "research", amount: 0.2 },
+    { resource: "research", amount: 0.02 },
   ]);
   const foresters = new Job(
     "foresters",
     "hand-saw.png",
     "unlockWoodConstruction",
-    [{ resource: "lumber", amount: 0.3 }]
+    [{ resource: "lumber", amount: 0.03 }]
   );
   const hunters = new Job("hunters", "watch.png", "unlockHunting");
   const miners = new Job("miners", "watch.png", "unlockStoneConstruction", [
-    { resource: "stone", amount: 0.1 },
+    { resource: "stone", amount: 0.01 },
   ]);
   const builders = new Job("builders", "watch.png", "unlockBuilders");
 
