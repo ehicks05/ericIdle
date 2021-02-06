@@ -503,7 +503,6 @@ export const getDefaultGameState = () => {
     this.prereq = prereq;
     this.status = "hidden";
     this.image = "enlightenment.png";
-    this.buttonLabel = "Discover";
     this.discovered = false;
   }
 
