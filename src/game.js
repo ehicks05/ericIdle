@@ -114,7 +114,7 @@ const updateResources = (game, updateGame) => {
   if (game.resources.food.amount < 0 && game.resources.villagers.amount > 0) {
     updateVillagerCount(game, updateGame, -1);
     removeWorker(game, updateGame);
-    game.resources.food.amount = 0.5; // ...
+    updateResource(game, updateGame, "food", 0.05); // ...
   }
 
   const workerCount = Object.values(game.jobs).reduce(
