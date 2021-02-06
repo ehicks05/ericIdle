@@ -31,6 +31,48 @@ const Resources = ({ game, updateGame }) => {
   );
 };
 
+const LimitInfo = ({ game, resource }) => {
+  const base = resource.baseLimit;
+
+  const mods = Object.values(game.buildings)
+    .filter(
+      (building) =>
+        building.amount &&
+        building?.resourceLimitModifier.some(
+          (limitMod) => limitMod.resource === resource.name
+        )
+    )
+    .map((building) => {
+      const mods = building.resourceLimitModifier.filter(
+        (limitMod) => limitMod.resource === resource.name
+      );
+      return (
+        <>
+          {mods.map((mod) => (
+            <tr className="">
+              <td>{building.name}</td>
+              <td className="pl-2 text-right">
+                +{building.amount * mod.amount}
+              </td>
+            </tr>
+          ))}
+        </>
+      );
+    });
+
+  return (
+    <table>
+      <tbody>
+        <tr className="">
+          <td>Base</td>
+          <td className="pl-2 text-right">{base}</td>
+        </tr>
+        {mods}
+      </tbody>
+    </table>
+  );
+};
+
 const RateInfo = ({ resource }) => {
   const time =
     resource.rate > 0
@@ -70,7 +112,9 @@ const Resource = ({ game, updateGame, resource }) => {
         </div>
       </td>
       <td className="px-2 text-right">
-        <span>{amount}</span>/<span>{limit}</span>
+        <Tippy content={<LimitInfo game={game} resource={resource} />}>
+          <span>{`${amount}/${limit}`}</span>
+        </Tippy>
       </td>
       <td className="px-2 text-right">
         <Tippy content={<RateInfo resource={resource} />}>
