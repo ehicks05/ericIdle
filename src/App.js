@@ -74,12 +74,12 @@ function App() {
         </section>
         <section>
           <div>
-            <div className="md:flex md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+            <div className="md:flex md:flex-row space-y-6 md:space-y-0 md:space-x-12">
               <div>
                 <Resources game={game} updateGame={updateGame} />
               </div>
               <div>
-                <div className="max-w-full overflow-x-auto flex space-x-5 border-b">
+                <div className="max-w-full overflow-x-auto flex space-x-5 mb-2 border-b">
                   {tabs
                     .filter((tab) => tab.unlocked)
                     .map((tab) => {
