@@ -112,7 +112,9 @@ const RateInfo = ({ game, resource }) => {
           {production.map((prod) => (
             <tr key={prod.resource}>
               <td>{job.name}</td>
-              <td className="pl-2 text-right">+{job.amount * prod.amount}</td>
+              <td className="pl-2 text-right">
+                +{(job.amount * prod.amount).toFixed(2)}
+              </td>
             </tr>
           ))}
         </React.Fragment>
@@ -135,9 +137,9 @@ const RateInfo = ({ game, resource }) => {
             const amount = building.amount * bonus.amount;
             const prettyAmount =
               bonus.type === "additive"
-                ? amount
+                ? amount.toFixed(2)
                 : !bonus.type || bonus.type === "multiplicative"
-                ? 1 + amount * 100 + "%"
+                ? (1 + amount * 100).toFixed(0) + "%"
                 : "?";
             return (
               <tr key={bonus.resource}>
@@ -198,7 +200,7 @@ const Resource = ({ game, updateGame, resource }) => {
       </td>
       <td className="px-2 text-right">
         <Tippy content={<LimitInfo game={game} resource={resource} />}>
-          <span>{`${amount}/${limit}`}</span>
+          <span>{`${amount.toFixed()}/${limit}`}</span>
         </Tippy>
       </td>
       <td className="px-2 text-right">
