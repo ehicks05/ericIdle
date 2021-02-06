@@ -46,7 +46,7 @@ const Job = ({ game, updateGame, job }) => {
           <span
             style={{ cursor: "pointer" }}
             className={
-              game.defaultJob === job.name ? "text-yellow-300" : undefined
+              game.defaultJob === job.name ? "text-yellow-500" : undefined
             }
             onClick={() => gameLogic.setDefaultJob(game, updateGame, job.name)}
           >
