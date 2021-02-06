@@ -76,31 +76,29 @@ function App() {
           <div>
             <div className="md:flex md:flex-row">
               <div className="p-4">
-                <div className="border-b">
+                <div className="pb-2 border-b">
                   <a href="/#">Resources</a>
                 </div>
                 <Resources game={game} updateGame={updateGame} />
               </div>
               <div className="p-4">
-                <div className="border-b">
-                  <ul className="flex flex-row space-x-4">
-                    {tabs
-                      .filter((tab) => tab.unlocked)
-                      .map((tab) => {
-                        return (
-                          <li
-                            key={tab.name}
-                            className={
-                              activeTab === tab.name ? "" : "text-gray-400"
-                            }
-                          >
-                            <a href="/#" onClick={() => setActiveTab(tab.name)}>
-                              {tab.name}
-                            </a>
-                          </li>
-                        );
-                      })}
-                  </ul>
+                <div className="flex space-x-5 border-b">
+                  {tabs
+                    .filter((tab) => tab.unlocked)
+                    .map((tab) => {
+                      return (
+                        <a
+                          href="/#"
+                          key={tab.name}
+                          className={`mb-2
+                              ${tab.name !== activeTab ? "opacity-50" : ""}
+                            `}
+                          onClick={() => setActiveTab(tab.name)}
+                        >
+                          {tab.name}
+                        </a>
+                      );
+                    })}
                 </div>
                 {game.progress.unlockHuts.unlocked &&
                   activeTab === "Buildings" && (
