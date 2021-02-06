@@ -79,7 +79,7 @@ function App() {
                 <Resources game={game} updateGame={updateGame} />
               </div>
               <div>
-                <div className="flex space-x-5 border-b">
+                <div className="max-w-full overflow-x-auto flex space-x-5 border-b">
                   {tabs
                     .filter((tab) => tab.unlocked)
                     .map((tab) => {

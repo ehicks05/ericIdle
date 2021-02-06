@@ -200,7 +200,7 @@ const Resource = ({ game, updateGame, resource }) => {
       </td>
       <td className="px-2 text-right">
         <Tippy content={<LimitInfo game={game} resource={resource} />}>
-          <span>{`${amount.toFixed()}/${limit}`}</span>
+          <span>{`${Math.floor(amount)}/${limit}`}</span>
         </Tippy>
       </td>
       <td className="px-2 text-right">
