@@ -1,6 +1,8 @@
+import React from "react";
 import * as util from "../util.js";
 import { updateResource } from "../game";
 import Button from "./Button";
+import humanizeDuration from "humanize-duration/humanize-duration";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 
@@ -47,16 +49,16 @@ const LimitInfo = ({ game, resource }) => {
         (limitMod) => limitMod.resource === resource.name
       );
       return (
-        <>
+        <React.Fragment key={building.name}>
           {mods.map((mod) => (
-            <tr className="">
+            <tr key={mod.resource}>
               <td>{building.name}</td>
               <td className="pl-2 text-right">
                 +{building.amount * mod.amount}
               </td>
             </tr>
           ))}
-        </>
+        </React.Fragment>
       );
     });
 
@@ -73,21 +75,93 @@ const LimitInfo = ({ game, resource }) => {
   );
 };
 
-const RateInfo = ({ resource }) => {
+const TimeUntil = ({ resource }) => {
   const time =
     resource.rate > 0
       ? (resource.limit - resource.amount) / resource.rate
       : resource.amount / -resource.rate;
 
-  const until =
-    resource.rate > 0 ? "seconds until full" : "seconds until empty";
+  const until = resource.rate > 0 ? "full" : "empty";
 
   const rateInfo =
     resource.rate > 0 || resource.rate < 0
-      ? `${time.toFixed(0)} ${until}`
+      ? `${humanizeDuration(time * 1000, { round: true })} until ${until}`
       : "No change";
 
   return <div>{rateInfo}</div>;
+};
+
+const RateInfo = ({ game, resource }) => {
+  const production = Object.values(game.jobs)
+    .filter(
+      (job) =>
+        job.amount &&
+        job?.production.some(
+          (production) => production.resource === resource.name
+        )
+    )
+    .map((job) => {
+      const production = job.production.filter(
+        (production) => production.resource === resource.name
+      );
+      return (
+        <React.Fragment key={job.name}>
+          {production.map((prod) => (
+            <tr key={prod.resource}>
+              <td>{job.name}</td>
+              <td className="pl-2 text-right">+{job.amount * prod.amount}</td>
+            </tr>
+          ))}
+        </React.Fragment>
+      );
+    });
+
+  const mods = Object.values(game.buildings)
+    .filter(
+      (building) =>
+        building.amount &&
+        building?.bonus.some((bonus) => bonus.resource === resource.name)
+    )
+    .map((building) => {
+      const bonus = building.bonus.filter(
+        (bonus) => bonus.resource === resource.name
+      );
+      return (
+        <React.Fragment key={building.name}>
+          {bonus.map((bonus) => {
+            const amount = building.amount * bonus.amount;
+            const prettyAmount =
+              bonus.type === "additive"
+                ? amount
+                : !bonus.type || bonus.type === "multiplicative"
+                ? 1 + amount * 100 + "%"
+                : "?";
+            return (
+              <tr key={bonus.resource}>
+                <td className="pl-2">{building.name}</td>
+                <td className="pl-2 text-right">+{prettyAmount}</td>
+              </tr>
+            );
+          })}
+        </React.Fragment>
+      );
+    });
+
+  const rateInfo = (
+    <table>
+      <tbody>
+        {production}
+        {mods}
+      </tbody>
+    </table>
+  );
+
+  return (
+    <div>
+      {rateInfo}
+      <TimeUntil resource={resource} />
+    </div>
+  );
 };
 
 const Resource = ({ game, updateGame, resource }) => {
@@ -117,7 +191,7 @@ const Resource = ({ game, updateGame, resource }) => {
         </Tippy>
       </td>
       <td className="px-2 text-right">
-        <Tippy content={<RateInfo resource={resource} />}>
+        <Tippy content={<RateInfo game={game} resource={resource} />}>
           <span>{rate}/s</span>
         </Tippy>
       </td>
