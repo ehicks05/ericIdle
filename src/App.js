@@ -44,18 +44,22 @@ function App() {
     {
       name: "Buildings",
       unlocked: game.progress.unlockHuts.unlocked,
+      component: <Buildings game={game} updateGame={updateGame} />,
     },
     {
       name: "Villagers",
       unlocked: game.progress.unlockVillagers.unlocked,
+      component: <Villagers game={game} updateGame={updateGame} />,
     },
     {
       name: "Technologies",
       unlocked: game.progress.unlockLevelOneTech.unlocked,
+      component: <Technologies game={game} updateGame={updateGame} />,
     },
     {
       name: "Settings",
       unlocked: true,
+      component: <Settings game={game} updateGame={updateGame} perf={perf} />,
     },
   ];
 
@@ -93,21 +97,7 @@ function App() {
                       );
                     })}
                 </div>
-                {game.progress.unlockHuts.unlocked &&
-                  activeTab === "Buildings" && (
-                    <Buildings game={game} updateGame={updateGame} />
-                  )}
-                {game.progress.unlockVillagers.unlocked &&
-                  activeTab === "Villagers" && (
-                    <Villagers game={game} updateGame={updateGame} />
-                  )}
-                {game.progress.unlockLevelOneTech.unlocked &&
-                  activeTab === "Technologies" && (
-                    <Technologies game={game} updateGame={updateGame} />
-                  )}
-                {activeTab === "Settings" && (
-                  <Settings game={game} updateGame={updateGame} perf={perf} />
-                )}
+                {tabs.find((tab) => tab.name === activeTab).component}
               </div>
             </div>
           </div>
