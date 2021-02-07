@@ -90,7 +90,7 @@ const Settings = ({ game, updateGame, perf }) => {
       <p>
         Ticks/s:{" "}
         {(
-          perf.recent.reduce((agg, cur) => agg + cur) / perf.recent.length
+          perf.recent.reduce((agg, cur) => agg + cur, 0) / perf.recent.length
         ).toFixed(2)}{" "}
         ms (max: {perf.max} ms)
       </p>
