@@ -97,7 +97,8 @@ function App() {
                       );
                     })}
                 </div>
-                {tabs.find((tab) => tab.name === activeTab).component}
+                {tabs.find((tab) => tab.unlocked && tab.name === activeTab)
+                  ?.component || <div />}
               </div>
             </div>
           </div>
