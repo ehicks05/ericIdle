@@ -12,7 +12,9 @@ import {
 import * as gameLogic from "./game";
 
 function App() {
-  const [game, updateGame] = useImmer({ ...gameLogic.getDefaultGameState() });
+  const [game, updateGame] = useImmer(
+    JSON.parse(JSON.stringify(gameLogic.getDefaultGameState()))
+  );
   const [activeTab, setActiveTab] = useState("Buildings");
   let [perf, setPerf] = useState({ max: 0, recent: [] });
 
