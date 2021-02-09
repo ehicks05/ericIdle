@@ -66,11 +66,9 @@ const Settings = ({ game, updateGame, perf }) => {
       />
       <div className="mt-4 space-x-2">
         <Button
-          className={`${
-            importText && !isImportTextValid ? "bg-red-700" : undefined
-          }`}
           title={importText && !isImportTextValid ? "Invalid input" : undefined}
           disabled={!importText || !isImportTextValid}
+          error={importText && !isImportTextValid}
           onClick={performImport}
         >
           Import
