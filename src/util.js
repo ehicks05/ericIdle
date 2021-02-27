@@ -1,47 +1,27 @@
+import humanizeDuration from "humanize-duration";
 // UTILITY
-export function myRound(value, places)
-{
-    const multiplier = Math.pow(10, places);
-    return (Math.round(value * multiplier) / multiplier);
+export function myRound(value, places) {
+  const multiplier = Math.pow(10, places);
+  return Math.round(value * multiplier) / multiplier;
 }
 
-export function camelToTitle(value)
-{
-    const result = value.replace( /([A-Z])/g, " $1" );
-    return result.charAt(0).toUpperCase() + result.slice(1);
+export function camelToTitle(value) {
+  const result = value.replace(/([A-Z])/g, " $1");
+  return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
-export function formatRate(rate)
-{
-    let e = 0;
-    let sign = rate >= 0 ? '+' : '-';
-    rate = Math.abs(rate);
-
-    while (rate !== 0 && !(rate >= .01 && rate <= 10))
-    {
-        if (rate < 1)
-        {
-            rate *= 10;
-            e--;
-        }
-        if (rate > 10)
-        {
-            rate /= 10;
-            e++;
-        }
-    }
-    if (sign === '-')
-        rate *= -1;
-    rate = myRound(rate, 2);
-    if (rate > 0) rate = '+' + rate;
-
-    let rateString = rate.toString();
-    if (rateString.indexOf(".") < 0)
-        rateString += '.';
-
-    while (rateString.indexOf('.') + 3 > rateString.length)
-        rateString += '0';
-
-    if (e !== 0) rateString += 'e' + e;
-    return rateString;
-}
+export const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: "shortEn",
+  languages: {
+    shortEn: {
+      y: () => "y",
+      mo: () => "mo",
+      w: () => "w",
+      d: () => "d",
+      h: () => "h",
+      m: () => "m",
+      s: () => "s",
+      ms: () => "ms",
+    },
+  },
+});
