@@ -1,7 +1,0 @@
-body {margin:auto; font-family: openSans, sans-serif;}
-img {height: 30px; vertical-align: middle;}
-
-.hidden {display: none;}
-
-.noTopBorder th {border-top: transparent !important;}
-.listHeader th {margin: auto; height: 42px; font-size: 1.2em; text-align: center;}
