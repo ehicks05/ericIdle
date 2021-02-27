@@ -86,7 +86,7 @@ const Settings = ({ game, updateGame, perf }) => {
       </div>
       <h1 className="subtitle mt-4">Debug Info</h1>
       <p>
-        Ticks/s:{" "}
+        Tick times:{" "}
         {(
           perf.recent.reduce((agg, cur) => agg + cur, 0) / perf.recent.length
         ).toFixed(2)}{" "}
