@@ -93,9 +93,13 @@ const Settings = ({ game, updateGame, perf }) => {
         ms (max: {perf.max} ms)
       </p>
       State:{" "}
-      <pre className="bg-gray-100 dark:bg-gray-800">
-        {JSON.stringify(game, null, 2)}
-      </pre>
+      <div className="flex flex-wrap gap-4">
+        {Object.entries(game).map(([k, v]) => (
+          <pre className="p-4 text-xs bg-gray-100 dark:bg-gray-800">
+            {k}: {JSON.stringify(v, null, 2)}
+          </pre>
+        ))}
+      </div>
     </>
   );
 };
