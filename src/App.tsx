@@ -16,9 +16,9 @@ function App() {
     JSON.parse(JSON.stringify(gameLogic.getDefaultGameState()))
   );
   const [activeTab, setActiveTab] = useState("Buildings");
-  let [perf, setPerf] = useState({ max: 0, recent: [] });
+  const [perf, setPerf] = useState({ max: 0, recent: [0] });
 
-  const updatePerf = (start) => {
+  const updatePerf = (start: number) => {
     console.log("tick");
     const tickDuration = Date.now() - start;
     const draft = { ...perf };
@@ -29,16 +29,17 @@ function App() {
   };
 
   useInterval(() => {
-    let start = Date.now();
+    const start = Date.now();
     gameLogic.doGameTick(game, updateGame);
     localStorage.setItem("persistedGame", JSON.stringify(game));
     updatePerf(start);
   }, MS_PER_TICK);
 
   useEffect(() => {
-    if (localStorage.getItem("persistedGame"))
-      updateGame((draft) => {
-        return JSON.parse(localStorage.getItem("persistedGame"));
+    const persistedGame = localStorage.getItem("persistedGame");
+    if (persistedGame)
+      updateGame(() => {
+        return JSON.parse(persistedGame);
       });
   }, [updateGame]);
 
