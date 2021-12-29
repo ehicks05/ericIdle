@@ -68,7 +68,7 @@ function App() {
 
   return (
     <div className="font-mono text-black dark:text-white bg-white dark:bg-gray-900">
-      <div className="min-h-screen p-6 flex flex-col container mx-auto space-y-6">
+      <div className="min-h-screen p-6 flex flex-col mx-auto space-y-6">
         <section>
           <div className="text-5xl font-bold">
             <span>Eric</span>

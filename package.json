@@ -8,6 +8,7 @@
     "humanize-duration": "^3.27.1",
     "immer": "^9.0.7",
     "postcss": "^8.4.5",
+    "ramda": "^0.27.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
@@ -16,6 +17,7 @@
     "use-immer": "^0.6.0"
   },
   "devDependencies": {
+    "@types/ramda": "^0.27.62",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
