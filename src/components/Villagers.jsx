@@ -38,10 +38,9 @@ const Job = ({ game, updateGame, job }) => {
       <td className="px-2">
         <Tippy content={<EffectsTable gameObject={job} />}>
           <span
-            style={{ cursor: "pointer" }}
-            className={
-              game.defaultJob === job.name ? "text-yellow-500" : undefined
-            }
+            className={`cursor-pointer
+              ${game.defaultJob === job.name ? "text-yellow-500" : undefined}
+            `}
             onClick={() => gameLogic.setDefaultJob(game, updateGame, job.name)}
           >
             {job.name}
