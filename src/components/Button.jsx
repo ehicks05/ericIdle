@@ -1,3 +1,5 @@
+import React from "react";
+
 const Button = ({ className, error, ...rest }) => {
   const hover = error
     ? "bg-red-700"

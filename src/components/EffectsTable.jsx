@@ -1,3 +1,4 @@
+import React from "react";
 import { camelToTitle } from "../util";
 
 const PRODUCTION_TABLE = {
