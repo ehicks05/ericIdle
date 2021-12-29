@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as gameLogic from "../game.js";
 import Button from "./Button";
 
@@ -95,7 +95,7 @@ const Settings = ({ game, updateGame, perf }) => {
       State:{" "}
       <div className="flex flex-wrap gap-4">
         {Object.entries(game).map(([k, v]) => (
-          <pre className="p-4 text-xs bg-gray-100 dark:bg-gray-800">
+          <pre key={k} className="p-4 text-xs bg-gray-100 dark:bg-gray-800">
             {k}: {JSON.stringify(v, null, 2)}
           </pre>
         ))}

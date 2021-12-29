@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useImmer } from "use-immer";
 import { MS_PER_TICK } from "./constants";
 import useInterval from "./hooks/useInterval";

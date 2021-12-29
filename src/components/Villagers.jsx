@@ -1,3 +1,4 @@
+import React from "react";
 import EffectsTable from "./EffectsTable";
 import Tippy from "@tippyjs/react";
 import * as gameLogic from "../game.js";

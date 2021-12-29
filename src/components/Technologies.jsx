@@ -1,3 +1,4 @@
+import React from "react";
 import * as gameLogic from "../game.js";
 import Button from "./Button.jsx";
 import ResourceCost from "./ResourceCost";

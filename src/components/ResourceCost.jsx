@@ -1,3 +1,4 @@
+import React from "react";
 import * as gameLogic from "../game.js";
 
 const ResourceCost = ({ game, coster }) => {

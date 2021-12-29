@@ -1,3 +1,4 @@
+import React from "react";
 import * as gameLogic from "../game.js";
 import ResourceCost from "./ResourceCost";
 import EffectsTable from "./EffectsTable";
