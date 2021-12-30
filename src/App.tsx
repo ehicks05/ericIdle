@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useImmer } from "use-immer";
-import { MS_PER_TICK } from "./constants";
-import useInterval from "./hooks/useInterval";
+import React, { useState } from "react";
 import {
   Resources,
   Buildings,
@@ -9,65 +6,39 @@ import {
   Technologies,
   Settings,
 } from "./components";
-import * as gameLogic from "./game";
+import GameLogic from "./GameLogic";
+import useStore from "./store";
 
 function App() {
-  const [game, updateGame] = useImmer(
-    JSON.parse(JSON.stringify(gameLogic.getDefaultGameState()))
-  );
+  const milestones = useStore((state) => state.milestones);
   const [activeTab, setActiveTab] = useState("Buildings");
-  const [perf, setPerf] = useState({ max: 0, recent: [0] });
-
-  const updatePerf = (start: number) => {
-    console.log("tick");
-    const tickDuration = Date.now() - start;
-    const draft = { ...perf };
-    draft.recent.push(tickDuration);
-    if (draft.recent.length > 100) draft.recent = draft.recent.slice(1, 101);
-    if (tickDuration > perf.max) draft.max = tickDuration;
-    setPerf(draft);
-  };
-
-  useInterval(() => {
-    const start = Date.now();
-    gameLogic.doGameTick(game, updateGame);
-    localStorage.setItem("persistedGame", JSON.stringify(game));
-    updatePerf(start);
-  }, MS_PER_TICK);
-
-  useEffect(() => {
-    const persistedGame = localStorage.getItem("persistedGame");
-    if (persistedGame)
-      updateGame(() => {
-        return JSON.parse(persistedGame);
-      });
-  }, [updateGame]);
 
   const tabs = [
     {
       name: "Buildings",
-      unlocked: game.progress.unlockHuts.unlocked,
-      component: <Buildings game={game} updateGame={updateGame} />,
+      unlocked: milestones.unlockHuts.reached,
+      component: <Buildings />,
     },
     {
       name: "Villagers",
-      unlocked: game.progress.unlockVillagers.unlocked,
-      component: <Villagers game={game} updateGame={updateGame} />,
+      unlocked: milestones.unlockVillagers.reached,
+      component: <Villagers />,
     },
     {
       name: "Technologies",
-      unlocked: game.progress.unlockLevelOneTech.unlocked,
-      component: <Technologies game={game} updateGame={updateGame} />,
+      unlocked: milestones.unlockLevelOneTech.reached,
+      component: <Technologies />,
     },
     {
       name: "Settings",
       unlocked: true,
-      component: <Settings game={game} updateGame={updateGame} perf={perf} />,
+      component: <Settings />,
     },
   ];
 
   return (
     <div className="font-mono text-black dark:text-white bg-white dark:bg-gray-900">
+      <GameLogic />
       <div className="min-h-screen p-6 flex flex-col mx-auto space-y-6">
         <section>
           <div className="text-5xl font-bold">
@@ -79,7 +50,7 @@ function App() {
           <div>
             <div className="md:flex md:flex-row space-y-6 md:space-y-0 md:space-x-12">
               <div>
-                <Resources game={game} updateGame={updateGame} />
+                <Resources />
               </div>
               <div>
                 <div className="max-w-full overflow-x-auto flex space-x-5 mb-2 border-b">

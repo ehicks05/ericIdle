@@ -1,11 +1,33 @@
 import React, { useEffect, useState } from "react";
-import * as gameLogic from "../game.js";
+import { getDefaultGameState } from "../default_state";
 import Button from "./Button";
+import useStore from "../store";
+import { GameState } from "../types";
 
-const Settings = ({ game, updateGame, perf }) => {
+export interface Perf {
+  max: number;
+  recent: number[];
+}
+
+const Settings = () => {
   const [copyResult, setCopyResult] = useState("unknown");
   const [importText, setImportText] = useState("");
   const [isImportTextValid, setIsImportTextValid] = useState(false);
+
+  const game = useStore((state) => ({
+    resources: state.resources,
+    villagers: state.villagers,
+    buildings: state.buildings,
+    techs: state.techs,
+    milestones: state.milestones,
+
+    defaultJob: state.defaultJob,
+    villagerCreatedAt: state.villagerCreatedAt,
+    isIncomingVillager: state.isIncomingVillager,
+  }));
+  const setGame = useStore((state) => state.setGame);
+
+  const perf = useStore((state) => state.perf);
 
   useEffect(() => {
     if (["success", "error"].includes(copyResult))
@@ -14,24 +36,24 @@ const Settings = ({ game, updateGame, perf }) => {
 
   useEffect(() => {
     try {
-      JSON.parse(atob(importText));
+      JSON.parse(window.atob(importText));
       setIsImportTextValid(true);
     } catch (e) {
       setIsImportTextValid(false);
     }
   }, [importText]);
 
-  function exportState(state) {
-    return btoa(JSON.stringify(state));
+  function exportState(state: GameState) {
+    return window.btoa(JSON.stringify(state));
   }
 
-  function importState(state) {
-    updateGame((_draft) => JSON.parse(atob(state)));
+  function importState(state: string) {
+    setGame(JSON.parse(window.atob(state)));
   }
 
   const reset = () => {
     if (window.confirm("Are you sure you? All progress will be lost.")) {
-      importState(exportState(gameLogic.getDefaultGameState()));
+      importState(exportState(getDefaultGameState()));
     }
   };
 
@@ -44,7 +66,7 @@ const Settings = ({ game, updateGame, perf }) => {
     updateClipboard(exportState(game));
   }
 
-  function updateClipboard(newClip) {
+  function updateClipboard(newClip: string) {
     navigator.clipboard.writeText(newClip).then(
       function () {
         setCopyResult("success");
@@ -68,7 +90,9 @@ const Settings = ({ game, updateGame, perf }) => {
         <Button
           title={importText && !isImportTextValid ? "Invalid input" : undefined}
           disabled={!importText || !isImportTextValid}
-          error={importText && !isImportTextValid}
+          error={
+            importText && (!isImportTextValid ? "Invalid input" : undefined)
+          }
           onClick={performImport}
         >
           Import
