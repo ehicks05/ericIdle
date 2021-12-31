@@ -41,7 +41,7 @@ export interface GameStore {
 const useStore = create<GameStore>(
   subscribeWithSelector(
     persist(
-      devtools((set) => ({
+      devtools((set, get) => ({
         resources,
         villagers,
         buildings,
@@ -49,38 +49,44 @@ const useStore = create<GameStore>(
         milestones,
         setResources: (data) => set({ resources: data }),
         setResource: (name, amount) =>
-          set({
-            resources: {
-              ...resources,
-              [name]: {
-                ...resources[name],
-                amount: amount,
-              },
-            },
-          }),
-        adjustResource: (name, amount) =>
           set((state) => ({
             resources: {
               ...state.resources,
               [name]: {
                 ...state.resources[name],
-                amount: state.resources[name].amount + amount,
+                amount: amount,
               },
             },
           })),
+        adjustResource: (name, amount) =>
+          set((state) => {
+            const newAmount = Math.min(
+              state.resources[name].amount + amount,
+              state.resources[name].limit
+            );
+            return {
+              resources: {
+                ...state.resources,
+                [name]: {
+                  ...state.resources[name],
+                  amount: newAmount,
+                },
+              },
+            };
+          }),
         isAffordable: ({ resource, amount }: ResourceAmount) =>
-          resources[resource].amount > amount,
+          get().resources[resource].amount > amount,
         setVillagers: (data) => set({ villagers: data }),
         adjustVillager: (name, amount) =>
-          set({
+          set((state) => ({
             villagers: {
-              ...villagers,
+              ...state.villagers,
               [name]: {
-                ...villagers[name],
-                amount: villagers[name].amount + amount,
+                ...state.villagers[name],
+                amount: state.villagers[name].amount + amount,
               },
             },
-          }),
+          })),
         setBuildings: (data) => set({ buildings: data }),
         setTechs: (data) => set({ techs: data }),
         setMilestones: (data) => set({ milestones: data }),

@@ -262,11 +262,11 @@ function GameLogic() {
     });
   };
 
-  // useInterval(() => {
-  //   const start = Date.now();
-  //   doGameTick();
-  //   updatePerf(start);
-  // }, MS_PER_TICK);
+  useInterval(() => {
+    const start = Date.now();
+    doGameTick();
+    updatePerf(start);
+  }, MS_PER_TICK);
 
   return null;
 }

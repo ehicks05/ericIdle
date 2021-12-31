@@ -34,7 +34,7 @@ const Buildings = () => {
 const getBuildingCost = (building: Building) => {
   const scalingFactor = building.name === "huts" ? 1.14 : 1.07;
   const cost =
-    building.price[0].amount * Math.pow(scalingFactor, building.amount || 0);
+    building.price[0].amount * Math.pow(scalingFactor, building.amount);
   return myRound(cost, 2);
 };
 
@@ -51,7 +51,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
 
   const buildBuilding = (building: Building) => {
     if (isAffordable(buildingPrice)) {
-      adjustResource(building.price[0].resource, -getBuildingCost(building));
+      adjustResource(building.price[0].resource, -buildingPrice.amount);
       setBuildings({
         ...buildings,
         [building.name]: {
@@ -71,7 +71,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
         amount: building.amount - 1,
       },
     });
-    adjustResource(building.price[0].resource, getBuildingCost(building));
+    adjustResource(building.price[0].resource, buildingPrice.amount);
   };
 
   return (
@@ -90,7 +90,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
       </td>
       <td className="px-2 text-right">{building.amount}</td>
       <td className="px-2 text-right">
-        <ResourceCost key="building.name" resourceAmounts={building.price} />
+        <ResourceCost key="building.name" resourceAmounts={[buildingPrice]} />
       </td>
       <td className="px-2">
         <div className="space-x-2">

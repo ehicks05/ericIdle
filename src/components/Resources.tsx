@@ -1,10 +1,10 @@
 import React from "react";
-import * as util from "../util.js";
+import * as util from "../util";
 import Button from "./Button";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import useStore from "../store";
-import { Resource } from "../types.js";
+import { Resource } from "../types";
 
 const Resources = () => {
   const resources = useStore((state) => state.resources);
