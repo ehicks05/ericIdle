@@ -1,11 +1,11 @@
 import humanizeDuration from "humanize-duration";
 // UTILITY
-export function myRound(value, places) {
+export function myRound(value: number, places: number) {
   const multiplier = Math.pow(10, places);
   return Math.round(value * multiplier) / multiplier;
 }
 
-export function camelToTitle(value) {
+export function camelToTitle(value: string) {
   const result = value.replace(/([A-Z])/g, " $1");
   return result.charAt(0).toUpperCase() + result.slice(1);
 }
