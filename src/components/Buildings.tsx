@@ -7,6 +7,7 @@ import Button from "./Button";
 import useStore from "../store";
 import { Building } from "../types";
 import { myRound } from "../util";
+import useIsAffordable from "../hooks/useIsAffordable";
 
 const Buildings = () => {
   const buildings = useStore((state) => state.buildings);
@@ -42,36 +43,28 @@ const BuildingRow = ({ building }: { building: Building }) => {
   const adjustResource = useStore((state) => state.adjustResource);
   const buildings = useStore((state) => state.buildings);
   const setBuildings = useStore((state) => state.setBuildings);
-  const isAffordable = useStore((state) => state.isAffordable);
 
-  const buildingPrice = {
-    resource: building.price[0].resource,
+  const buildingPrice = building.price.map((p) => ({
+    ...p,
     amount: getBuildingCost(building),
-  };
+  }));
 
-  const buildBuilding = (building: Building) => {
-    if (isAffordable(buildingPrice)) {
-      adjustResource(building.price[0].resource, -buildingPrice.amount);
-      setBuildings({
-        ...buildings,
-        [building.name]: {
-          ...building,
-          amount: building.amount + 1,
-        },
-      });
-    }
-  };
+  const isAffordable = useIsAffordable(buildingPrice);
 
-  const reclaimBuilding = (building: Building) => {
-    if (building.amount === 0) return;
+  const addOrRemoveBuilding = (building: Building, isAdd: boolean) => {
+    if (isAdd && !isAffordable) return;
+    if (!isAdd && building.amount < 1) return;
+
+    buildingPrice.forEach((p) =>
+      adjustResource(p.resource, (isAdd ? -1 : 1) * p.amount)
+    );
     setBuildings({
       ...buildings,
       [building.name]: {
         ...building,
-        amount: building.amount - 1,
+        amount: building.amount + (isAdd ? 1 : -1),
       },
     });
-    adjustResource(building.price[0].resource, buildingPrice.amount);
   };
 
   return (
@@ -90,20 +83,20 @@ const BuildingRow = ({ building }: { building: Building }) => {
       </td>
       <td className="px-2 text-right">{building.amount}</td>
       <td className="px-2 text-right">
-        <ResourceCost key="building.name" resourceAmounts={[buildingPrice]} />
+        <ResourceCost key="building.name" resourceAmounts={buildingPrice} />
       </td>
       <td className="px-2">
         <div className="space-x-2">
           <Button
-            disabled={!isAffordable(buildingPrice)}
-            onClick={() => buildBuilding(building)}
+            disabled={!isAffordable}
+            onClick={() => addOrRemoveBuilding(building, true)}
           >
             +
           </Button>
           {building.sellable && (
             <Button
               disabled={building.amount === 0}
-              onClick={() => reclaimBuilding(building)}
+              onClick={() => addOrRemoveBuilding(building, false)}
             >
               -
             </Button>

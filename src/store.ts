@@ -8,7 +8,7 @@ import {
   techs,
   villagers,
 } from "./default_state";
-import { GameState, ResourceAmount } from "./types";
+import { GameState } from "./types";
 
 export interface GameStore {
   resources: typeof resources;
@@ -19,7 +19,6 @@ export interface GameStore {
   setResources: (data: typeof resources) => void;
   setResource: (name: keyof typeof resources, amount: number) => void;
   adjustResource: (name: keyof typeof resources, amount: number) => void;
-  isAffordable: (resourceAmount: ResourceAmount) => boolean;
   setVillagers: (data: typeof villagers) => void;
   adjustVillager: (name: keyof typeof villagers, amount: number) => void;
   setBuildings: (data: typeof buildings) => void;
@@ -41,7 +40,7 @@ export interface GameStore {
 const useStore = create<GameStore>(
   subscribeWithSelector(
     persist(
-      devtools((set, get) => ({
+      devtools((set) => ({
         resources,
         villagers,
         buildings,
@@ -74,8 +73,6 @@ const useStore = create<GameStore>(
               },
             };
           }),
-        isAffordable: ({ resource, amount }: ResourceAmount) =>
-          get().resources[resource].amount > amount,
         setVillagers: (data) => set({ villagers: data }),
         adjustVillager: (name, amount) =>
           set((state) => ({
