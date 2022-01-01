@@ -109,7 +109,7 @@ export const villagers = {
 
 type PartialBuilding = Pick<
   Building,
-  "name" | "image" | "prereq" | "price" | "resourceLimitModifiers" | "bonus"
+  "name" | "image" | "prereq" | "basePrice" | "resourceLimitModifiers" | "bonus"
 >;
 const hydrateBuilding = (building: PartialBuilding): Building => ({
   ...building,
@@ -123,7 +123,7 @@ export const buildings = {
     name: "huts",
     image: "tipi.png",
     prereq: "unlockHuts",
-    price: [{ resource: "food", amount: 1 }],
+    basePrice: [{ resource: "food", amount: 1 }],
     resourceLimitModifiers: [{ resource: "villagers", amount: 2, type: "add" }],
     bonus: [],
   }),
@@ -131,7 +131,7 @@ export const buildings = {
     name: "farms",
     image: "barn.png",
     prereq: "unlockFarming",
-    price: [{ resource: "lumber", amount: 1 }],
+    basePrice: [{ resource: "lumber", amount: 1 }],
     resourceLimitModifiers: [],
     bonus: [{ resource: "food", amount: 0.05 }],
   }),
@@ -139,7 +139,7 @@ export const buildings = {
     name: "lumberMills",
     image: "circular-saw.png",
     prereq: "unlockWoodConstruction",
-    price: [{ resource: "lumber", amount: 2 }],
+    basePrice: [{ resource: "lumber", amount: 2 }],
     resourceLimitModifiers: [],
     bonus: [{ resource: "lumber", amount: 0.1 }],
   }),
@@ -147,7 +147,10 @@ export const buildings = {
     name: "storerooms",
     image: "block-house.png",
     prereq: "unlockStoneConstruction",
-    price: [{ resource: "lumber", amount: 5 }],
+    basePrice: [
+      { resource: "lumber", amount: 5 },
+      { resource: "stone", amount: 1 },
+    ],
     resourceLimitModifiers: [
       { resource: "food", amount: 5, type: "add" },
       { resource: "lumber", amount: 5, type: "add" },
@@ -159,7 +162,7 @@ export const buildings = {
     name: "quarries",
     image: "gold-mine.png",
     prereq: "unlockStoneConstruction",
-    price: [{ resource: "lumber", amount: 2 }],
+    basePrice: [{ resource: "lumber", amount: 2 }],
     resourceLimitModifiers: [],
     bonus: [{ resource: "stone", amount: 0.06 }],
   }),
@@ -167,7 +170,7 @@ export const buildings = {
     name: "schools",
     image: "graduate-cap.png",
     prereq: "unlockSchools",
-    price: [{ resource: "lumber", amount: 3 }],
+    basePrice: [{ resource: "lumber", amount: 3 }],
     resourceLimitModifiers: [],
     bonus: [{ resource: "research", amount: 0.06 }],
   }),
@@ -175,7 +178,7 @@ export const buildings = {
     name: "libraries",
     image: "book-cover.png",
     prereq: "unlockLibraries",
-    price: [{ resource: "lumber", amount: 4 }],
+    basePrice: [{ resource: "lumber", amount: 4 }],
     resourceLimitModifiers: [{ resource: "research", amount: 5, type: "add" }],
     bonus: [],
   }),

@@ -25,7 +25,7 @@ export interface Villager extends Entity {
 }
 export interface Building extends Entity {
   amount: number;
-  price: ResourceAmount[];
+  basePrice: ResourceAmount[];
   resourceLimitModifiers: ResourceLimitModifier[]; // replace with effects?
   bonus: ProductionBonus[]; // replace with effects?
   sellable: boolean;

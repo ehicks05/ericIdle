@@ -32,11 +32,13 @@ const Buildings = () => {
   );
 };
 
-const getBuildingCost = (building: Building) => {
+const getScaledPrice = (building: Building) => {
   const scalingFactor = building.name === "huts" ? 1.14 : 1.07;
-  const cost =
-    building.price[0].amount * Math.pow(scalingFactor, building.amount);
-  return myRound(cost, 2);
+  const price = building.basePrice.map((p) => ({
+    ...p,
+    amount: myRound(p.amount * Math.pow(scalingFactor, building.amount), 2),
+  }));
+  return price;
 };
 
 const BuildingRow = ({ building }: { building: Building }) => {
@@ -44,11 +46,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
   const buildings = useStore((state) => state.buildings);
   const setBuildings = useStore((state) => state.setBuildings);
 
-  const buildingPrice = building.price.map((p) => ({
-    ...p,
-    amount: getBuildingCost(building),
-  }));
-
+  const buildingPrice = getScaledPrice(building);
   const isAffordable = useIsAffordable(buildingPrice);
 
   const addOrRemoveBuilding = (building: Building, isAdd: boolean) => {
