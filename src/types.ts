@@ -10,7 +10,7 @@ export interface Entity {
   name: string;
   image: string;
   // effects: Effect[];
-  prereq: Predicate;
+  prereq: string;
   status: "hidden" | "visible";
 }
 export interface Resource extends Entity {
@@ -34,7 +34,9 @@ export interface Tech extends Entity {
   price: ResourceAmount[];
   discovered: boolean;
 }
-export interface Milestone extends Entity {
+export interface Milestone {
+  name: string;
+  predicate: Predicate;
   reached: boolean;
 }
 
@@ -55,7 +57,7 @@ export interface ProductionBonus {
 export interface Effect {
   type: "production" | "resourceLimitModifier" | "bonus";
 }
-export type Predicate = ResourceAmount | { tech: keyof typeof techs } | string; // string = tech name
+export type Predicate = ResourceAmount | { tech: keyof typeof techs };
 
 export interface GameState {
   resources: typeof resources;

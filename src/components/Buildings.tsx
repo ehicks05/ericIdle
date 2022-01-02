@@ -1,5 +1,5 @@
 import React from "react";
-import ResourceCost from "./ResourceCost";
+import ResourceCosts from "./ResourceCosts";
 import EffectsTable from "./EffectsTable";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
@@ -81,7 +81,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
       </td>
       <td className="px-2 text-right">{building.amount}</td>
       <td className="px-2 text-right">
-        <ResourceCost key="building.name" resourceAmounts={buildingPrice} />
+        <ResourceCosts key="building.name" resourceAmounts={buildingPrice} />
       </td>
       <td className="px-2">
         <div className="space-x-2">

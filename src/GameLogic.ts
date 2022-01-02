@@ -39,26 +39,24 @@ function GameLogic() {
     (state) => state.setIsIncomingVillager
   );
 
-  const setResources = useStore((state) => state.setResources);
-  const setVillagers = useStore((state) => state.setVillagers);
-  const setBuildings = useStore((state) => state.setBuildings);
-  const setTechs = useStore((state) => state.setTechs);
+  const setResource = useStore((state) => state.setResource);
+  const setVillager = useStore((state) => state.setVillager);
+  const setBuilding = useStore((state) => state.setBuilding);
+  const setTech = useStore((state) => state.setTech);
 
   const checkMilestones = () => {
     Object.values(game.milestones)
       .filter((milestone) => !milestone.reached)
       .forEach((milestone) => {
-        const requirement = milestone.prereq;
+        const { predicate } = milestone;
 
         const unlockIt =
-          (typeof requirement === "string" &&
-            game.techs[requirement as keyof typeof techs].discovered) ||
-          ((requirement as { tech: string }).tech &&
-            game.techs[(requirement as { tech: keyof typeof techs }).tech]
+          ((predicate as { tech: string })?.tech &&
+            game.techs[(predicate as { tech: keyof typeof techs }).tech]
               .discovered) ||
-          ((requirement as ResourceAmount).resource &&
-            game.resources[(requirement as ResourceAmount).resource].amount >=
-              (requirement as ResourceAmount).amount);
+          ((predicate as ResourceAmount)?.resource &&
+            game.resources[(predicate as ResourceAmount).resource].amount >=
+              (predicate as ResourceAmount).amount);
 
         if (unlockIt) {
           setMilestones({
@@ -75,46 +73,22 @@ function GameLogic() {
   const applyMilestone = (milestone: Milestone) => {
     Object.values(game.resources).forEach((i) => {
       if (i.prereq === milestone.name) {
-        setResources({
-          ...game.resources,
-          [i.name]: {
-            ...game.resources[i.name as keyof typeof resources],
-            status: "visible",
-          },
-        });
+        setResource(i.name as keyof typeof resources, "status", "visible");
       }
     });
     Object.values(game.villagers).forEach((i) => {
       if (i.prereq === milestone.name) {
-        setVillagers({
-          ...game.villagers,
-          [i.name]: {
-            ...game.villagers[i.name as keyof typeof villagers],
-            status: "visible",
-          },
-        });
+        setVillager(i.name as keyof typeof villagers, "status", "visible");
       }
     });
     Object.values(game.buildings).forEach((i) => {
       if (i.prereq === milestone.name) {
-        setBuildings({
-          ...game.buildings,
-          [i.name]: {
-            ...game.buildings[i.name as keyof typeof buildings],
-            status: "visible",
-          },
-        });
+        setBuilding(i.name as keyof typeof buildings, "status", "visible");
       }
     });
     Object.values(game.techs).forEach((i) => {
       if (i.prereq === milestone.name) {
-        setTechs({
-          ...game.techs,
-          [i.name]: {
-            ...game.techs[i.name as keyof typeof techs],
-            status: "visible",
-          },
-        });
+        setTech(i.name as keyof typeof techs, "status", "visible");
       }
     });
   };
@@ -124,6 +98,7 @@ function GameLogic() {
       let multiplicativeMod = 0;
       let additiveMod = 0;
       Object.values(game.buildings)
+        .filter((building) => building.amount > 0)
         .filter((building) => building.resourceLimitModifiers.length > 0)
         .forEach((building) => {
           building.resourceLimitModifiers
@@ -138,10 +113,7 @@ function GameLogic() {
 
       const newLimit =
         (resource.baseLimit + additiveMod) * (1 + multiplicativeMod);
-      setResources({
-        ...game.resources,
-        [resourceKey]: { ...resource, limit: newLimit },
-      });
+      setResource(resource.name as keyof typeof resources, "limit", newLimit);
     });
   };
 
@@ -173,10 +145,7 @@ function GameLogic() {
       if (resource.name === "food")
         newRate = newRate - 0.045 * game.resources.villagers.amount;
 
-      setResources({
-        ...game.resources,
-        [resource.name]: { ...resource, rate: newRate },
-      });
+      setResource(resource.name as keyof typeof resources, "rate", newRate);
       adjustResource(
         resource.name as keyof typeof resources,
         newRate * (MS_PER_TICK / 1000)

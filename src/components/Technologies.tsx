@@ -1,8 +1,9 @@
 import React from "react";
 import Button from "./Button";
-import ResourceCost from "./ResourceCost";
+import ResourceCosts from "./ResourceCosts";
 import useStore from "../store";
 import { Tech } from "../types";
+import useIsAffordable from "../hooks/useIsAffordable";
 
 const Technologies = () => {
   const techs = useStore((state) => state.techs);
@@ -28,27 +29,18 @@ const Technologies = () => {
 };
 
 const Technology = ({ tech }: { tech: Tech }) => {
-  const resources = useStore((state) => state.resources);
   const adjustResource = useStore((state) => state.adjustResource);
   const techs = useStore((state) => state.techs);
-  const setTechs = useStore((state) => state.setTechs);
+  const setTech = useStore((state) => state.setTech);
+
+  const isAffordable = useIsAffordable(tech.price);
 
   const makeDiscovery = (tech: Tech) => {
-    const canAfford = resources.research.amount >= tech.price[0].amount;
-
-    if (tech.discovered || !canAfford) return;
+    if (tech.discovered || !isAffordable) return;
 
     adjustResource("research", -tech.price[0].amount);
-    setTechs({
-      ...techs,
-      [tech.name]: {
-        ...tech,
-        discovered: true,
-      },
-    });
+    setTech(tech.name as keyof typeof techs, "discovered", true);
   };
-
-  const canAfford = resources.research.amount >= tech.price[0].amount;
 
   return (
     <tr>
@@ -63,11 +55,11 @@ const Technology = ({ tech }: { tech: Tech }) => {
         </div>
       </td>
       <td className="px-2 text-right">
-        <ResourceCost key={tech.name} resourceAmounts={tech.price} />
+        <ResourceCosts key={tech.name} resourceAmounts={tech.price} />
       </td>
       <td className="px-2">
         <Button
-          disabled={tech.discovered || !canAfford}
+          disabled={tech.discovered || !isAffordable}
           onClick={() => makeDiscovery(tech)}
         >
           {tech.discovered ? "Discovered" : "Discover"}

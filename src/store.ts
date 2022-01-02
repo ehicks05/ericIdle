@@ -17,12 +17,28 @@ export interface GameStore {
   techs: typeof techs;
   milestones: typeof milestones;
   setResources: (data: typeof resources) => void;
-  setResource: (name: keyof typeof resources, amount: number) => void;
+  setResource: (
+    resource: keyof typeof resources,
+    field: string,
+    value: any
+  ) => void;
   adjustResource: (name: keyof typeof resources, amount: number) => void;
   setVillagers: (data: typeof villagers) => void;
+  setVillager: (
+    resource: keyof typeof villagers,
+    field: string,
+    value: any
+  ) => void;
   adjustVillager: (name: keyof typeof villagers, amount: number) => void;
   setBuildings: (data: typeof buildings) => void;
+  setBuilding: (
+    resource: keyof typeof buildings,
+    field: string,
+    value: any
+  ) => void;
   setTechs: (data: typeof techs) => void;
+  setTech: (resource: keyof typeof techs, field: string, value: any) => void;
+
   setMilestones: (data: typeof milestones) => void;
 
   setGame: (data: GameState) => void;
@@ -47,13 +63,13 @@ const useStore = create<GameStore>(
         techs,
         milestones,
         setResources: (data) => set({ resources: data }),
-        setResource: (name, amount) =>
+        setResource: (resource, field, value) =>
           set((state) => ({
             resources: {
               ...state.resources,
-              [name]: {
-                ...state.resources[name],
-                amount: amount,
+              [resource]: {
+                ...state.resources[resource],
+                [field]: value,
               },
             },
           })),
@@ -74,6 +90,16 @@ const useStore = create<GameStore>(
             };
           }),
         setVillagers: (data) => set({ villagers: data }),
+        setVillager: (villager, field, value) =>
+          set((state) => ({
+            villagers: {
+              ...state.villagers,
+              [villager]: {
+                ...state.villagers[villager],
+                [field]: value,
+              },
+            },
+          })),
         adjustVillager: (name, amount) =>
           set((state) => ({
             villagers: {
@@ -85,7 +111,27 @@ const useStore = create<GameStore>(
             },
           })),
         setBuildings: (data) => set({ buildings: data }),
+        setBuilding: (building, field, value) =>
+          set((state) => ({
+            buildings: {
+              ...state.buildings,
+              [building]: {
+                ...state.buildings[building],
+                [field]: value,
+              },
+            },
+          })),
         setTechs: (data) => set({ techs: data }),
+        setTech: (tech, field, value) =>
+          set((state) => ({
+            techs: {
+              ...state.techs,
+              [tech]: {
+                ...state.techs[tech],
+                [field]: value,
+              },
+            },
+          })),
         setMilestones: (data) => set({ milestones: data }),
 
         setGame: (data) =>
@@ -114,7 +160,7 @@ const useStore = create<GameStore>(
         name: "store",
         partialize: (state) =>
           Object.fromEntries(
-            Object.entries(state).filter(([key]) => !["perf"].includes(key))
+            Object.entries(state).filter(([key]) => ["test"].includes(key))
           ),
       }
     )

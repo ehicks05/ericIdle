@@ -6,8 +6,21 @@ interface Props {
   resourceAmounts: ResourceAmount[];
 }
 
-const ResourceCost: FC<Props> = ({ resourceAmounts }) => {
-  const { resource: resourceName, amount } = resourceAmounts[0];
+const ResourceCosts: FC<Props> = ({ resourceAmounts }) => {
+  return (
+    <>
+      {resourceAmounts.map((r) => (
+        <ResourceCost key={r.resource} resourceAmount={r} />
+      ))}
+    </>
+  );
+};
+
+interface ResourceAmountProps {
+  resourceAmount: ResourceAmount;
+}
+const ResourceCost: FC<ResourceAmountProps> = ({ resourceAmount }) => {
+  const { resource: resourceName, amount } = resourceAmount;
   const resources = useStore((state) => state.resources);
   const resource = resources[resourceName];
   return (
@@ -18,4 +31,4 @@ const ResourceCost: FC<Props> = ({ resourceAmounts }) => {
   );
 };
 
-export default ResourceCost;
+export default ResourceCosts;

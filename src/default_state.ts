@@ -215,51 +215,49 @@ export const techs = {
   }),
 } as const;
 
-type PartialMilestone = Pick<Milestone, "name" | "prereq">;
+type PartialMilestone = Pick<Milestone, "name" | "predicate">;
 const hydrateMilestone = (milestone: PartialMilestone): Milestone => ({
   ...milestone,
   reached: false,
-  image: "", // has no effect
-  status: "hidden", // has no effect
 });
 
 export const milestones = {
   unlockHuts: hydrateMilestone({
     name: "unlockHuts",
-    prereq: { resource: "food", amount: 1 },
+    predicate: { resource: "food", amount: 1 },
     // predicate: (gameState: GameState) => gameState.resources.find(r => r.name === 'food')?.amount || 0 >= 1,
   }),
   unlockVillagers: hydrateMilestone({
     name: "unlockVillagers",
-    prereq: { resource: "villagers", amount: 1 },
+    predicate: { resource: "villagers", amount: 1 },
   }),
   unlockLevelOneTech: hydrateMilestone({
     name: "unlockLevelOneTech",
-    prereq: { resource: "research", amount: 1 },
+    predicate: { resource: "research", amount: 1 },
   }),
   unlockFarming: hydrateMilestone({
     name: "unlockFarming",
-    prereq: { tech: "farming" },
+    predicate: { tech: "farming" },
   }),
   unlockWoodConstruction: hydrateMilestone({
     name: "unlockWoodConstruction",
-    prereq: { tech: "woodConstruction" },
+    predicate: { tech: "woodConstruction" },
   }),
   unlockStoneConstruction: hydrateMilestone({
     name: "unlockStoneConstruction",
-    prereq: { tech: "stoneConstruction" },
+    predicate: { tech: "stoneConstruction" },
   }),
   unlockWheel: hydrateMilestone({
     name: "unlockWheel",
-    prereq: { tech: "wheel" },
+    predicate: { tech: "wheel" },
   }),
   unlockSchools: hydrateMilestone({
     name: "unlockSchools",
-    prereq: { resource: "villagers", amount: 30 },
+    predicate: { resource: "villagers", amount: 30 },
   }),
   unlockLibraries: hydrateMilestone({
     name: "unlockLibraries",
-    prereq: { resource: "villagers", amount: 50 },
+    predicate: { resource: "villagers", amount: 50 },
   }),
 } as const;
 
