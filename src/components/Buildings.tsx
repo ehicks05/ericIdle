@@ -1,5 +1,5 @@
 import React from "react";
-import ResourceCosts from "./ResourceCosts";
+import ResourceCosts from "./ResourceCost";
 import EffectsTable from "./EffectsTable";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";

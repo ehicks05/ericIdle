@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button";
-import ResourceCosts from "./ResourceCosts";
+import ResourceCosts from "./ResourceCost";
 import useStore from "../store";
 import { Tech } from "../types";
 import useIsAffordable from "../hooks/useIsAffordable";
