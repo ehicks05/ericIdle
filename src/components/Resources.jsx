@@ -1,8 +1,8 @@
-import React from "react";
-import * as util from "../util.js";
-import { updateResource } from "../game";
-import Button from "./Button";
 import Tippy from "@tippyjs/react";
+import React from "react";
+import { updateResource } from "../misc/game.js";
+import * as util from "../misc/util.js";
+import Button from "./Button.jsx";
 import "tippy.js/dist/tippy.css";
 
 const Resources = ({ game, updateGame }) => {
@@ -13,7 +13,7 @@ const Resources = ({ game, updateGame }) => {
           <th className="px-2 text-left">Resource</th>
           <th className="px-2 text-right">#</th>
           <th className="px-2 text-right w-24">Rate</th>
-          <th></th>
+          <th />
         </tr>
       </thead>
       <tbody>
@@ -139,7 +139,7 @@ const RateInfo = ({ game, resource }) => {
               bonus.type === "additive"
                 ? amount.toFixed(2)
                 : !bonus.type || bonus.type === "multiplicative"
-                ? (1 + amount * 100).toFixed(0) + "%"
+                ? `${(1 + amount * 100).toFixed(0)}%`
                 : "?";
             return (
               <tr key={bonus.resource}>

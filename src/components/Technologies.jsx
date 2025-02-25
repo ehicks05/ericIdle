@@ -1,13 +1,13 @@
-import * as gameLogic from "../game.js";
+import * as gameLogic from "../misc/game.js";
 import Button from "./Button.jsx";
-import ResourceCost from "./ResourceCost";
+import ResourceCost from "./ResourceCost.jsx";
 
 const Technologies = ({ game, updateGame }) => {
   return (
     <table className="">
       <thead>
         <tr>
-          <th className="px-2 text-left"></th>
+          <th className="px-2 text-left" />
           <th className="px-2 text-right">Price</th>
           <th />
         </tr>

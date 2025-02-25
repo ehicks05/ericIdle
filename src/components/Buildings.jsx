@@ -1,7 +1,7 @@
-import * as gameLogic from "../game.js";
-import ResourceCost from "./ResourceCost";
-import EffectsTable from "./EffectsTable";
 import Tippy from "@tippyjs/react";
+import * as gameLogic from "../misc/game.js";
+import EffectsTable from "./EffectsTable.jsx";
+import ResourceCost from "./ResourceCost.jsx";
 import "tippy.js/dist/tippy.css";
 import Button from "./Button.jsx";
 
@@ -10,7 +10,7 @@ const Buildings = ({ game, updateGame }) => {
     <table className="">
       <thead>
         <tr>
-          <th className="px-2 text-left"></th>
+          <th className="px-2 text-left" />
           <th className="px-2 text-right">#</th>
           <th className="px-2 text-right">Price</th>
           <th />

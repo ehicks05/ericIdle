@@ -1,4 +1,4 @@
-const Button = ({ className, error, ...rest }) => {
+const Button = ({ className, error, children, ...rest }) => {
   const hover = error
     ? "bg-red-700"
     : "hover:bg-gray-100 dark:hover:bg-gray-800";
@@ -8,7 +8,7 @@ const Button = ({ className, error, ...rest }) => {
     <button
       className={`px-3 py-0.5 ${disabled} ${border} ${hover} ${className}`}
       {...rest}
-    ></button>
+    >{children}</button>
   );
 };
 

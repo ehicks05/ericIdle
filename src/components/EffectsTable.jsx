@@ -1,4 +1,4 @@
-import { camelToTitle } from "../util";
+import { camelToTitle } from "../misc/util";
 
 const PRODUCTION_TABLE = {
   title: "Production",

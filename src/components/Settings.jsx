@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import * as gameLogic from "../game.js";
-import Button from "./Button";
+import * as gameLogic from "../misc/game.js";
+import Button from "./Button.jsx";
 
 const Settings = ({ game, updateGame, perf }) => {
   const [copyResult, setCopyResult] = useState("unknown");
@@ -46,10 +46,10 @@ const Settings = ({ game, updateGame, perf }) => {
 
   function updateClipboard(newClip) {
     navigator.clipboard.writeText(newClip).then(
-      function () {
+      () => {
         setCopyResult("success");
       },
-      function () {
+      () => {
         setCopyResult("error");
       }
     );
@@ -95,7 +95,7 @@ const Settings = ({ game, updateGame, perf }) => {
       State:{" "}
       <div className="flex flex-wrap gap-4">
         {Object.entries(game).map(([k, v]) => (
-          <pre className="p-4 text-xs bg-gray-100 dark:bg-gray-800">
+          <pre key={k} className="p-4 text-xs bg-gray-100 dark:bg-gray-800">
             {k}: {JSON.stringify(v, null, 2)}
           </pre>
         ))}
