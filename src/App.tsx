@@ -58,36 +58,34 @@ function App() {
 					</div>
 				</section>
 				<section>
-					<div>
-						<div className="md:flex md:flex-row space-y-6 md:space-y-0 md:space-x-12">
-							<div>
-								<Resources game={game} updateGame={updateGame} />
-							</div>
-							<div>
-								<Tabs defaultValue="Buildings" className="w-[400px]">
-									<TabsList>
-										{tabs
-											.filter((tab) => tab.unlocked)
-											.map((tab) => (
-												<TabsTrigger key={tab.name} value={tab.name}>
-													{tab.name}
-												</TabsTrigger>
-											))}
-									</TabsList>
-									<TabsContent value="Buildings">
-										<Buildings game={game} updateGame={updateGame} />
-									</TabsContent>
-									<TabsContent value="Villagers">
-										<Villagers game={game} updateGame={updateGame} />
-									</TabsContent>
-									<TabsContent value="Techs">
-										<Technologies game={game} updateGame={updateGame} />
-									</TabsContent>
-									<TabsContent value="Settings">
-										<Settings game={game} updateGame={updateGame} perf={perf} />
-									</TabsContent>
-								</Tabs>
-							</div>
+					<div className="flex flex-col md:flex-row items-start gap-2">
+						<div className="w-80">
+							<Resources game={game} updateGame={updateGame} />
+						</div>
+						<div>
+							<Tabs defaultValue="Buildings" className="w-full">
+								<TabsList>
+									{tabs
+										.filter((tab) => tab.unlocked)
+										.map((tab) => (
+											<TabsTrigger key={tab.name} value={tab.name}>
+												{tab.name}
+											</TabsTrigger>
+										))}
+								</TabsList>
+								<TabsContent value="Buildings">
+									<Buildings game={game} updateGame={updateGame} />
+								</TabsContent>
+								<TabsContent value="Villagers">
+									<Villagers game={game} updateGame={updateGame} />
+								</TabsContent>
+								<TabsContent value="Techs">
+									<Technologies game={game} updateGame={updateGame} />
+								</TabsContent>
+								<TabsContent value="Settings">
+									<Settings game={game} updateGame={updateGame} perf={perf} />
+								</TabsContent>
+							</Tabs>
 						</div>
 					</div>
 				</section>
