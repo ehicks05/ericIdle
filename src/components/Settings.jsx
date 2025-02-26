@@ -20,15 +20,6 @@ const Settings = ({ game, updateGame, perf }) => {
       setTimeout(() => setCopyButtonLabel("Export"), 1500);
   }, [copyButtonLabel]);
 
-  useEffect(() => {
-    try {
-      JSON.parse(atob(importText));
-      setIsImportTextValid(true);
-    } catch (e) {
-      setIsImportTextValid(false);
-    }
-  }, [importText]);
-
   const handleReset = () => {
     if (window.confirm("Are you sure you? All progress will be lost.")) {
       importState(exportState(gameLogic.getDefaultGameState()), updateGame);
@@ -45,6 +36,16 @@ const Settings = ({ game, updateGame, perf }) => {
     setCopyButtonLabel("Copied")
   }
 
+  const handleTextInputChange = (text) => {
+    try {
+      setImportText(text);
+      JSON.parse(atob(text));
+      setIsImportTextValid(true);
+    } catch (e) {
+      setIsImportTextValid(false);
+    }
+  }
+
   const tickTimes = `${(
     perf.recent.reduce((agg, cur) => agg + cur, 0) / perf.recent.length
   ).toFixed(2)} ms (max: ${perf.max} ms)`;
@@ -56,7 +57,7 @@ const Settings = ({ game, updateGame, perf }) => {
         className="w-full bg-muted"
         placeholder="Paste save here..."
         value={importText}
-        onChange={(e) => setImportText(e.target.value)}
+        onChange={(e) => handleTextInputChange(e.target.value)}
       />
       <div className="mt-4 space-x-2">
         <Button
