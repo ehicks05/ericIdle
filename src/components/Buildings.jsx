@@ -1,9 +1,9 @@
+import {Button} from "@/components/ui/button";
 import Tippy from "@tippyjs/react";
 import * as gameLogic from "../misc/game.js";
 import EffectsTable from "./EffectsTable.jsx";
 import ResourceCost from "./ResourceCost.jsx";
 import "tippy.js/dist/tippy.css";
-import Button from "./Button.jsx";
 
 const Buildings = ({ game, updateGame }) => {
   return (
@@ -54,6 +54,8 @@ const Building = ({ game, updateGame, building }) => {
       <td className="px-2">
         <div className="space-x-2">
           <Button
+            variant="secondary"
+            size="sm"
             disabled={!gameLogic.canAffordBuilding(game, building)}
             onClick={() => gameLogic.buildBuilding(game, updateGame, building)}
           >
@@ -61,6 +63,8 @@ const Building = ({ game, updateGame, building }) => {
           </Button>
           {building.sellable && (
             <Button
+              variant="secondary"
+              size="sm"
               disabled={building.amount === 0}
               onClick={() =>
                 gameLogic.reclaimBuilding(game, updateGame, building)

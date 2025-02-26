@@ -1,6 +1,6 @@
+import {Button} from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import * as gameLogic from "../misc/game.js";
-import Button from "./Button.jsx";
 
 const Settings = ({ game, updateGame, perf }) => {
   const [copyResult, setCopyResult] = useState("unknown");
@@ -55,6 +55,10 @@ const Settings = ({ game, updateGame, perf }) => {
     );
   }
 
+  const tickTimes = `${(
+    perf.recent.reduce((agg, cur) => agg + cur, 0) / perf.recent.length
+  ).toFixed(2)} ms (max: ${perf.max} ms)`;
+
   return (
     <>
       <h1 className="subtitle mt-4">Import/Export/Reset</h1>
@@ -66,6 +70,7 @@ const Settings = ({ game, updateGame, perf }) => {
       />
       <div className="mt-4 space-x-2">
         <Button
+          variant="secondary"
           title={importText && !isImportTextValid ? "Invalid input" : undefined}
           disabled={!importText || !isImportTextValid}
           error={importText && !isImportTextValid}
@@ -73,7 +78,7 @@ const Settings = ({ game, updateGame, perf }) => {
         >
           Import
         </Button>
-        <Button onClick={copy}>
+        <Button variant="secondary" onClick={copy}>
           {`${
             copyResult === "success"
               ? "Copied"
@@ -82,20 +87,14 @@ const Settings = ({ game, updateGame, perf }) => {
               : "Export"
           }`}
         </Button>
-        <Button onClick={reset}>Reset</Button>
+        <Button variant="destructive" onClick={reset}>Reset</Button>
       </div>
       <h1 className="subtitle mt-4">Debug Info</h1>
-      <p>
-        Tick times:{" "}
-        {(
-          perf.recent.reduce((agg, cur) => agg + cur, 0) / perf.recent.length
-        ).toFixed(2)}{" "}
-        ms (max: {perf.max} ms)
-      </p>
+      <p>Tick times: {tickTimes}</p>
       State:{" "}
       <div className="flex flex-wrap gap-4">
         {Object.entries(game).map(([k, v]) => (
-          <pre key={k} className="p-4 text-xs bg-gray-100 dark:bg-gray-800">
+          <pre key={k} className="p-4 text-xs">
             {k}: {JSON.stringify(v, null, 2)}
           </pre>
         ))}

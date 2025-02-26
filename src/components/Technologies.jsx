@@ -1,5 +1,5 @@
+import {Button} from "@/components/ui/button";
 import * as gameLogic from "../misc/game.js";
-import Button from "./Button.jsx";
 import ResourceCost from "./ResourceCost.jsx";
 
 const Technologies = ({ game, updateGame }) => {
@@ -54,6 +54,8 @@ const Technology = ({ game, updateGame, technology }) => {
       </td>
       <td className="px-2">
         <Button
+          variant="secondary"
+          size="sm"
           disabled={technology.discovered || !canAfford}
           onClick={() => makeDiscovery(technology.name)}
         >

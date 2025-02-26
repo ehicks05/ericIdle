@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import Tippy from "@tippyjs/react";
 import * as gameLogic from "../misc/game.js";
-import Button from "./Button.jsx";
 import EffectsTable from "./EffectsTable.jsx";
 import "tippy.js/dist/tippy.css";
 
@@ -52,12 +52,16 @@ const Job = ({ game, updateGame, job }) => {
 				{job.name !== "idlers" && (
 					<div className="space-x-2">
 						<Button
+							variant="secondary"
+							size="sm"
 							disabled={game.jobs.idlers.amount <= 0}
 							onClick={() => assignWorker(job.name)}
 						>
 							+
 						</Button>
 						<Button
+							variant="secondary"
+							size="sm"
 							disabled={job.amount <= 0}
 							onClick={() => unAssignWorker(job.name)}
 						>

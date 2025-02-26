@@ -1,8 +1,8 @@
+import {Button} from "@/components/ui/button";
 import Tippy from "@tippyjs/react";
 import React from "react";
 import { updateResource } from "../misc/game.js";
 import {myRound, shortEnglishHumanizer} from "../misc/util";
-import Button from "./Button.jsx";
 import "tippy.js/dist/tippy.css";
 
 const Resources = ({ game, updateGame }) => {
@@ -209,7 +209,7 @@ const Resource = ({ game, updateGame, resource }) => {
         </Tippy>
       </td>
       <td className="px-2">
-        {name === "food" && <Button onClick={harvestFood}>+</Button>}
+        {name === "food" && <Button variant="secondary" size="sm" onClick={harvestFood}>+</Button>}
       </td>
     </tr>
   );
