@@ -1,7 +1,7 @@
-import type { Job } from "./types";
+import type { Game, Job } from "./types";
 
-export const jobs: Job[] = [
-	{
+export const jobs: Record<keyof Game["jobs"], Job> = {
+	idlers: {
 		name: "idlers",
 		image: "watch.png",
 		prereq: "unlockVillagers",
@@ -9,7 +9,7 @@ export const jobs: Job[] = [
 		production: [],
 		amount: 0,
 	},
-	{
+	farmers: {
 		name: "farmers",
 		image: "farmer.png",
 		prereq: "unlockVillagers",
@@ -17,7 +17,7 @@ export const jobs: Job[] = [
 		production: [{ resource: "food", amount: 0.05 }],
 		amount: 0,
 	},
-	{
+	thinkers: {
 		name: "thinkers",
 		image: "think.png",
 		prereq: "unlockVillagers",
@@ -25,7 +25,7 @@ export const jobs: Job[] = [
 		production: [{ resource: "research", amount: 0.02 }],
 		amount: 0,
 	},
-	{
+	foresters: {
 		name: "foresters",
 		image: "hand-saw.png",
 		prereq: "unlockWoodConstruction",
@@ -33,7 +33,7 @@ export const jobs: Job[] = [
 		production: [{ resource: "lumber", amount: 0.03 }],
 		amount: 0,
 	},
-	{
+	hunters: {
 		name: "hunters",
 		image: "watch.png",
 		prereq: "unlockHunting",
@@ -41,7 +41,7 @@ export const jobs: Job[] = [
 		production: [],
 		amount: 0,
 	},
-	{
+	miners: {
 		name: "miners",
 		image: "watch.png",
 		prereq: "unlockStoneConstruction",
@@ -49,7 +49,7 @@ export const jobs: Job[] = [
 		production: [{ resource: "stone", amount: 0.01 }],
 		amount: 0,
 	},
-	{
+	builders: {
 		name: "builders",
 		image: "watch.png",
 		prereq: "unlockBuilders",
@@ -57,4 +57,4 @@ export const jobs: Job[] = [
 		production: [],
 		amount: 0,
 	},
-];
+};

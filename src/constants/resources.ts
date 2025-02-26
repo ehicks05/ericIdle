@@ -1,17 +1,17 @@
-import type { Resource } from "./types";
+import type { Game, Resource } from "./types";
 
-export const resources: Resource[] = [
-	{
+export const resources: Record<keyof Game["resources"], Resource> = {
+	food: {
 		name: "food",
 		image: "wheat.png",
-		status: "hidden",
+		status: "visible",
 		prereq: "",
 		baseLimit: 40,
 		limit: 40,
 		amount: 0,
 		rate: 0,
 	},
-	{
+	lumber: {
 		name: "lumber",
 		image: "wood-pile.png",
 		status: "hidden",
@@ -21,7 +21,7 @@ export const resources: Resource[] = [
 		amount: 0,
 		rate: 0,
 	},
-	{
+	leather: {
 		name: "leather",
 		image: "animal-hide.png",
 		status: "hidden",
@@ -31,7 +31,7 @@ export const resources: Resource[] = [
 		amount: 0,
 		rate: 0,
 	},
-	{
+	stone: {
 		name: "stone",
 		image: "stone-pile.png",
 		status: "hidden",
@@ -41,7 +41,7 @@ export const resources: Resource[] = [
 		amount: 0,
 		rate: 0,
 	},
-	{
+	research: {
 		name: "research",
 		image: "coma.png",
 		status: "hidden",
@@ -51,7 +51,7 @@ export const resources: Resource[] = [
 		amount: 0,
 		rate: 0,
 	},
-	{
+	villagers: {
 		name: "villagers",
 		image: "backup.png",
 		status: "hidden",
@@ -61,4 +61,4 @@ export const resources: Resource[] = [
 		amount: 0,
 		rate: 0,
 	},
-];
+};

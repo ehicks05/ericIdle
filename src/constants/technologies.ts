@@ -1,7 +1,7 @@
-import type { Technology } from "./types";
+import type { Game, Technology } from "./types";
 
-export const technologies: Technology[] = [
-	{
+export const technologies: Record<keyof Game["technologies"], Technology> = {
+	farming: {
 		name: "farming",
 		image: "",
 		prereq: "unlockLevelOneTech",
@@ -9,7 +9,7 @@ export const technologies: Technology[] = [
 		discovered: false,
 		cost: [{ resource: "research", amount: 1 }],
 	},
-	{
+	woodConstruction: {
 		name: "woodConstruction",
 		image: "",
 		prereq: "unlockLevelOneTech",
@@ -17,7 +17,7 @@ export const technologies: Technology[] = [
 		discovered: false,
 		cost: [{ resource: "research", amount: 2 }],
 	},
-	{
+	stoneConstruction: {
 		name: "stoneConstruction",
 		image: "",
 		prereq: "unlockLevelOneTech",
@@ -25,7 +25,7 @@ export const technologies: Technology[] = [
 		discovered: false,
 		cost: [{ resource: "research", amount: 5 }],
 	},
-	{
+	wheel: {
 		name: "wheel",
 		image: "",
 		prereq: "unlockLevelOneTech",
@@ -33,4 +33,4 @@ export const technologies: Technology[] = [
 		discovered: false,
 		cost: [{ resource: "research", amount: 5 }],
 	},
-];
+};

@@ -1,7 +1,7 @@
 export type UnlockStatus = "hidden" | "visible";
 export type ModifierType = "add" | "mult";
 export interface ResourceAmount {
-	resource: string;
+	resource: keyof Game["resources"];
 	amount: number;
 }
 
@@ -26,7 +26,7 @@ export interface Job {
 }
 
 export interface Building {
-	name: string;
+	name: keyof Game["buildings"];
 	image: string;
 	prereq: string;
 	cost: ResourceAmount[];
@@ -52,13 +52,58 @@ export interface Technology {
 
 export interface ProgressCheck {
 	name: string;
-	goal: (ResourceAmount | { technology: string })[];
+	goal: ResourceAmount | { technology: string };
+	unlocked: boolean;
 }
 
 export interface Game {
-	resources: Resource[];
-	jobs: Job[];
-	buildings: Building[];
-	technologies: Technology[];
-	progress: ProgressCheck[];
+	resources: {
+		villagers: Resource;
+		food: Resource;
+		lumber: Resource;
+		stone: Resource;
+		research: Resource;
+		leather: Resource;
+	};
+	jobs: {
+		idlers: Job;
+		farmers: Job;
+		thinkers: Job;
+		foresters: Job;
+		hunters: Job;
+		miners: Job;
+		builders: Job;
+	};
+	buildings: {
+		huts: Building;
+		farms: Building;
+		lumberMills: Building;
+		storerooms: Building;
+		quarries: Building;
+		schools: Building;
+		libraries: Building;
+		huntingCamps: Building;
+		smithies: Building;
+	};
+	technologies: {
+		farming: Technology;
+		woodConstruction: Technology;
+		stoneConstruction: Technology;
+		wheel: Technology;
+	};
+	progress: {
+		unlockHuts: ProgressCheck;
+		unlockVillagers: ProgressCheck;
+		unlockLevelOneTech: ProgressCheck;
+		unlockFarming: ProgressCheck;
+		unlockWoodConstruction: ProgressCheck;
+		unlockStoneConstruction: ProgressCheck;
+		unlockWheel: ProgressCheck;
+		unlockSchools: ProgressCheck;
+		unlockLibraries: ProgressCheck;
+	};
+
+	defaultJob: string;
+	villagerCreatedAt: number;
+	isIncomingVillager: boolean;
 }

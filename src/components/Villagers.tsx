@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Tippy from "@tippyjs/react";
-import * as gameLogic from "../misc/game.js";
-import EffectsTable from "./EffectsTable.jsx";
+import EffectsTable from "./EffectsTable.tsx";
 import "tippy.js/dist/tippy.css";
+import type { Job } from "@/constants/types.ts";
+import { useGame } from "@/misc/store.ts";
 
-const Jobs = ({ game, updateGame }) => {
+const Jobs = () => {
+	const { game } = useGame();
 	return (
 		<table className="">
 			<thead>
@@ -18,19 +20,21 @@ const Jobs = ({ game, updateGame }) => {
 				{Object.values(game.jobs)
 					.filter((job) => job.status !== "hidden")
 					.map((job) => (
-						<Job key={job.name} game={game} updateGame={updateGame} job={job} />
+						<JobRow key={job.name} job={job} />
 					))}
 			</tbody>
 		</table>
 	);
 };
 
-const Job = ({ game, updateGame, job }) => {
+const JobRow = ({ job }: { job: Job }) => {
+	const { game } = useGame();
+
 	const assignWorker = (jobName) => {
-		gameLogic.assignJob(game, updateGame, jobName, 1);
+		gameLogic.assignJob(jobName, 1);
 	};
 	const unAssignWorker = (jobName) => {
-		gameLogic.assignJob(game, updateGame, jobName, -1);
+		gameLogic.assignJob(jobName, -1);
 	};
 
 	return (
@@ -41,7 +45,7 @@ const Job = ({ game, updateGame, job }) => {
 						type="button"
 						style={{ cursor: "pointer" }}
 						className={game.defaultJob === job.name ? "text-yellow-500" : ""}
-						onClick={() => gameLogic.setDefaultJob(game, updateGame, job.name)}
+						onClick={() => setDefaultJob(job.name)}
 					>
 						{job.name}
 					</button>

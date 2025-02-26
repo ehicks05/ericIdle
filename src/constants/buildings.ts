@@ -1,7 +1,7 @@
-import type { Building } from "./types";
+import type { Building, Game } from "./types";
 
-export const buildings: Building[] = [
-	{
+export const buildings: Record<keyof Game["buildings"], Building> = {
+	huts: {
 		name: "huts",
 		image: "tipi.png",
 		prereq: "unlockHuts",
@@ -12,7 +12,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	farms: {
 		name: "farms",
 		image: "barn.png",
 		prereq: "unlockFarming",
@@ -23,7 +23,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	lumberMills: {
 		name: "lumberMills",
 		image: "circular-saw.png",
 		prereq: "unlockWoodConstruction",
@@ -34,7 +34,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	storerooms: {
 		name: "storerooms",
 		image: "block-house.png",
 		prereq: "unlockStoneConstruction",
@@ -49,7 +49,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	quarries: {
 		name: "quarries",
 		image: "gold-mine.png",
 		prereq: "unlockStoneConstruction",
@@ -60,7 +60,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	schools: {
 		name: "schools",
 		image: "graduate-cap.png",
 		prereq: "unlockSchools",
@@ -71,7 +71,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	libraries: {
 		name: "libraries",
 		image: "book-cover.png",
 		prereq: "unlockLibraries",
@@ -82,7 +82,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	huntingCamps: {
 		name: "huntingCamps",
 		image: "watch.png",
 		prereq: "unlockHunting",
@@ -93,7 +93,7 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-	{
+	smithies: {
 		name: "smithies",
 		image: "watch.png",
 		prereq: "unlockSmithies",
@@ -104,4 +104,4 @@ export const buildings: Building[] = [
 		amount: 0,
 		sellable: false,
 	},
-];
+};

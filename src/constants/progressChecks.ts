@@ -1,49 +1,49 @@
-import type { ProgressCheck } from "./types";
+import type { Game, ProgressCheck } from "./types";
 
-export const progressChecks: ProgressCheck[] = [
-	{
+export const progressChecks: Record<keyof Game["progress"], ProgressCheck> = {
+	unlockHuts: {
 		name: "unlockHuts",
-		goal: [{ resource: "food", amount: 1 }],
+		goal: { resource: "food", amount: 1 },
 		unlocked: false,
 	},
-	{
+	unlockVillagers: {
 		name: "unlockVillagers",
-		goal: [{ resource: "villagers", amount: 1 }],
+		goal: { resource: "villagers", amount: 1 },
 		unlocked: false,
 	},
-	{
-		name: "unlockLevelOneTech",
-		goal: [{ resource: "research", amount: 1 }],
-		unlocked: false,
-	},
-	{
-		name: "unlockFarming",
-		goal: [{ technology: "farming" }],
-		unlocked: false,
-	},
-	{
-		name: "unlockWoodConstruction",
-		goal: [{ technology: "woodConstruction" }],
-		unlocked: false,
-	},
-	{
-		name: "unlockStoneConstruction",
-		goal: [{ technology: "stoneConstruction" }],
-		unlocked: false,
-	},
-	{
-		name: "unlockWheel",
-		goal: [{ technology: "wheel" }],
-		unlocked: false,
-	},
-	{
-		name: "unlockSchools",
-		goal: [{ resource: "villagers", amount: 30 }],
-		unlocked: false,
-	},
-	{
-		name: "unlockLibraries",
-		goal: [{ resource: "villagers", amount: 50 }],
-		unlocked: false,
-	},
-];
+	// unlockLevelOneTech: {
+	// 	name: "unlockLevelOneTech",
+	// 	goal: { resource: "research", amount: 1 },
+	// 	unlocked: false,
+	// },
+	// unlockFarming: {
+	// 	name: "unlockFarming",
+	// 	goal: { technology: "farming" },
+	// 	unlocked: false,
+	// },
+	// unlockWoodConstruction: {
+	// 	name: "unlockWoodConstruction",
+	// 	goal: { technology: "woodConstruction" },
+	// 	unlocked: false,
+	// },
+	// unlockStoneConstruction: {
+	// 	name: "unlockStoneConstruction",
+	// 	goal: { technology: "stoneConstruction" },
+	// 	unlocked: false,
+	// },
+	// unlockWheel: {
+	// 	name: "unlockWheel",
+	// 	goal: { technology: "wheel" },
+	// 	unlocked: false,
+	// },
+	// unlockSchools: {
+	// 	name: "unlockSchools",
+	// 	goal: { resource: "villagers", amount: 30 },
+	// 	unlocked: false,
+	// },
+	// unlockLibraries: {
+	// 	name: "unlockLibraries",
+	// 	goal: { resource: "villagers", amount: 50 },
+	// 	unlocked: false,
+	// },
+};

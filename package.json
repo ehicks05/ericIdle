@@ -18,14 +18,17 @@
 		"clsx": "^2.1.1",
 		"humanize-duration": "^3.32.1",
 		"immer": "^10.1.1",
+		"lodash-es": "^4.17.21",
 		"lucide-react": "^0.476.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
+		"react18-json-view": "^0.2.9",
 		"tailwind-merge": "^3.0.2",
 		"tailwindcss": "^4.0.9",
 		"tailwindcss-animate": "^1.0.7",
 		"use-immer": "^0.11.0",
-		"usehooks-ts": "^3.1.1"
+		"usehooks-ts": "^3.1.1",
+		"zustand": "^5.0.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
