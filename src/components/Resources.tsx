@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
-import Tippy from "@tippyjs/react";
 import React from "react";
 import { myRound, shortEnglishHumanizer } from "../misc/util.js";
 import "tippy.js/dist/tippy.css";
 import type { Resource } from "@/constants/types.js";
 import { incrementResource, useGame } from "@/misc/store.js";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "./ui/tooltip.js";
 
 const Resources = () => {
 	const { game } = useGame();
@@ -73,7 +78,7 @@ const LimitInfo = ({ resource }: { resource: Resource }) => {
 	);
 };
 
-const TimeUntil = ({ resource }) => {
+const TimeUntil = ({ resource }: { resource: Resource }) => {
 	const time =
 		resource.rate > 0
 			? (resource.limit - resource.amount) / resource.rate
@@ -200,14 +205,26 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 				</div>
 			</td>
 			<td className="px-2 text-right">
-				{/* <Tippy content={<LimitInfo resource={resource} />}> */}
-				<span>{`${Math.floor(amount)}/${limit}`}</span>
-				{/* </Tippy> */}
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger>{`${Math.floor(amount)}/${limit}`}</TooltipTrigger>
+						<TooltipContent className="bg-muted text-white">
+							<LimitInfo resource={resource} />
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
 			</td>
 			<td className="px-2 text-right">
-				{/* <Tippy content={<RateInfo resource={resource} />}> */}
-				<span>{`${rate > 0 ? "+" : ""}${rate.toFixed(2)}`}/s</span>
-				{/* </Tippy> */}
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger>
+							{`${rate > 0 ? "+" : ""}${rate.toFixed(2)}`}/s
+						</TooltipTrigger>
+						<TooltipContent className="bg-muted text-white">
+							<RateInfo resource={resource} />
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
 			</td>
 			<td className="px-2">
 				{name === "food" && (

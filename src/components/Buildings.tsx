@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import Tippy from "@tippyjs/react";
 import EffectsTable from "./EffectsTable.tsx";
 import ResourceCost from "./ResourceCost.tsx";
 import "tippy.js/dist/tippy.css";
@@ -11,6 +10,12 @@ import {
 	sellBuilding,
 	useGame,
 } from "@/misc/store.js";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "./ui/tooltip.tsx";
 
 const Buildings = () => {
 	const { game } = useGame();
@@ -41,16 +46,25 @@ const BuildingRow = ({ building }: { building: Building }) => {
 
 	return (
 		<tr>
-			<td className="px-2 text-left">
+			<td className="px-2">
 				<div className="flex flex-row">
-					<img
-						className="w-6 h-6 mr-1"
-						src={`ico/${building.image}`}
-						alt="building"
-					/>
-					<Tippy content={<EffectsTable gameObject={building} />}>
-						<span>{building.name}</span>
-					</Tippy>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger>
+								<div className="flex">
+									<img
+										className="w-6 h-6 mr-1"
+										src={`ico/${building.image}`}
+										alt="building"
+									/>
+									{building.name}
+								</div>
+							</TooltipTrigger>
+							<TooltipContent className="bg-muted text-white">
+								<EffectsTable gameObject={building} />
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
 				</div>
 			</td>
 			<td className="px-2 text-right">{building.amount}</td>

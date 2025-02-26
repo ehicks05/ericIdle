@@ -1,65 +1,71 @@
+import type { Building, Job } from "@/constants/types";
 import { camelToTitle } from "../misc/util";
 
 const PRODUCTION_TABLE = {
-  title: "Production",
-  columns: ["resource", "amount"],
+	title: "Production",
+	columns: ["resource", "amount"],
 };
 
 const BONUS_TABLE = {
-  title: "Production Bonuses",
-  columns: ["resource", "amount"],
+	title: "Production Bonuses",
+	columns: ["resource", "amount"],
 };
 
 const LIMIT_MOD_TABLE = {
-  title: "Resource Limit Mods",
-  columns: ["resource", "amount", "type"],
+	title: "Resource Limit Mods",
+	columns: ["resource", "amount", "type"],
 };
 
-const buildTable = ({ title, columns }, data) => {
-  return (
-    <table className="table is-narrow">
-      <thead>
-        <tr>
-          <th colSpan={columns.length}>{title}</th>
-        </tr>
-        <tr>
-          {columns.map((column) => (
-            <th key={column}>{camelToTitle(column)}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((rowData) => (
-          <tr key={rowData.resource}>
-            {columns.map((column) => (
-              <td key={column}>{rowData[column]}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+const buildTable = (
+	{ title, columns }: { title: string; columns: string[] },
+	data,
+) => {
+	return (
+		<table className="text-left">
+			<thead>
+				<tr>
+					<th colSpan={columns.length}>{title}</th>
+				</tr>
+				<tr>
+					{columns.map((column) => (
+						<th className="p-4" key={column}>
+							{camelToTitle(column)}
+						</th>
+					))}
+				</tr>
+			</thead>
+			<tbody>
+				{data.map((rowData) => (
+					<tr key={rowData.resource}>
+						{columns.map((column) => (
+							<td className="p-4" key={column}>
+								{rowData[column]}
+							</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	);
 };
 
-const EffectsTable = ({ gameObject }) => {
-  const productionTable = gameObject.production?.length
-    ? buildTable(PRODUCTION_TABLE, gameObject.production)
-    : undefined;
+const EffectsTable = ({ gameObject }: { gameObject: Building | Job }) => {
+	return (
+		<div>
+			<div className="font-bold">{camelToTitle(gameObject.name)}</div>
 
-  const bonusTable = gameObject.bonus?.length
-    ? buildTable(BONUS_TABLE, gameObject.bonus)
-    : undefined;
+			{"production" in gameObject &&
+				gameObject.production.length > 0 &&
+				buildTable(PRODUCTION_TABLE, gameObject.production)}
 
-  const resourceLimitModTable = gameObject.resourceLimitModifier?.length
-    ? buildTable(LIMIT_MOD_TABLE, gameObject.resourceLimitModifier)
-    : undefined;
-
-  return (
-    <>
-      <div style={{ fontWeight: "bold" }}>{camelToTitle(gameObject.name)}</div>
-      {productionTable} {bonusTable} {resourceLimitModTable}
-    </>
-  );
+			{"bonus" in gameObject &&
+				gameObject.bonus.length > 0 &&
+				buildTable(BONUS_TABLE, gameObject.bonus)}
+			{"resourceLimitModifier" in gameObject &&
+				gameObject.resourceLimitModifier.length > 0 &&
+				buildTable(LIMIT_MOD_TABLE, gameObject.resourceLimitModifier)}
+		</div>
+	);
 };
 
 export default EffectsTable;
