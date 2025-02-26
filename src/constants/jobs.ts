@@ -1,0 +1,60 @@
+import type { Job } from "./types";
+
+export const jobs: Job[] = [
+	{
+		name: "idlers",
+		image: "watch.png",
+		prereq: "unlockVillagers",
+		status: "hidden",
+		production: [],
+		amount: 0,
+	},
+	{
+		name: "farmers",
+		image: "farmer.png",
+		prereq: "unlockVillagers",
+		status: "hidden",
+		production: [{ resource: "food", amount: 0.05 }],
+		amount: 0,
+	},
+	{
+		name: "thinkers",
+		image: "think.png",
+		prereq: "unlockVillagers",
+		status: "hidden",
+		production: [{ resource: "research", amount: 0.02 }],
+		amount: 0,
+	},
+	{
+		name: "foresters",
+		image: "hand-saw.png",
+		prereq: "unlockWoodConstruction",
+		status: "hidden",
+		production: [{ resource: "lumber", amount: 0.03 }],
+		amount: 0,
+	},
+	{
+		name: "hunters",
+		image: "watch.png",
+		prereq: "unlockHunting",
+		status: "hidden",
+		production: [],
+		amount: 0,
+	},
+	{
+		name: "miners",
+		image: "watch.png",
+		prereq: "unlockStoneConstruction",
+		status: "hidden",
+		production: [{ resource: "stone", amount: 0.01 }],
+		amount: 0,
+	},
+	{
+		name: "builders",
+		image: "watch.png",
+		prereq: "unlockBuilders",
+		status: "hidden",
+		production: [],
+		amount: 0,
+	},
+];

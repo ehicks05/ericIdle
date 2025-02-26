@@ -8,7 +8,7 @@ import {
 	Technologies,
 	Villagers,
 } from "./components";
-import { MS_PER_TICK } from "./misc/constants";
+import { MS_PER_TICK } from "./constants/gameSpeed";
 import * as gameLogic from "./misc/game";
 
 function App() {
@@ -19,7 +19,6 @@ function App() {
 	const [perf, setPerf] = useState({ max: 0, recent: [0] });
 
 	const updatePerf = (start: number) => {
-		console.log("tick");
 		const tickDuration = Date.now() - start;
 		const draft = { ...perf };
 		draft.recent.push(tickDuration);

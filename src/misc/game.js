@@ -1,4 +1,4 @@
-import { MS_PER_TICK } from "./constants.ts";
+import { MS_PER_TICK } from "../constants/gameSpeed.ts";
 import * as util from "./util.js";
 
 export const doGameTick = (game, updateGame) => {
