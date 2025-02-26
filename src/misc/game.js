@@ -1,5 +1,5 @@
 import { MS_PER_TICK } from "../constants/gameSpeed.ts";
-import * as util from "./util.js";
+import { myRound } from "./util";
 
 export const doGameTick = (game, updateGame) => {
 	checkProgress(game, updateGame);
@@ -127,7 +127,7 @@ const updateResources = (game, updateGame) => {
 export const updateResource = (game, updateGame, name, amount) => {
 	updateGame((draft) => {
 		const newAmount = Math.min(
-			util.myRound(draft.resources[name].amount + amount, 4),
+			myRound(draft.resources[name].amount + amount, 4),
 			draft.resources[name].limit,
 		);
 		draft.resources[name].amount = newAmount;
@@ -230,7 +230,7 @@ export const isCreateVillager = (game, updateGame) => {
 export const getBuildingCost = (building) => {
 	const scalingFactor = building.name === "huts" ? 1.14 : 1.07;
 	const cost = building.cost.amount * scalingFactor ** (building.amount || 0);
-	return util.myRound(cost, 2);
+	return myRound(cost, 2);
 };
 
 export const canAffordBuilding = (game, building) => {

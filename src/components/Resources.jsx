@@ -1,7 +1,7 @@
 import Tippy from "@tippyjs/react";
 import React from "react";
 import { updateResource } from "../misc/game.js";
-import * as util from "../misc/util.js";
+import {myRound, shortEnglishHumanizer} from "../misc/util";
 import Button from "./Button.jsx";
 import "tippy.js/dist/tippy.css";
 
@@ -84,7 +84,7 @@ const TimeUntil = ({ resource }) => {
 
   const rateInfo =
     resource.rate > 0 || resource.rate < 0
-      ? `${destination} in ${util.shortEnglishHumanizer(time * 1000, {
+      ? `${destination} in ${shortEnglishHumanizer(time * 1000, {
           round: true,
           largest: 2,
           spacer: "",
@@ -183,7 +183,7 @@ const Resource = ({ game, updateGame, resource }) => {
   };
 
   const { image, name, limit, rate } = resource;
-  const amount = util.myRound(resource.amount, 2);
+  const amount = myRound(resource.amount, 2);
 
   return (
     <tr>
