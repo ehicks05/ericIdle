@@ -8,6 +8,7 @@ import {
 	Technologies,
 	Villagers,
 } from "./components";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { MS_PER_TICK } from "./constants/gameSpeed";
 import * as gameLogic from "./misc/game";
 
@@ -15,7 +16,6 @@ function App() {
 	const [game, updateGame] = useImmer(
 		JSON.parse(JSON.stringify(gameLogic.getDefaultGameState())),
 	);
-	const [activeTab, setActiveTab] = useState("Buildings");
 	const [perf, setPerf] = useState({ max: 0, recent: [0] });
 
 	const updatePerf = (start: number) => {
@@ -42,35 +42,19 @@ function App() {
 	}, [updateGame]);
 
 	const tabs = [
-		{
-			name: "Buildings",
-			unlocked: game.progress.unlockHuts.unlocked,
-			component: <Buildings game={game} updateGame={updateGame} />,
-		},
-		{
-			name: "Villagers",
-			unlocked: game.progress.unlockVillagers.unlocked,
-			component: <Villagers game={game} updateGame={updateGame} />,
-		},
-		{
-			name: "Technologies",
-			unlocked: game.progress.unlockLevelOneTech.unlocked,
-			component: <Technologies game={game} updateGame={updateGame} />,
-		},
-		{
-			name: "Settings",
-			unlocked: true,
-			component: <Settings game={game} updateGame={updateGame} perf={perf} />,
-		},
+		{ name: "Buildings", unlocked: game.progress.unlockHuts.unlocked },
+		{ name: "Villagers", unlocked: game.progress.unlockVillagers.unlocked },
+		{ name: "Techs", unlocked: game.progress.unlockLevelOneTech.unlocked },
+		{ name: "Settings", unlocked: true },
 	];
 
 	return (
-		<div className="font-mono text-black dark:text-white bg-white dark:bg-gray-900">
+		<div className="">
 			<div className="min-h-screen p-6 flex flex-col mx-auto space-y-6">
 				<section>
 					<div className="text-5xl font-bold">
 						<span>Eric</span>
-						<span style={{ color: "green" }}>Idle</span>
+						<span className="text-green-600">Idle</span>
 					</div>
 				</section>
 				<section>
@@ -80,26 +64,29 @@ function App() {
 								<Resources game={game} updateGame={updateGame} />
 							</div>
 							<div>
-								<div className="max-w-full overflow-x-auto flex space-x-5 mb-2 border-b">
-									{tabs
-										.filter((tab) => tab.unlocked)
-										.map((tab) => {
-											return (
-												<button
-													type="button"
-													key={tab.name}
-													className={`mb-2
-                              ${tab.name !== activeTab ? "opacity-50" : ""}
-                            `}
-													onClick={() => setActiveTab(tab.name)}
-												>
+								<Tabs defaultValue="Buildings" className="w-[400px]">
+									<TabsList>
+										{tabs
+											.filter((tab) => tab.unlocked)
+											.map((tab) => (
+												<TabsTrigger key={tab.name} value={tab.name}>
 													{tab.name}
-												</button>
-											);
-										})}
-								</div>
-								{tabs.find((tab) => tab.unlocked && tab.name === activeTab)
-									?.component || <div />}
+												</TabsTrigger>
+											))}
+									</TabsList>
+									<TabsContent value="Buildings">
+										<Buildings game={game} updateGame={updateGame} />
+									</TabsContent>
+									<TabsContent value="Villagers">
+										<Villagers game={game} updateGame={updateGame} />
+									</TabsContent>
+									<TabsContent value="Techs">
+										<Technologies game={game} updateGame={updateGame} />
+									</TabsContent>
+									<TabsContent value="Settings">
+										<Settings game={game} updateGame={updateGame} perf={perf} />
+									</TabsContent>
+								</Tabs>
 							</div>
 						</div>
 					</div>
