@@ -35,6 +35,7 @@ import {
 	School,
 	Shovel,
 	Sword,
+	Target,
 	Telescope,
 	Tent,
 	TentTree,
@@ -73,6 +74,7 @@ export const ICONS = {
 	briefcase: { Icon: Briefcase, color: "text-neutral-500" },
 	briefcaseMedical: { Icon: BriefcaseMedical, color: "text-neutral-500" },
 	music: { Icon: Music, color: "text-neutral-500" },
+	target: { Icon: Target, color: "text-red-500" },
 
 	// technologies
 

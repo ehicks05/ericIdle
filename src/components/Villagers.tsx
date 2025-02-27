@@ -80,7 +80,7 @@ export const Villagers = () => {
 			</thead>
 			<tbody>
 				{Object.values(game.jobs)
-					.filter((job) => job.status !== "hidden")
+					// .filter((job) => job.status !== "hidden")
 					.map((job) => (
 						<JobRow key={job.name} job={job} />
 					))}
