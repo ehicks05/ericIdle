@@ -184,12 +184,23 @@ const RateInfo = ({ resource }: { resource: Resource }) => {
 };
 
 const ResourceRow = ({ resource }: { resource: Resource }) => {
+	const { game } = useGame();
 	const harvestFood = () => {
 		incrementResource("food", 1);
 	};
 
 	const { image, name, limit, rate } = resource;
-	const amount = myRound(resource.amount, 2);
+	const amount =
+		resource.name === "villagers"
+			? myRound(resource.amount, 0)
+			: resource.amount.toFixed(2);
+
+	const rateColumn =
+		resource.name === "villagers"
+			? game.isIncomingVillager
+				? "+"
+				: "..."
+			: `${rate > 0 ? "+" : ""}${rate.toFixed(2)}/s`;
 
 	return (
 		<tr>
@@ -202,7 +213,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 			<td className="px-2 text-right">
 				<TooltipProvider>
 					<Tooltip>
-						<TooltipTrigger>{`${Math.floor(amount)}/${limit}`}</TooltipTrigger>
+						<TooltipTrigger>{`${amount}/${limit}`}</TooltipTrigger>
 						<TooltipContent className="bg-muted text-white">
 							<LimitInfo resource={resource} />
 						</TooltipContent>
@@ -212,9 +223,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 			<td className="px-2 text-right">
 				<TooltipProvider>
 					<Tooltip>
-						<TooltipTrigger>
-							{`${rate > 0 ? "+" : ""}${rate.toFixed(2)}`}/s
-						</TooltipTrigger>
+						<TooltipTrigger>{rateColumn}</TooltipTrigger>
 						<TooltipContent className="bg-muted text-white">
 							<RateInfo resource={resource} />
 						</TooltipContent>

@@ -63,7 +63,7 @@ function App() {
 				</div>
 			</section>
 			<section className="flex-grow" />
-			<div className="flex flex-wrap gap-2">
+			<div className="grid grid-cols-12 w-fit mx-auto gap-2">
 				{Object.entries(ICONS).map(([name, { Icon, color }]) => (
 					<Icon key={name} className={color} />
 				))}

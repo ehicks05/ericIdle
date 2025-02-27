@@ -4,6 +4,7 @@ import {
 	buildBuilding,
 	canAfford,
 	getScaledBuildingCost,
+	scaleBuildingCosts,
 	sellBuilding,
 	useGame,
 } from "@/misc/store.js";
@@ -87,7 +88,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
 					<Button
 						variant="secondary"
 						size="sm"
-						disabled={!canAfford({ cost: building.cost })}
+						disabled={!canAfford({ cost: scaleBuildingCosts(building) })}
 						onClick={() => buildBuilding(building)}
 					>
 						+

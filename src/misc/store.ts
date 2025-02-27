@@ -202,13 +202,20 @@ export const getScaledBuildingCost = (
 	return myRound(scaledCost, 2);
 };
 
+export const scaleBuildingCosts = (building: Building) => {
+	return building.cost.map((cost) => ({
+		...cost,
+		amount: getScaledBuildingCost(building.name, cost, building.amount),
+	}));
+};
+
 export const buildBuilding = (building: Building) => {
-	if (canAfford({ cost: building.cost })) {
-		building.cost.forEach((cost) =>
-			incrementResource(
-				cost.resource,
-				-getScaledBuildingCost(building.name, cost, building.amount),
-			),
+	const scaledCosts = scaleBuildingCosts(building);
+	const isCanAfford = canAfford({ cost: scaledCosts });
+
+	if (isCanAfford) {
+		scaledCosts.forEach((cost) =>
+			incrementResource(cost.resource, -1 * cost.amount),
 		);
 
 		useGame.setState(({ game }) => {
