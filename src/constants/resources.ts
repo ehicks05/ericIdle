@@ -3,7 +3,7 @@ import type { Game, Resource } from "./types";
 export const resources: Record<keyof Game["resources"], Resource> = {
 	food: {
 		name: "food",
-		image: "wheat.png",
+		image: "wheat",
 		status: "visible",
 		prereq: "",
 		baseLimit: 40,
@@ -13,7 +13,7 @@ export const resources: Record<keyof Game["resources"], Resource> = {
 	},
 	lumber: {
 		name: "lumber",
-		image: "wood-pile.png",
+		image: "treePine",
 		status: "hidden",
 		prereq: "unlockWoodConstruction",
 		baseLimit: 24,
@@ -23,7 +23,7 @@ export const resources: Record<keyof Game["resources"], Resource> = {
 	},
 	leather: {
 		name: "leather",
-		image: "animal-hide.png",
+		image: "wheat",
 		status: "hidden",
 		prereq: "unlockHunting",
 		baseLimit: 20,
@@ -33,7 +33,7 @@ export const resources: Record<keyof Game["resources"], Resource> = {
 	},
 	stone: {
 		name: "stone",
-		image: "stone-pile.png",
+		image: "mountain",
 		status: "hidden",
 		prereq: "unlockStoneConstruction",
 		baseLimit: 10,
@@ -43,7 +43,7 @@ export const resources: Record<keyof Game["resources"], Resource> = {
 	},
 	research: {
 		name: "research",
-		image: "coma.png",
+		image: "flaskConical",
 		status: "hidden",
 		prereq: "unlockVillagers",
 		baseLimit: 20,
@@ -53,7 +53,7 @@ export const resources: Record<keyof Game["resources"], Resource> = {
 	},
 	villagers: {
 		name: "villagers",
-		image: "backup.png",
+		image: "users",
 		status: "hidden",
 		prereq: "unlockVillagers",
 		baseLimit: 0,

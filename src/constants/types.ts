@@ -1,3 +1,5 @@
+import type { ICONS } from "./icons";
+
 export type UnlockStatus = "hidden" | "visible";
 export type ModifierType = "add" | "mult";
 export interface ResourceAmount {
@@ -6,10 +8,10 @@ export interface ResourceAmount {
 }
 
 export interface Resource {
-	name: string;
+	name: keyof Game["resources"];
 	limit: number;
 	baseLimit: number;
-	image: string;
+	image: keyof typeof ICONS;
 	prereq: string;
 	status: UnlockStatus;
 	amount: number;
@@ -17,7 +19,7 @@ export interface Resource {
 }
 
 export interface Job {
-	name: string;
+	name: keyof Game["jobs"];
 	image: string;
 	prereq: string;
 	status: UnlockStatus;
@@ -42,7 +44,7 @@ export interface Building {
 }
 
 export interface Technology {
-	name: string;
+	name: keyof Game["technologies"];
 	image: string;
 	prereq: string;
 	status: UnlockStatus;
@@ -51,8 +53,8 @@ export interface Technology {
 }
 
 export interface ProgressCheck {
-	name: string;
-	goal: ResourceAmount | { technology: string };
+	name: keyof Game["progress"];
+	goal: ResourceAmount | { technology: keyof Game["technologies"] };
 	unlocked: boolean;
 }
 
@@ -103,7 +105,7 @@ export interface Game {
 		unlockLibraries: ProgressCheck;
 	};
 
-	defaultJob: string;
+	defaultJob: keyof Game["jobs"];
 	villagerCreatedAt: number;
 	isIncomingVillager: boolean;
 }

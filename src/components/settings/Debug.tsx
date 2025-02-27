@@ -11,10 +11,9 @@ export const Debug = ({ perf: { history, max } }: { perf: Perf }) => {
 
 	return (
 		<div>
-			<h1 className="subtitle mt-4">Debug Info</h1>
-			<p>Tick times: {tickTimes}</p>
-			State:
-			<div className="flex flex-wrap gap-4 p-4 bg-muted">
+			<div className="flex flex-col text-muted-foreground p-4 bg-muted">
+				<p className="mb-4">Tick duration: {tickTimes}</p>
+				State
 				<JsonView src={game} collapsed={1} />
 			</div>
 		</div>

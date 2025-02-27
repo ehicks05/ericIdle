@@ -1,14 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { DEFAULT_GAME } from "@/constants/game";
 import type { Game } from "@/constants/types";
 import type { Perf } from "@/hooks/usePerf";
-import { useGame } from "@/misc/store";
+import { resetGame, useGame } from "@/misc/store";
 import { useEffect, useState } from "react";
 import { Debug } from "./settings/Debug";
 
-export function exportState(state: Game, json: boolean) {
-	const stringified = JSON.stringify(state);
-	return json ? stringified : btoa(stringified);
+export function exportState(state: Game) {
+	return btoa(JSON.stringify(state));
 }
 
 export function importState(state: string) {
@@ -29,7 +27,7 @@ const Settings = ({ perf }: { perf: Perf }) => {
 
 	const handleReset = () => {
 		if (window.confirm("Are you sure you? All progress will be lost.")) {
-			importState(exportState(DEFAULT_GAME, false));
+			resetGame();
 		}
 	};
 
@@ -38,8 +36,8 @@ const Settings = ({ perf }: { perf: Perf }) => {
 		setImportText("");
 	};
 
-	async function handleCopy(json: boolean) {
-		await navigator.clipboard.writeText(exportState(game, json));
+	async function handleCopy() {
+		await navigator.clipboard.writeText(exportState(game));
 		setCopyButtonLabel("Copied");
 	}
 
@@ -54,15 +52,15 @@ const Settings = ({ perf }: { perf: Perf }) => {
 	};
 
 	return (
-		<>
-			<h1 className="subtitle mt-4">Import/Export/Reset</h1>
+		<div className="flex flex-col gap-4">
+			<h1 className="">Save Game</h1>
 			<textarea
 				className="w-full p-2 bg-muted"
 				placeholder="Paste save here..."
 				value={importText}
 				onChange={(e) => handleTextInputChange(e.target.value)}
 			/>
-			<div className="mt-4 space-x-2">
+			<div className="flex gap-2 justify-between">
 				<Button
 					variant="secondary"
 					disabled={!importText || !isImportTextValid}
@@ -70,19 +68,16 @@ const Settings = ({ perf }: { perf: Perf }) => {
 				>
 					{isImportTextValid ? "Import" : "Invalid Save"}
 				</Button>
-				<Button variant="secondary" onClick={() => handleCopy(false)}>
+				<Button variant="secondary" onClick={handleCopy}>
 					{copyButtonLabel}
 				</Button>
-				<Button variant="secondary" onClick={() => handleCopy(true)}>
-					{copyButtonLabel} JSON
-				</Button>
 				<Button variant="destructive" onClick={handleReset}>
-					Reset
+					Reset Save
 				</Button>
 			</div>
 
 			<Debug perf={perf} />
-		</>
+		</div>
 	);
 };
 

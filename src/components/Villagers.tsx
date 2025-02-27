@@ -3,7 +3,7 @@ import Tippy from "@tippyjs/react";
 import EffectsTable from "./EffectsTable.tsx";
 import "tippy.js/dist/tippy.css";
 import type { Job } from "@/constants/types.ts";
-import { useGame } from "@/misc/store.ts";
+import { assignJob, setDefaultJob, useGame } from "@/misc/store.ts";
 
 const Jobs = () => {
 	const { game } = useGame();
@@ -30,13 +30,6 @@ const Jobs = () => {
 const JobRow = ({ job }: { job: Job }) => {
 	const { game } = useGame();
 
-	const assignWorker = (jobName) => {
-		gameLogic.assignJob(jobName, 1);
-	};
-	const unAssignWorker = (jobName) => {
-		gameLogic.assignJob(jobName, -1);
-	};
-
 	return (
 		<tr>
 			<td className="px-2">
@@ -59,7 +52,7 @@ const JobRow = ({ job }: { job: Job }) => {
 							variant="secondary"
 							size="sm"
 							disabled={game.jobs.idlers.amount <= 0}
-							onClick={() => assignWorker(job.name)}
+							onClick={() => assignJob(job.name, 1)}
 						>
 							+
 						</Button>
@@ -67,7 +60,7 @@ const JobRow = ({ job }: { job: Job }) => {
 							variant="secondary"
 							size="sm"
 							disabled={job.amount <= 0}
-							onClick={() => unAssignWorker(job.name)}
+							onClick={() => assignJob(job.name, -1)}
 						>
 							-
 						</Button>

@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { myRound, shortEnglishHumanizer } from "../misc/util.js";
 import "tippy.js/dist/tippy.css";
+import { ICONS } from "@/constants/icons";
 import type { Resource } from "@/constants/types.js";
+import { cn } from "@/lib/utils.js";
 import { incrementResource, useGame } from "@/misc/store.js";
 import {
 	Tooltip,
@@ -26,7 +28,7 @@ const Resources = () => {
 			</thead>
 			<tbody>
 				{Object.values(game.resources)
-					.filter((resource) => resource.status !== "hidden")
+					// .filter((resource) => resource.status !== "hidden")
 					.map((resource) => (
 						<ResourceRow key={resource.name} resource={resource} />
 					))}
@@ -189,18 +191,14 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 	};
 
 	const { image, name, limit, rate } = resource;
+	const { Icon, color } = ICONS[image];
 	const amount = myRound(resource.amount, 2);
 
 	return (
 		<tr>
 			<td className="px-2">
-				<div className="flex flex-row">
-					<img
-						className="w-6 h-6"
-						style={{ marginRight: ".5rem" }}
-						src={`ico/${image}`}
-						alt="cost"
-					/>
+				<div className="flex items-center gap-2">
+					<Icon className={cn(color, "bg-muted p-1 h-8 w-8")} />
 					<span>{name}</span>
 				</div>
 			</td>
