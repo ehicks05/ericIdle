@@ -78,7 +78,7 @@ export const Buildings = () => {
 	const { game } = useGame();
 
 	return (
-		<table className="">
+		<table className="w-full">
 			<thead>
 				<tr>
 					<th className="px-2 text-left" />
@@ -89,7 +89,7 @@ export const Buildings = () => {
 			</thead>
 			<tbody>
 				{Object.values(game.buildings)
-					// .filter((building) => building.status !== "hidden")
+					.filter((building) => building.status === "visible")
 					.map((building) => (
 						<BuildingRow key={building.name} building={building} />
 					))}

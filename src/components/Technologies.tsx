@@ -45,17 +45,17 @@ export const Technologies = () => {
 	const { game } = useGame();
 
 	return (
-		<table className="">
-			<thead>
+		<table className="w-full">
+			{/* <thead>
 				<tr>
 					<th className="px-2 text-left" />
 					<th className="px-2 text-right">Price</th>
 					<th />
 				</tr>
-			</thead>
+			</thead> */}
 			<tbody>
 				{Object.values(game.technologies)
-					.filter((technology) => technology.status !== "hidden")
+					.filter((technology) => technology.status === "visible")
 					.map((technology) => (
 						<TechnologyRow key={technology.name} technology={technology} />
 					))}

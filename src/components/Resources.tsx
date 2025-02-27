@@ -217,18 +217,18 @@ export const Resources = () => {
 	const { game } = useGame();
 
 	return (
-		<table>
-			<thead>
+		<table className="w-full">
+			{/* <thead>
 				<tr>
 					<th className="px-2 text-left">Resource</th>
 					<th className="px-2 text-right">#</th>
 					<th className="px-2 text-right w-24">Rate</th>
 					<th />
 				</tr>
-			</thead>
+			</thead> */}
 			<tbody>
 				{Object.values(game.resources)
-					// .filter((resource) => resource.status !== "hidden")
+					.filter((resource) => resource.status === "visible")
 					.map((resource) => (
 						<ResourceRow key={resource.name} resource={resource} />
 					))}

@@ -9,7 +9,7 @@ export interface ResourceAmount {
 
 export interface Resource {
 	name: keyof Game["resources"];
-	prereq: string;
+	prereq: keyof Game["progress"];
 	status: UnlockStatus;
 	image: keyof typeof ICONS;
 	amount: number;
@@ -20,7 +20,7 @@ export interface Resource {
 
 export interface Job {
 	name: keyof Game["jobs"];
-	prereq: string;
+	prereq: keyof Game["progress"];
 	status: UnlockStatus;
 	image: keyof typeof ICONS;
 	amount: number;
@@ -29,7 +29,7 @@ export interface Job {
 
 export interface Building {
 	name: keyof Game["buildings"];
-	prereq: string;
+	prereq: keyof Game["progress"];
 	status: UnlockStatus;
 	image: keyof typeof ICONS;
 	amount: number;
@@ -45,7 +45,7 @@ export interface Building {
 
 export interface Technology {
 	name: keyof Game["technologies"];
-	prereq: string;
+	prereq: keyof Game["progress"];
 	status: UnlockStatus;
 	image: keyof typeof ICONS;
 	discovered: boolean;

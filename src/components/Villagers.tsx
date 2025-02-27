@@ -70,17 +70,17 @@ const JobRow = ({ job }: { job: Job }) => {
 export const Villagers = () => {
 	const { game } = useGame();
 	return (
-		<table className="">
-			<thead>
+		<table className="w-full">
+			{/* <thead>
 				<tr>
 					<th className="px-2 text-left" />
 					<th className="px-2 text-right">#</th>
 					<th />
 				</tr>
-			</thead>
+			</thead> */}
 			<tbody>
 				{Object.values(game.jobs)
-					// .filter((job) => job.status !== "hidden")
+					.filter((job) => job.status === "visible")
 					.map((job) => (
 						<JobRow key={job.name} job={job} />
 					))}
