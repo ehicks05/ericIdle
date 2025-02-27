@@ -6,6 +6,10 @@ export interface ResourceAmount {
 	resource: keyof Game["resources"];
 	amount: number;
 }
+export interface Event {
+	date: number;
+	text: string;
+}
 
 export interface Resource {
 	name: keyof Game["resources"];
@@ -107,7 +111,10 @@ export interface Game {
 		unlockSmithies: ProgressCheck;
 	};
 
+	log: Event[];
 	defaultJob: keyof Game["jobs"];
 	villagerCreatedAt: number;
 	isIncomingVillager: boolean;
+	huntingPartyReturnedAt: number;
+	isHuntingPartyActive: boolean;
 }

@@ -12,7 +12,10 @@ export const DEFAULT_GAME: Game = {
 	technologies: technologies,
 	progress: progressChecks,
 
+	log: [],
 	defaultJob: "idlers",
 	villagerCreatedAt: Date.now(),
 	isIncomingVillager: false,
+	huntingPartyReturnedAt: Date.now(),
+	isHuntingPartyActive: false,
 };

@@ -202,7 +202,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 					</Tooltip>
 				</TooltipProvider>
 			</td>
-			<td className="px-2">
+			<td className="text-right">
 				{name === "food" && (
 					<Button variant="secondary" size="sm" onClick={harvestFood}>
 						+

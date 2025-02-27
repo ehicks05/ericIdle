@@ -1,19 +1,26 @@
+import { SECONDS_PER_TICK } from "@/constants/gameSpeed";
 import type { Game } from "@/constants/types";
 import { incrementResource, useGame } from "../index";
 import { updateVillagerCount } from "../utils";
 
-const removeWorker = () => {
+const removeWorkers = (_count: number) => {
 	const { game } = useGame.getState();
 
-	const jobName =
-		game.jobs.idlers.amount > 0
-			? "idlers"
-			: Object.values(game.jobs).find((job) => job.amount > 0)?.name;
+	let count = _count;
 
-	if (jobName) {
-		useGame.setState(({ game }) => {
-			game.jobs[jobName].amount -= 1;
-		});
+	while (count > 0) {
+		const jobName =
+			game.jobs.idlers.amount > 0
+				? "idlers"
+				: Object.values(game.jobs).find((job) => job.amount > 0)?.name;
+
+		if (jobName) {
+			useGame.setState(({ game }) => {
+				game.jobs[jobName].amount -= 1;
+			});
+		}
+
+		count--;
 	}
 };
 
@@ -53,15 +60,26 @@ export const updateResources = () => {
 		incrementResource(
 			resource.name as keyof Game["resources"],
 			// apply rate per tick
-			newRate * (200 / 1000),
+			newRate * SECONDS_PER_TICK,
 		);
 	});
 
 	// handle starvation
 	if (game.resources.food.amount < 0 && game.resources.villagers.amount > 0) {
-		updateVillagerCount(-1);
-		removeWorker();
-		incrementResource("food", 0.05);
+		const foodDeficit = -game.resources.food.amount;
+		const deaths = Math.ceil(foodDeficit / 0.045);
+
+		updateVillagerCount(-deaths);
+		removeWorkers(deaths);
+		incrementResource("food", deaths * 0.045);
+
+		useGame.setState(({ game }) => {
+			const event = {
+				date: new Date().getTime(),
+				text: `${deaths} villager${deaths !== 1 ? "s" : ""} starved`,
+			};
+			game.log = [event, ...game.log];
+		});
 	}
 
 	const workerCount = Object.values(game.jobs).reduce(
@@ -70,7 +88,8 @@ export const updateResources = () => {
 	);
 
 	// more workers than villagers
-	if (workerCount > game.resources.villagers.amount) {
-		removeWorker();
+	const extraWorkers = workerCount - game.resources.villagers.amount;
+	if (extraWorkers > 0) {
+		removeWorkers(extraWorkers);
 	}
 };

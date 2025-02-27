@@ -11,6 +11,7 @@ import { usePerf } from "@/hooks/usePerf";
 import { useGame } from "@/store";
 import { doGameTick } from "@/store/loop";
 import { Debug } from "./components/Debug";
+import { Log } from "./components/Log";
 import { ResetButton } from "./components/Settings/ResetButton";
 
 function App() {
@@ -32,12 +33,12 @@ function App() {
 	].filter(({ unlocked }) => unlocked);
 
 	return (
-		<div className="min-h-screen p-6 flex flex-col mx-auto space-y-6">
+		<div className="h-svh p-6 grid justify-center items-end gap-4">
 			<section className="text-5xl font-bold">
 				<span>Eric</span>
 				<span className="text-green-600">Idle</span>
 			</section>
-			<section className="flex flex-col md:flex-row items-start gap-2">
+			<section className="h-full flex flex-col md:flex-row items-start gap-4">
 				<div className="w-80">
 					<Resources />
 				</div>
@@ -67,8 +68,10 @@ function App() {
 						</TabsContent>
 					</Tabs>
 				</div>
+				<div className="w-80 h-3/4">
+					<Log />
+				</div>
 			</section>
-			<section className="flex-grow" />
 			<footer className="p-6 text-center">
 				hi
 				{import.meta.env.DEV && (

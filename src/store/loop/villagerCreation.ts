@@ -1,4 +1,4 @@
-import { MS_PER_TICK } from "@/constants/gameSpeed";
+import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { useGame } from "..";
 import { updateVillagerCount } from "../utils";
 
@@ -18,8 +18,8 @@ const hasVillagerArrived = () => {
 	} = useGame.getState();
 
 	// wait at least 5 seconds
-	const msSinceLastVillager = Date.now() - villagerCreatedAt;
-	if (msSinceLastVillager < 5000) return false;
+	const msSinceLastEvent = Date.now() - villagerCreatedAt;
+	if (msSinceLastEvent < 5000) return false;
 
 	const isRoom = villagers.amount < villagers.limit;
 	const isFood = food.amount >= 1;
@@ -32,10 +32,8 @@ const hasVillagerArrived = () => {
 			});
 		}
 
-		const ticksPerSecond = 1000 / MS_PER_TICK;
-
-		const rand = Math.random() / ticksPerSecond;
-		return rand < 0.01;
+		const rand = Math.random() / TICKS_PER_SECOND;
+		return rand < 0.002;
 	}
 	return false;
 };
@@ -55,6 +53,12 @@ const createVillager = () => {
 
 	useGame.setState(({ game }) => {
 		game.isIncomingVillager = false;
+
+		const event = {
+			date: new Date().getTime(),
+			text: `${villagersToCreate} villager${villagersToCreate !== 1 ? "s" : ""} joined the community`,
+		};
+		game.log = [event, ...game.log];
 	});
 };
 
