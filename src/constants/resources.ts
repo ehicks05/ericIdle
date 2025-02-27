@@ -23,7 +23,7 @@ export const resources: Record<keyof Game["resources"], Resource> = {
 	},
 	leather: {
 		name: "leather",
-		image: "wheat",
+		image: "piggyBank",
 		status: "hidden",
 		prereq: "unlockHunting",
 		baseLimit: 20,

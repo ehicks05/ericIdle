@@ -31,6 +31,7 @@ import {
 	Package,
 	Paintbrush,
 	Pickaxe,
+	PiggyBank,
 	School,
 	Shovel,
 	Sword,
@@ -48,10 +49,11 @@ import {
 export const ICONS = {
 	// resources
 	wheat: { Icon: Wheat, color: "text-yellow-500" },
-	treePine: { Icon: TreePine, color: "text-green-500" },
+	treePine: { Icon: TreePine, color: "text-green-600" },
 	mountain: { Icon: Mountain, color: "text-stone-500" },
 	flaskConical: { Icon: FlaskConical, color: "text-blue-500" },
-	users: { Icon: Users, color: "text-slate-500" },
+	users: { Icon: Users, color: "text-yellow-200/50" },
+	piggyBank: { Icon: PiggyBank, color: "text-pink-300/75" },
 
 	// villagers
 	bed: { Icon: Bed, color: "text-neutral-500" },
@@ -76,8 +78,8 @@ export const ICONS = {
 
 	bean: { Icon: Bean, color: "text-yellow-700" },
 	circle: { Icon: Circle, color: "text-neutral-500" },
-	fence: { Icon: Fence, color: "text-neutral-300" },
-	brickWall: { Icon: BrickWall, color: "text-neutral-500" },
+	fence: { Icon: Fence, color: "text-yellow-600/75" },
+	brickWall: { Icon: BrickWall, color: "text-stone-500" },
 	flame: { Icon: Flame, color: "text-orange-400" },
 	circleOff: { Icon: CircleOff, color: "text-orange-400" },
 

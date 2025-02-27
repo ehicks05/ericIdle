@@ -39,7 +39,7 @@ const JobRow = ({ job }: { job: Job }) => {
 
 	return (
 		<tr>
-			<td className="px-2">
+			<td className="p-2">
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
