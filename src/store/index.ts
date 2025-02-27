@@ -3,7 +3,6 @@ import type { Building, Game, ResourceAmount } from "@/constants/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { doGameTick } from "./loop";
 
 type GameStore = {
 	game: Game;
@@ -23,8 +22,6 @@ export const useGame = create<GameStore>()(
 		),
 	),
 );
-
-export const tick = () => doGameTick();
 
 export const canAfford = ({ cost }: { cost: ResourceAmount[] }) => {
 	const resources = useGame.getState().game.resources;

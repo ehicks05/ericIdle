@@ -9,7 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MS_PER_TICK } from "@/constants/gameSpeed";
 import { ICONS } from "@/constants/icons";
 import { usePerf } from "@/hooks/usePerf";
-import { tick, useGame } from "@/store";
+import { useGame } from "@/store";
+import { doGameTick } from "@/store/loop";
 
 function App() {
 	const { game } = useGame();
@@ -17,7 +18,7 @@ function App() {
 
 	useInterval(() => {
 		const tickStart = Date.now();
-		tick();
+		doGameTick();
 		updatePerf(tickStart);
 	}, MS_PER_TICK);
 
