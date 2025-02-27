@@ -186,7 +186,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger>{`${amount}/${limit}`}</TooltipTrigger>
-						<TooltipContent className="bg-muted text-white">
+						<TooltipContent side="right" className="bg-muted text-white">
 							<LimitInfo resource={resource} />
 						</TooltipContent>
 					</Tooltip>
@@ -196,7 +196,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger>{rateColumn}</TooltipTrigger>
-						<TooltipContent className="bg-muted text-white">
+						<TooltipContent side="right" className="bg-muted text-white">
 							<RateInfo resource={resource} />
 						</TooltipContent>
 					</Tooltip>

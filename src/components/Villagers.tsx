@@ -34,7 +34,7 @@ const JobRow = ({ job }: { job: Job }) => {
 								{job.name}
 							</button>
 						</TooltipTrigger>
-						<TooltipContent className="bg-muted text-white">
+						<TooltipContent side="right" className="bg-muted text-white">
 							<EffectsTable gameObject={job} />
 						</TooltipContent>
 					</Tooltip>
