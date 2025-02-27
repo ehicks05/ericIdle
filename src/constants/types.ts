@@ -9,28 +9,30 @@ export interface ResourceAmount {
 
 export interface Resource {
 	name: keyof Game["resources"];
-	limit: number;
-	baseLimit: number;
-	image: keyof typeof ICONS;
 	prereq: string;
 	status: UnlockStatus;
+	image: keyof typeof ICONS;
 	amount: number;
+	limit: number;
+	baseLimit: number;
 	rate: number;
 }
 
 export interface Job {
 	name: keyof Game["jobs"];
-	image: keyof typeof ICONS;
 	prereq: string;
 	status: UnlockStatus;
-	production: ResourceAmount[];
+	image: keyof typeof ICONS;
 	amount: number;
+	production: ResourceAmount[];
 }
 
 export interface Building {
 	name: keyof Game["buildings"];
-	image: keyof typeof ICONS;
 	prereq: string;
+	status: UnlockStatus;
+	image: keyof typeof ICONS;
+	amount: number;
 	cost: ResourceAmount[];
 	resourceLimitModifier: {
 		resource: string;
@@ -38,16 +40,14 @@ export interface Building {
 		type: ModifierType;
 	}[];
 	bonus: ResourceAmount[];
-	status: UnlockStatus;
-	amount: number;
 	sellable: boolean;
 }
 
 export interface Technology {
 	name: keyof Game["technologies"];
-	image: keyof typeof ICONS;
 	prereq: string;
 	status: UnlockStatus;
+	image: keyof typeof ICONS;
 	discovered: boolean;
 	cost: ResourceAmount[];
 }
