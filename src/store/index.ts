@@ -55,24 +55,13 @@ export const incrementResource = (
 };
 
 /**
- * Calculate the rising cost of each building.
+ * Take each resource cost, and map it to a scaled version of itself.
  */
-export const getScaledBuildingCost = (
-	buildingName: keyof Game["buildings"],
-	buildingCount: number,
-	cost: ResourceAmount,
-) => {
-	const scalingFactor = buildingName === "huts" ? 1.14 : 1.07;
-	const scaledCost = cost.amount * scalingFactor ** buildingCount;
-	return scaledCost;
-};
-
-/**
- * Take each resource cost, and scale it up
- */
-export const scaleBuildingCosts = (building: Building) => {
+export const scaleBuildingCosts = (building: Building, isSale = false) => {
+	const scalingFactor = building.name === "huts" ? 1.14 : 1.07;
+	const buildingAmount = building.amount - (isSale ? 1 : 0);
 	return building.cost.map((cost) => ({
 		...cost,
-		amount: getScaledBuildingCost(building.name, building.amount, cost),
+		amount: cost.amount * scalingFactor ** buildingAmount,
 	}));
 };

@@ -1,11 +1,5 @@
 import type { Building, Game } from "@/constants/types";
-import {
-	canAfford,
-	getScaledBuildingCost,
-	incrementResource,
-	scaleBuildingCosts,
-	useGame,
-} from ".";
+import { canAfford, incrementResource, scaleBuildingCosts, useGame } from ".";
 
 export const makeDiscovery = (name: keyof Game["technologies"]) => {
 	const { game } = useGame.getState();
@@ -42,11 +36,8 @@ export const sellBuilding = (building: Building) => {
 		game.buildings[building.name].amount -= 1;
 	});
 
-	building.cost.forEach((cost) =>
-		incrementResource(
-			cost.resource,
-			getScaledBuildingCost(building.name, building.amount - 1, cost),
-		),
+	scaleBuildingCosts(building, true).forEach((cost) =>
+		incrementResource(cost.resource, cost.amount),
 	);
 };
 

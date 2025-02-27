@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { Building } from "@/constants/types";
-import {
-	canAfford,
-	getScaledBuildingCost,
-	scaleBuildingCosts,
-	useGame,
-} from "@/store";
+import { canAfford, scaleBuildingCosts, useGame } from "@/store";
 import { buildBuilding, sellBuilding } from "@/store/actions";
 import EffectsTable from "./EffectsTable";
 import { GameIcon } from "./GameIcon";
@@ -41,19 +36,14 @@ const BuildingRow = ({ building }: { building: Building }) => {
 			</td>
 			<td className="px-2 text-right">{building.amount}</td>
 			<td className="px-2 text-right">
-				{building.cost.map((cost) => {
-					const scaledCost = getScaledBuildingCost(
-						building.name,
-						building.amount,
-						cost,
-					);
-					const resource = game.resources[cost.resource];
+				{scaleBuildingCosts(building).map((scaledCost) => {
+					const resource = game.resources[scaledCost.resource];
 
 					return (
 						<ResourceCost
 							key={building.name}
 							resource={resource}
-							amount={scaledCost}
+							amount={scaledCost.amount}
 						/>
 					);
 				})}
