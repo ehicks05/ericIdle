@@ -11,6 +11,7 @@ import { usePerf } from "@/hooks/usePerf";
 import { useGame } from "@/store";
 import { doGameTick } from "@/store/loop";
 import { Debug } from "./components/Debug";
+import { ResetButton } from "./components/Settings/ResetButton";
 
 function App() {
 	const { game } = useGame();
@@ -68,7 +69,14 @@ function App() {
 				</div>
 			</section>
 			<section className="flex-grow" />
-			<footer className="p-6 text-center">hi</footer>
+			<footer className="p-6 text-center">
+				hi
+				{import.meta.env.DEV && (
+					<span className="ml-4">
+						<ResetButton skipConfirm />
+					</span>
+				)}
+			</footer>
 		</div>
 	);
 }

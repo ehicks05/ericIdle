@@ -1,11 +1,16 @@
 import { useGame } from "@/store";
 import { Button } from "../ui/button";
 
-export const ResetButton = () => {
+export const ResetButton = ({
+	skipConfirm = false,
+}: { skipConfirm?: boolean }) => {
 	const { resetGame } = useGame();
 
 	const handleReset = () => {
-		if (window.confirm("Are you sure you? All progress will be lost.")) {
+		if (
+			skipConfirm ||
+			window.confirm("Are you sure you? All progress will be lost.")
+		) {
 			resetGame();
 
 			if (import.meta.env.DEV) {
