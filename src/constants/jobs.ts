@@ -36,7 +36,7 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	hunters: {
 		name: "hunters",
 		image: "target",
-		prereq: "unlockHunting",
+		prereq: "unlockVillagers",
 		status: "hidden",
 		production: [],
 		amount: 0,

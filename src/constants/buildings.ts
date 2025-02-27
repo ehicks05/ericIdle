@@ -85,8 +85,8 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	huntingCamps: {
 		name: "huntingCamps",
 		image: "tent",
-		prereq: "unlockHunting",
-		cost: [{ resource: "lumber", amount: 2 }],
+		prereq: "unlockVillagers",
+		cost: [{ resource: "food", amount: 2 }],
 		resourceLimitModifier: [],
 		bonus: [],
 		status: "hidden",

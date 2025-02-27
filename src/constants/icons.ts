@@ -92,7 +92,7 @@ export const ICONS = {
 
 	// buildings
 	tent: { Icon: Tent, color: "text-yellow-600" },
-	tentTree: { Icon: TentTree, color: "text-neutral-500" },
+	tentTree: { Icon: TentTree, color: "text-indigo-500" },
 	tractor: { Icon: Tractor, color: "text-red-500" },
 	treeDeciduous: { Icon: TreeDeciduous, color: "text-green-500" },
 	box: { Icon: Box, color: "text-yellow-600" },

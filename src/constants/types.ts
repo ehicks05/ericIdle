@@ -103,6 +103,8 @@ export interface Game {
 		unlockWheel: ProgressCheck;
 		unlockSchools: ProgressCheck;
 		unlockLibraries: ProgressCheck;
+		unlockBuilders: ProgressCheck;
+		unlockSmithies: ProgressCheck;
 	};
 
 	defaultJob: keyof Game["jobs"];
