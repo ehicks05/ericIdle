@@ -51,7 +51,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	quarries: {
 		name: "quarries",
-		image: "hardHat",
+		image: "mountainSnow",
 		prereq: "unlockStoneConstruction",
 		cost: [{ resource: "lumber", amount: 2 }],
 		resourceLimitModifier: [],

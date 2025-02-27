@@ -27,7 +27,7 @@ export const technologies: Record<keyof Game["technologies"], Technology> = {
 	},
 	wheel: {
 		name: "wheel",
-		image: "circle",
+		image: "shoppingCart",
 		prereq: "unlockLevelOneTech",
 		status: "hidden",
 		discovered: false,
