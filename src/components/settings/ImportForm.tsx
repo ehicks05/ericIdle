@@ -9,7 +9,7 @@ export const ImportForm = () => {
 	const handleImport = () => {
 		if (window.confirm("Are you sure you? All progress will be replaced.")) {
 			const parsed = JSON.parse(atob(importText));
-			useGame.setState(parsed);
+			useGame.setState({ game: parsed });
 			setImportText("");
 		}
 	};
