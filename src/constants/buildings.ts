@@ -73,7 +73,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	libraries: {
 		name: "libraries",
-		image: "library",
+		image: "squareLibrary",
 		prereq: "unlockLibraries",
 		cost: [{ resource: "lumber", amount: 4 }],
 		resourceLimitModifier: [{ resource: "research", amount: 5, type: "add" }],
