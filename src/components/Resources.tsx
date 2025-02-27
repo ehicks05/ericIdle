@@ -3,7 +3,6 @@ import type { Resource } from "@/constants/types.js";
 import { incrementResource, useGame } from "@/misc/store.js";
 import { intlFormatDistance } from "date-fns";
 import React from "react";
-import { round } from "../misc/util.js";
 import { GameIcon } from "./GameIcon.js";
 import {
 	Tooltip,
@@ -189,7 +188,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 	const { image, name, limit, rate } = resource;
 	const amount =
 		resource.name === "villagers"
-			? round(resource.amount, 0)
+			? Math.round(resource.amount)
 			: resource.amount.toFixed(2);
 
 	const rateColumn =
