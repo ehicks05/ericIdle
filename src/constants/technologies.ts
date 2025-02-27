@@ -3,7 +3,7 @@ import type { Game, Technology } from "./types";
 export const technologies: Record<keyof Game["technologies"], Technology> = {
 	farming: {
 		name: "farming",
-		image: "",
+		image: "tractor",
 		prereq: "unlockLevelOneTech",
 		status: "hidden",
 		discovered: false,
@@ -11,7 +11,7 @@ export const technologies: Record<keyof Game["technologies"], Technology> = {
 	},
 	woodConstruction: {
 		name: "woodConstruction",
-		image: "",
+		image: "fence",
 		prereq: "unlockLevelOneTech",
 		status: "hidden",
 		discovered: false,
@@ -19,7 +19,7 @@ export const technologies: Record<keyof Game["technologies"], Technology> = {
 	},
 	stoneConstruction: {
 		name: "stoneConstruction",
-		image: "",
+		image: "brickWall",
 		prereq: "unlockLevelOneTech",
 		status: "hidden",
 		discovered: false,
@@ -27,7 +27,7 @@ export const technologies: Record<keyof Game["technologies"], Technology> = {
 	},
 	wheel: {
 		name: "wheel",
-		image: "",
+		image: "circle",
 		prereq: "unlockLevelOneTech",
 		status: "hidden",
 		discovered: false,

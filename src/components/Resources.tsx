@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
+import type { Resource } from "@/constants/types.js";
+import { incrementResource, useGame } from "@/misc/store.js";
 import React from "react";
 import { myRound, shortEnglishHumanizer } from "../misc/util.js";
-import "tippy.js/dist/tippy.css";
-import { ICONS } from "@/constants/icons";
-import type { Resource } from "@/constants/types.js";
-import { cn } from "@/lib/utils.js";
-import { incrementResource, useGame } from "@/misc/store.js";
+import { GameIcon } from "./GameIcon.js";
 import {
 	Tooltip,
 	TooltipContent,
@@ -191,14 +189,13 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 	};
 
 	const { image, name, limit, rate } = resource;
-	const { Icon, color } = ICONS[image];
 	const amount = myRound(resource.amount, 2);
 
 	return (
 		<tr>
-			<td className="px-2">
+			<td className="px-2 py-1">
 				<div className="flex items-center gap-2">
-					<Icon className={cn(color, "bg-muted p-1 h-8 w-8")} />
+					<GameIcon icon={image} />
 					<span>{name}</span>
 				</div>
 			</td>

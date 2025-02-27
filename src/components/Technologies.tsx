@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
-import * as gameLogic from "../misc/game.js";
+import type { Technology } from "@/constants/types.ts";
+import { canAfford, makeDiscovery, useGame } from "@/misc/store.ts";
+import { GameIcon } from "./GameIcon.tsx";
 import ResourceCost from "./ResourceCost.tsx";
 
-const Technologies = ({ game, updateGame }) => {
+const Technologies = () => {
+	const { game } = useGame();
+
 	return (
 		<table className="">
 			<thead>
@@ -16,47 +20,42 @@ const Technologies = ({ game, updateGame }) => {
 				{Object.values(game.technologies)
 					.filter((technology) => technology.status !== "hidden")
 					.map((technology) => (
-						<Technology
-							key={technology.name}
-							game={game}
-							updateGame={updateGame}
-							technology={technology}
-						/>
+						<TechnologyRow key={technology.name} technology={technology} />
 					))}
 			</tbody>
 		</table>
 	);
 };
 
-const Technology = ({ game, updateGame, technology }) => {
-	const canAfford =
-		game.resources.research.amount >=
-		game.technologies[technology.name].cost.amount;
-
-	const makeDiscovery = (technologyName) => {
-		gameLogic.makeDiscovery(game, updateGame, technologyName);
-	};
+const TechnologyRow = ({ technology }: { technology: Technology }) => {
+	const { game } = useGame();
+	const isCanAfford = canAfford({ cost: technology.cost });
 
 	return (
 		<tr>
 			<td className="px-2">
-				<div className="flex">
-					<img
-						className="w-6 h-6 mr-1"
-						src={`ico/${technology.image}`}
-						alt="technology"
-					/>
-					{technology.name}
+				<div className="flex items-center gap-2">
+					<GameIcon icon={technology.image} />
+					{technology.name
+						.split(/(?=[A-Z])/)
+						.map((s) => `${s[0].toUpperCase()}${s.slice(1)}`)
+						.join(" ")}
 				</div>
 			</td>
 			<td className="px-2 text-right">
-				<ResourceCost key={technology.name} game={game} coster={technology} />
+				{technology.cost.map((cost) => (
+					<ResourceCost
+						key={technology.name}
+						resource={game.resources[cost.resource]}
+						amount={cost.amount}
+					/>
+				))}
 			</td>
 			<td className="px-2">
 				<Button
 					variant="secondary"
 					size="sm"
-					disabled={technology.discovered || !canAfford}
+					disabled={technology.discovered || !isCanAfford}
 					onClick={() => makeDiscovery(technology.name)}
 				>
 					{technology.discovered ? "Discovered" : "Discover"}

@@ -1,7 +1,4 @@
 import { Button } from "@/components/ui/button";
-import EffectsTable from "./EffectsTable.tsx";
-import ResourceCost from "./ResourceCost.tsx";
-import "tippy.js/dist/tippy.css";
 import type { Building } from "@/constants/types.js";
 import {
 	buildBuilding,
@@ -10,6 +7,9 @@ import {
 	sellBuilding,
 	useGame,
 } from "@/misc/store.js";
+import EffectsTable from "./EffectsTable.tsx";
+import { GameIcon } from "./GameIcon.tsx";
+import ResourceCost from "./ResourceCost.tsx";
 import {
 	Tooltip,
 	TooltipContent,
@@ -32,7 +32,7 @@ const Buildings = () => {
 			</thead>
 			<tbody>
 				{Object.values(game.buildings)
-					.filter((building) => building.status !== "hidden")
+					// .filter((building) => building.status !== "hidden")
 					.map((building) => (
 						<BuildingRow key={building.name} building={building} />
 					))}
@@ -51,12 +51,8 @@ const BuildingRow = ({ building }: { building: Building }) => {
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger>
-								<div className="flex">
-									<img
-										className="w-6 h-6 mr-1"
-										src={`ico/${building.image}`}
-										alt="building"
-									/>
+								<div className="flex gap-1">
+									<GameIcon icon={building.image} />
 									{building.name}
 								</div>
 							</TooltipTrigger>

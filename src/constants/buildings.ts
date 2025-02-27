@@ -3,7 +3,7 @@ import type { Building, Game } from "./types";
 export const buildings: Record<keyof Game["buildings"], Building> = {
 	huts: {
 		name: "huts",
-		image: "tipi.png",
+		image: "tentTree",
 		prereq: "unlockHuts",
 		cost: [{ resource: "food", amount: 1 }],
 		resourceLimitModifier: [{ resource: "villagers", amount: 2, type: "add" }],
@@ -14,7 +14,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	farms: {
 		name: "farms",
-		image: "barn.png",
+		image: "tractor",
 		prereq: "unlockFarming",
 		cost: [{ resource: "lumber", amount: 1 }],
 		resourceLimitModifier: [],
@@ -25,7 +25,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	lumberMills: {
 		name: "lumberMills",
-		image: "circular-saw.png",
+		image: "treeDeciduous",
 		prereq: "unlockWoodConstruction",
 		cost: [{ resource: "lumber", amount: 2 }],
 		resourceLimitModifier: [],
@@ -36,7 +36,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	storerooms: {
 		name: "storerooms",
-		image: "block-house.png",
+		image: "box",
 		prereq: "unlockStoneConstruction",
 		cost: [{ resource: "lumber", amount: 5 }],
 		resourceLimitModifier: [
@@ -51,7 +51,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	quarries: {
 		name: "quarries",
-		image: "gold-mine.png",
+		image: "hardHat",
 		prereq: "unlockStoneConstruction",
 		cost: [{ resource: "lumber", amount: 2 }],
 		resourceLimitModifier: [],
@@ -62,7 +62,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	schools: {
 		name: "schools",
-		image: "graduate-cap.png",
+		image: "school",
 		prereq: "unlockSchools",
 		cost: [{ resource: "lumber", amount: 3 }],
 		resourceLimitModifier: [],
@@ -73,7 +73,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	libraries: {
 		name: "libraries",
-		image: "book-cover.png",
+		image: "library",
 		prereq: "unlockLibraries",
 		cost: [{ resource: "lumber", amount: 4 }],
 		resourceLimitModifier: [{ resource: "research", amount: 5, type: "add" }],
@@ -84,7 +84,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	huntingCamps: {
 		name: "huntingCamps",
-		image: "watch.png",
+		image: "tent",
 		prereq: "unlockHunting",
 		cost: [{ resource: "lumber", amount: 2 }],
 		resourceLimitModifier: [],
@@ -95,7 +95,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	},
 	smithies: {
 		name: "smithies",
-		image: "watch.png",
+		image: "anvil",
 		prereq: "unlockSmithies",
 		cost: [{ resource: "lumber", amount: 3 }],
 		resourceLimitModifier: [],

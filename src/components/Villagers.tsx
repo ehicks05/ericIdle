@@ -1,9 +1,15 @@
 import { Button } from "@/components/ui/button";
-import Tippy from "@tippyjs/react";
-import EffectsTable from "./EffectsTable.tsx";
-import "tippy.js/dist/tippy.css";
 import type { Job } from "@/constants/types.ts";
+import { cn } from "@/lib/utils.ts";
 import { assignJob, setDefaultJob, useGame } from "@/misc/store.ts";
+import EffectsTable from "./EffectsTable.tsx";
+import { GameIcon } from "./GameIcon.tsx";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "./ui/tooltip.tsx";
 
 const Jobs = () => {
 	const { game } = useGame();
@@ -29,20 +35,31 @@ const Jobs = () => {
 
 const JobRow = ({ job }: { job: Job }) => {
 	const { game } = useGame();
+	const isDefaultJob = game.defaultJob === job.name;
 
 	return (
 		<tr>
 			<td className="px-2">
-				<Tippy content={<EffectsTable gameObject={job} />}>
-					<button
-						type="button"
-						style={{ cursor: "pointer" }}
-						className={game.defaultJob === job.name ? "text-yellow-500" : ""}
-						onClick={() => setDefaultJob(job.name)}
-					>
-						{job.name}
-					</button>
-				</Tippy>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<button
+								type="button"
+								className={cn(
+									"flex gap-1 cursor-pointer",
+									isDefaultJob ? "text-yellow-500" : "",
+								)}
+								onClick={() => setDefaultJob(job.name)}
+							>
+								<GameIcon icon={job.image} />
+								{job.name}
+							</button>
+						</TooltipTrigger>
+						<TooltipContent className="bg-muted text-white">
+							<EffectsTable gameObject={job} />
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
 			</td>
 			<td className="px-2 text-right">{job.amount}</td>
 			<td className="px-2 text-center">

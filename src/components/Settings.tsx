@@ -28,6 +28,16 @@ const Settings = ({ perf }: { perf: Perf }) => {
 	const handleReset = () => {
 		if (window.confirm("Are you sure you? All progress will be lost.")) {
 			resetGame();
+
+			if (import.meta.env.DEV) {
+				useGame.setState(({ game }) => {
+					game.resources.food.amount = 20;
+					game.resources.villagers.amount = 20;
+					game.resources.research.amount = 20;
+					game.buildings.huts.amount = 10;
+					game.jobs.farmers.amount = 20;
+				});
+			}
 		}
 	};
 

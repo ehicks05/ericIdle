@@ -3,7 +3,7 @@ import type { Game, Job } from "./types";
 export const jobs: Record<keyof Game["jobs"], Job> = {
 	idlers: {
 		name: "idlers",
-		image: "watch.png",
+		image: "bed",
 		prereq: "unlockVillagers",
 		status: "hidden",
 		production: [],
@@ -11,7 +11,7 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	},
 	farmers: {
 		name: "farmers",
-		image: "farmer.png",
+		image: "shovel",
 		prereq: "unlockVillagers",
 		status: "hidden",
 		production: [{ resource: "food", amount: 0.05 }],
@@ -19,7 +19,7 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	},
 	thinkers: {
 		name: "thinkers",
-		image: "think.png",
+		image: "graduationCap",
 		prereq: "unlockVillagers",
 		status: "hidden",
 		production: [{ resource: "research", amount: 0.02 }],
@@ -27,7 +27,7 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	},
 	foresters: {
 		name: "foresters",
-		image: "hand-saw.png",
+		image: "axe",
 		prereq: "unlockWoodConstruction",
 		status: "hidden",
 		production: [{ resource: "lumber", amount: 0.03 }],
@@ -35,7 +35,7 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	},
 	hunters: {
 		name: "hunters",
-		image: "watch.png",
+		image: "circleOff",
 		prereq: "unlockHunting",
 		status: "hidden",
 		production: [],
@@ -43,7 +43,7 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	},
 	miners: {
 		name: "miners",
-		image: "watch.png",
+		image: "pickaxe",
 		prereq: "unlockStoneConstruction",
 		status: "hidden",
 		production: [{ resource: "stone", amount: 0.01 }],
@@ -51,7 +51,7 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	},
 	builders: {
 		name: "builders",
-		image: "watch.png",
+		image: "hammer",
 		prereq: "unlockBuilders",
 		status: "hidden",
 		production: [],

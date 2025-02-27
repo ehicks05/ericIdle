@@ -243,7 +243,7 @@ export const assignJob = (name: keyof Game["jobs"], amount: number) => {
 	) {
 		useGame.setState(({ game }) => {
 			game.jobs[name].amount += amount;
-			game.jobs.idlers.amount -= 1;
+			game.jobs.idlers.amount -= amount;
 		});
 	}
 };

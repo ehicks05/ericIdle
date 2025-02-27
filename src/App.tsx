@@ -7,6 +7,7 @@ import Technologies from "./components/Technologies";
 import Villagers from "./components/Villagers";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { MS_PER_TICK } from "./constants/gameSpeed";
+import { ICONS } from "./constants/icons";
 import { usePerf } from "./hooks/usePerf";
 import { tick, useGame } from "./misc/store";
 
@@ -62,6 +63,11 @@ function App() {
 				</div>
 			</section>
 			<section className="flex-grow" />
+			<div className="flex flex-wrap gap-2">
+				{Object.entries(ICONS).map(([name, { Icon, color }]) => (
+					<Icon key={name} className={color} />
+				))}
+			</div>
 			<footer className="p-6 text-center">hi</footer>
 		</div>
 	);

@@ -20,7 +20,7 @@ export interface Resource {
 
 export interface Job {
 	name: keyof Game["jobs"];
-	image: string;
+	image: keyof typeof ICONS;
 	prereq: string;
 	status: UnlockStatus;
 	production: ResourceAmount[];
@@ -29,7 +29,7 @@ export interface Job {
 
 export interface Building {
 	name: keyof Game["buildings"];
-	image: string;
+	image: keyof typeof ICONS;
 	prereq: string;
 	cost: ResourceAmount[];
 	resourceLimitModifier: {
@@ -45,7 +45,7 @@ export interface Building {
 
 export interface Technology {
 	name: keyof Game["technologies"];
-	image: string;
+	image: keyof typeof ICONS;
 	prereq: string;
 	status: UnlockStatus;
 	discovered: boolean;
