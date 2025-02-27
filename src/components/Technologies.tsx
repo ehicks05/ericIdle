@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Technology } from "@/constants/types.ts";
 import { canAfford, makeDiscovery, useGame } from "@/misc/store.ts";
+import { camelToTitle } from "@/misc/util.ts";
 import { GameIcon } from "./GameIcon.tsx";
 import ResourceCost from "./ResourceCost.tsx";
 
@@ -36,10 +37,7 @@ const TechnologyRow = ({ technology }: { technology: Technology }) => {
 			<td className="px-2">
 				<div className="flex items-center gap-2">
 					<GameIcon icon={technology.image} />
-					{technology.name
-						.split(/(?=[A-Z])/)
-						.map((s) => `${s[0].toUpperCase()}${s.slice(1)}`)
-						.join(" ")}
+					{camelToTitle(technology.name)}
 				</div>
 			</td>
 			<td className="px-2 text-right">
