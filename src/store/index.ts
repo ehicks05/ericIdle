@@ -23,6 +23,9 @@ export const useGame = create<GameStore>()(
 	),
 );
 
+/**
+ * Compare `game.resources` against a list of resource costs.
+ */
 export const canAfford = ({ cost }: { cost: ResourceAmount[] }) => {
 	const resources = useGame.getState().game.resources;
 
@@ -32,16 +35,18 @@ export const canAfford = ({ cost }: { cost: ResourceAmount[] }) => {
 	});
 };
 
-// honor limits
+/**
+ * Respects `resource.limit`.
+ */
 export const incrementResource = (
 	name: keyof Game["resources"],
 	amount: number,
 ) => {
-	const { game } = useGame.getState();
+	const { resources } = useGame.getState().game;
 
 	const newAmount = Math.min(
-		game.resources[name].amount + amount,
-		game.resources[name].limit,
+		resources[name].amount + amount,
+		resources[name].limit,
 	);
 
 	useGame.setState(({ game }) => {
@@ -49,20 +54,25 @@ export const incrementResource = (
 	});
 };
 
-// todo this also handles technology cost
+/**
+ * Calculate the rising cost of each building.
+ */
 export const getScaledBuildingCost = (
-	buildingName: string,
+	buildingName: keyof Game["buildings"],
+	buildingCount: number,
 	cost: ResourceAmount,
-	buildingCount = 0,
 ) => {
 	const scalingFactor = buildingName === "huts" ? 1.14 : 1.07;
 	const scaledCost = cost.amount * scalingFactor ** buildingCount;
 	return scaledCost;
 };
 
+/**
+ * Take each resource cost, and scale it up
+ */
 export const scaleBuildingCosts = (building: Building) => {
 	return building.cost.map((cost) => ({
 		...cost,
-		amount: getScaledBuildingCost(building.name, cost, building.amount),
+		amount: getScaledBuildingCost(building.name, building.amount, cost),
 	}));
 };

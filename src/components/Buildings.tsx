@@ -44,8 +44,8 @@ const BuildingRow = ({ building }: { building: Building }) => {
 				{building.cost.map((cost) => {
 					const scaledCost = getScaledBuildingCost(
 						building.name,
-						cost,
 						building.amount,
+						cost,
 					);
 					const resource = game.resources[cost.resource];
 

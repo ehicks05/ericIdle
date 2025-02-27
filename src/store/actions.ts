@@ -45,7 +45,7 @@ export const sellBuilding = (building: Building) => {
 	building.cost.forEach((cost) =>
 		incrementResource(
 			cost.resource,
-			getScaledBuildingCost(building.name, cost, building.amount - 1),
+			getScaledBuildingCost(building.name, building.amount - 1, cost),
 		),
 	);
 };
