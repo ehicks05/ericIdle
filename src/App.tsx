@@ -7,10 +7,10 @@ import { Technologies } from "@/components/Technologies";
 import { Villagers } from "@/components/Villagers";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MS_PER_TICK } from "@/constants/gameSpeed";
-import { ICONS } from "@/constants/icons";
 import { usePerf } from "@/hooks/usePerf";
 import { useGame } from "@/store";
 import { doGameTick } from "@/store/loop";
+import { Debug } from "./components/Debug";
 
 function App() {
 	const { game } = useGame();
@@ -27,6 +27,7 @@ function App() {
 		{ name: "Villagers", unlocked: game.progress.unlockVillagers.unlocked },
 		{ name: "Techs", unlocked: game.progress.unlockLevelOneTech.unlocked },
 		{ name: "Settings", unlocked: true },
+		{ name: "Debug", unlocked: import.meta.env.DEV },
 	].filter(({ unlocked }) => unlocked);
 
 	return (
@@ -58,17 +59,15 @@ function App() {
 							<Technologies />
 						</TabsContent>
 						<TabsContent value="Settings">
-							<Settings perf={perf} />
+							<Settings />
+						</TabsContent>
+						<TabsContent value="Debug">
+							<Debug perf={perf} />
 						</TabsContent>
 					</Tabs>
 				</div>
 			</section>
 			<section className="flex-grow" />
-			<div className="grid grid-cols-12 w-fit mx-auto gap-2">
-				{Object.entries(ICONS).map(([name, { Icon, color }]) => (
-					<Icon key={name} className={color} />
-				))}
-			</div>
 			<footer className="p-6 text-center">hi</footer>
 		</div>
 	);
