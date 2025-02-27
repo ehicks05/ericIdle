@@ -1,46 +1,21 @@
 import { Button } from "@/components/ui/button";
-import type { Building } from "@/constants/types.js";
+import type { Building } from "@/constants/types";
 import {
-	buildBuilding,
 	canAfford,
 	getScaledBuildingCost,
 	scaleBuildingCosts,
-	sellBuilding,
 	useGame,
-} from "@/misc/store.js";
-import EffectsTable from "./EffectsTable.tsx";
-import { GameIcon } from "./GameIcon.tsx";
-import ResourceCost from "./ResourceCost.tsx";
+} from "@/store";
+import { buildBuilding, sellBuilding } from "@/store/actions";
+import EffectsTable from "./EffectsTable";
+import { GameIcon } from "./GameIcon";
+import ResourceCost from "./ResourceCost";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "./ui/tooltip.tsx";
-
-const Buildings = () => {
-	const { game } = useGame();
-
-	return (
-		<table className="">
-			<thead>
-				<tr>
-					<th className="px-2 text-left" />
-					<th className="px-2 text-right">#</th>
-					<th className="px-2 text-right">Price</th>
-					<th />
-				</tr>
-			</thead>
-			<tbody>
-				{Object.values(game.buildings)
-					// .filter((building) => building.status !== "hidden")
-					.map((building) => (
-						<BuildingRow key={building.name} building={building} />
-					))}
-			</tbody>
-		</table>
-	);
-};
+} from "./ui/tooltip";
 
 const BuildingRow = ({ building }: { building: Building }) => {
 	const { game } = useGame();
@@ -109,4 +84,26 @@ const BuildingRow = ({ building }: { building: Building }) => {
 	);
 };
 
-export default Buildings;
+export const Buildings = () => {
+	const { game } = useGame();
+
+	return (
+		<table className="">
+			<thead>
+				<tr>
+					<th className="px-2 text-left" />
+					<th className="px-2 text-right">#</th>
+					<th className="px-2 text-right">Price</th>
+					<th />
+				</tr>
+			</thead>
+			<tbody>
+				{Object.values(game.buildings)
+					// .filter((building) => building.status !== "hidden")
+					.map((building) => (
+						<BuildingRow key={building.name} building={building} />
+					))}
+			</tbody>
+		</table>
+	);
+};

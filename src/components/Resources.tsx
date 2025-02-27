@@ -1,39 +1,15 @@
 import { Button } from "@/components/ui/button";
-import type { Resource } from "@/constants/types.js";
-import { incrementResource, useGame } from "@/misc/store.js";
+import type { Resource } from "@/constants/types";
+import { incrementResource, useGame } from "@/store";
 import { intlFormatDistance } from "date-fns";
 import React from "react";
-import { GameIcon } from "./GameIcon.js";
+import { GameIcon } from "./GameIcon";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "./ui/tooltip.js";
-
-const Resources = () => {
-	const { game } = useGame();
-
-	return (
-		<table>
-			<thead>
-				<tr>
-					<th className="px-2 text-left">Resource</th>
-					<th className="px-2 text-right">#</th>
-					<th className="px-2 text-right w-24">Rate</th>
-					<th />
-				</tr>
-			</thead>
-			<tbody>
-				{Object.values(game.resources)
-					// .filter((resource) => resource.status !== "hidden")
-					.map((resource) => (
-						<ResourceRow key={resource.name} resource={resource} />
-					))}
-			</tbody>
-		</table>
-	);
-};
 
 const LimitInfo = ({ resource }: { resource: Resource }) => {
 	const { game } = useGame();
@@ -237,4 +213,26 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 	);
 };
 
-export default Resources;
+export const Resources = () => {
+	const { game } = useGame();
+
+	return (
+		<table>
+			<thead>
+				<tr>
+					<th className="px-2 text-left">Resource</th>
+					<th className="px-2 text-right">#</th>
+					<th className="px-2 text-right w-24">Rate</th>
+					<th />
+				</tr>
+			</thead>
+			<tbody>
+				{Object.values(game.resources)
+					// .filter((resource) => resource.status !== "hidden")
+					.map((resource) => (
+						<ResourceRow key={resource.name} resource={resource} />
+					))}
+			</tbody>
+		</table>
+	);
+};

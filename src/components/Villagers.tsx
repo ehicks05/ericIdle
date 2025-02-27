@@ -1,37 +1,16 @@
 import { Button } from "@/components/ui/button";
-import type { Job } from "@/constants/types.ts";
-import { cn } from "@/lib/utils.ts";
-import { assignJob, setDefaultJob, useGame } from "@/misc/store.ts";
-import EffectsTable from "./EffectsTable.tsx";
-import { GameIcon } from "./GameIcon.tsx";
+import type { Job } from "@/constants/types";
+import { cn } from "@/lib/utils";
+import { useGame } from "@/store";
+import { assignJob, setDefaultJob } from "@/store/actions";
+import EffectsTable from "./EffectsTable";
+import { GameIcon } from "./GameIcon";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "./ui/tooltip.tsx";
-
-const Jobs = () => {
-	const { game } = useGame();
-	return (
-		<table className="">
-			<thead>
-				<tr>
-					<th className="px-2 text-left" />
-					<th className="px-2 text-right">#</th>
-					<th />
-				</tr>
-			</thead>
-			<tbody>
-				{Object.values(game.jobs)
-					.filter((job) => job.status !== "hidden")
-					.map((job) => (
-						<JobRow key={job.name} job={job} />
-					))}
-			</tbody>
-		</table>
-	);
-};
+} from "./ui/tooltip";
 
 const JobRow = ({ job }: { job: Job }) => {
 	const { game } = useGame();
@@ -88,4 +67,24 @@ const JobRow = ({ job }: { job: Job }) => {
 	);
 };
 
-export default Jobs;
+export const Villagers = () => {
+	const { game } = useGame();
+	return (
+		<table className="">
+			<thead>
+				<tr>
+					<th className="px-2 text-left" />
+					<th className="px-2 text-right">#</th>
+					<th />
+				</tr>
+			</thead>
+			<tbody>
+				{Object.values(game.jobs)
+					.filter((job) => job.status !== "hidden")
+					.map((job) => (
+						<JobRow key={job.name} job={job} />
+					))}
+			</tbody>
+		</table>
+	);
+};

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Game } from "@/constants/types";
 import type { Perf } from "@/hooks/usePerf";
-import { resetGame, useGame } from "@/misc/store";
+import { useGame } from "@/store";
 import { useEffect, useState } from "react";
 import { Debug } from "./settings/Debug";
 
@@ -13,8 +13,8 @@ export function importState(state: string) {
 	useGame.setState(JSON.parse(atob(state)));
 }
 
-const Settings = ({ perf }: { perf: Perf }) => {
-	const { game } = useGame();
+export const Settings = ({ perf }: { perf: Perf }) => {
+	const { game, resetGame } = useGame();
 
 	const [copyButtonLabel, setCopyButtonLabel] = useState("Export");
 	const [importText, setImportText] = useState("");
@@ -90,5 +90,3 @@ const Settings = ({ perf }: { perf: Perf }) => {
 		</div>
 	);
 };
-
-export default Settings;

@@ -1,5 +1,5 @@
 import type { Building, Job } from "@/constants/types";
-import { camelToTitle } from "../misc/util";
+import { camelToTitle } from "@/lib/utils";
 
 const PRODUCTION_TABLE = {
 	title: "Production",

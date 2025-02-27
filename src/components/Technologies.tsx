@@ -1,32 +1,10 @@
 import { Button } from "@/components/ui/button";
-import type { Technology } from "@/constants/types.ts";
-import { canAfford, makeDiscovery, useGame } from "@/misc/store.ts";
-import { camelToTitle } from "@/misc/util.ts";
-import { GameIcon } from "./GameIcon.tsx";
-import ResourceCost from "./ResourceCost.tsx";
-
-const Technologies = () => {
-	const { game } = useGame();
-
-	return (
-		<table className="">
-			<thead>
-				<tr>
-					<th className="px-2 text-left" />
-					<th className="px-2 text-right">Price</th>
-					<th />
-				</tr>
-			</thead>
-			<tbody>
-				{Object.values(game.technologies)
-					.filter((technology) => technology.status !== "hidden")
-					.map((technology) => (
-						<TechnologyRow key={technology.name} technology={technology} />
-					))}
-			</tbody>
-		</table>
-	);
-};
+import type { Technology } from "@/constants/types";
+import { camelToTitle } from "@/lib/utils";
+import { canAfford, useGame } from "@/store";
+import { makeDiscovery } from "@/store/actions";
+import { GameIcon } from "./GameIcon";
+import ResourceCost from "./ResourceCost";
 
 const TechnologyRow = ({ technology }: { technology: Technology }) => {
 	const { game } = useGame();
@@ -63,4 +41,25 @@ const TechnologyRow = ({ technology }: { technology: Technology }) => {
 	);
 };
 
-export default Technologies;
+export const Technologies = () => {
+	const { game } = useGame();
+
+	return (
+		<table className="">
+			<thead>
+				<tr>
+					<th className="px-2 text-left" />
+					<th className="px-2 text-right">Price</th>
+					<th />
+				</tr>
+			</thead>
+			<tbody>
+				{Object.values(game.technologies)
+					.filter((technology) => technology.status !== "hidden")
+					.map((technology) => (
+						<TechnologyRow key={technology.name} technology={technology} />
+					))}
+			</tbody>
+		</table>
+	);
+};

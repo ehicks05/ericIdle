@@ -1,15 +1,15 @@
 import { useInterval } from "usehooks-ts";
 
-import Buildings from "./components/Buildings";
-import Resources from "./components/Resources";
-import Settings from "./components/Settings";
-import Technologies from "./components/Technologies";
-import Villagers from "./components/Villagers";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { MS_PER_TICK } from "./constants/gameSpeed";
-import { ICONS } from "./constants/icons";
-import { usePerf } from "./hooks/usePerf";
-import { tick, useGame } from "./misc/store";
+import { Buildings } from "@/components/Buildings";
+import { Resources } from "@/components/Resources";
+import { Settings } from "@/components/Settings";
+import { Technologies } from "@/components/Technologies";
+import { Villagers } from "@/components/Villagers";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MS_PER_TICK } from "@/constants/gameSpeed";
+import { ICONS } from "@/constants/icons";
+import { usePerf } from "@/hooks/usePerf";
+import { tick, useGame } from "@/store";
 
 function App() {
 	const { game } = useGame();

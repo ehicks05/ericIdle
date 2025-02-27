@@ -12,10 +12,10 @@ const ResourceCost = ({ resource, amount }: Props) => {
 
 	return (
 		<div
-			className="flex items-center justify-between gap-1 p-1 rounded bg-muted/50"
+			className="flex items-center justify-end gap-1 p-1 rounded bg-muted/50"
 			title={resource.name}
 		>
-			<span>{amount}</span>
+			<span className="text-right">{amount.toFixed(2)}</span>
 			<Icon className={cn(color, "p-1 h-8 w-8")} />
 		</div>
 	);
