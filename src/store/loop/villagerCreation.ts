@@ -8,7 +8,7 @@ export const addWorker = (amount: number) => {
 	});
 };
 
-export const isCreateVillager = () => {
+const hasVillagerArrived = () => {
 	const {
 		game: {
 			resources: { villagers, food },
@@ -40,7 +40,7 @@ export const isCreateVillager = () => {
 	return false;
 };
 
-export const createVillager = () => {
+const createVillager = () => {
 	const { villagers } = useGame.getState().game.resources;
 	const spacesAvailable = villagers.limit - villagers.amount;
 
@@ -56,4 +56,10 @@ export const createVillager = () => {
 	useGame.setState(({ game }) => {
 		game.isIncomingVillager = false;
 	});
+};
+
+export const checkVillagerCreation = () => {
+	if (hasVillagerArrived()) {
+		createVillager();
+	}
 };
