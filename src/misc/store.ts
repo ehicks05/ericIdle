@@ -4,7 +4,7 @@ import type { Building, Game, ResourceAmount } from "@/constants/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { myRound } from "./util";
+import { round } from "./util";
 
 type GameStore = {
 	game: Game;
@@ -199,7 +199,7 @@ export const getScaledBuildingCost = (
 ) => {
 	const scalingFactor = buildingName === "huts" ? 1.14 : 1.07;
 	const scaledCost = cost.amount * scalingFactor ** buildingCount;
-	return myRound(scaledCost, 2);
+	return round(scaledCost, 2);
 };
 
 export const scaleBuildingCosts = (building: Building) => {

@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import type { Resource } from "@/constants/types.js";
 import { incrementResource, useGame } from "@/misc/store.js";
+import { intlFormatDistance } from "date-fns";
 import React from "react";
-import { myRound, shortEnglishHumanizer } from "../misc/util.js";
+import { round } from "../misc/util.js";
 import { GameIcon } from "./GameIcon.js";
 import {
 	Tooltip,
@@ -88,11 +89,7 @@ const TimeUntil = ({ resource }: { resource: Resource }) => {
 
 	const rateInfo =
 		resource.rate > 0 || resource.rate < 0
-			? `${destination} in ${shortEnglishHumanizer(time * 1000, {
-					round: true,
-					largest: 2,
-					spacer: "",
-				})}`
+			? `${destination} in ${intlFormatDistance(new Date().getTime() + time * 1000, new Date(), { style: "narrow" })}`
 			: "No change";
 
 	return <div>{rateInfo}</div>;
@@ -192,7 +189,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 	const { image, name, limit, rate } = resource;
 	const amount =
 		resource.name === "villagers"
-			? myRound(resource.amount, 0)
+			? round(resource.amount, 0)
 			: resource.amount.toFixed(2);
 
 	const rateColumn =
