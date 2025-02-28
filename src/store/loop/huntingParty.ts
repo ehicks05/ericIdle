@@ -1,6 +1,6 @@
+import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
 import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { incrementResource, useGame } from "..";
-import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
 import { getPByTime } from "../utils";
 
 const hasHuntingPartyReturned = () => {
@@ -18,6 +18,9 @@ const hasHuntingPartyReturned = () => {
 
 	const isHunters = hunters.amount > 0;
 	if (!isHunters) {
+		useGame.setState(({ game }) => {
+			game.isHuntingPartyActive = false;
+		});
 		return false;
 	}
 

@@ -36,6 +36,10 @@ const hasVillagerArrived = () => {
 		const p = getPByTime(30);
 		return rand < p;
 	}
+
+	useGame.setState(({ game }) => {
+		game.isIncomingVillager = false;
+	});
 	return false;
 };
 
