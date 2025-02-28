@@ -1,6 +1,7 @@
 import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { incrementResource, useGame } from "..";
 import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
+import { getPByTime } from "../utils";
 
 const hasHuntingPartyReturned = () => {
 	const {
@@ -28,7 +29,8 @@ const hasHuntingPartyReturned = () => {
 	}
 
 	const rand = Math.random() / TICKS_PER_SECOND;
-	return rand < 0.002;
+	const p = getPByTime(30);
+	return rand < p;
 };
 
 const handleHuntingPartyReturn = () => {

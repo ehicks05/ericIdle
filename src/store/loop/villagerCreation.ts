@@ -1,6 +1,6 @@
 import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { useGame } from "..";
-import { updateVillagerCount } from "../utils";
+import { getPByTime, updateVillagerCount } from "../utils";
 
 export const addWorker = (amount: number) => {
 	useGame.setState(({ game }) => {
@@ -33,7 +33,8 @@ const hasVillagerArrived = () => {
 		}
 
 		const rand = Math.random() / TICKS_PER_SECOND;
-		return rand < 0.002;
+		const p = getPByTime(30);
+		return rand < p;
 	}
 	return false;
 };
