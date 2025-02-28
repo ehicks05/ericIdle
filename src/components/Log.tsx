@@ -9,16 +9,12 @@ export const df = Intl.DateTimeFormat("en-US", {
 	second: "2-digit",
 });
 
-// https://stackoverflow.com/a/39466341
-function nth(n: number) {
-	return ["st", "nd", "rd"][((((n + 90) % 100) - 10) % 10) - 1] || "th";
-}
-
 const LogLine = ({ event }: { event: Event }) => {
+	const { dayOfSeason, season, year } = getCalendar(event.tick);
 	return (
 		<div className="flex flex-col">
 			<span className="text-xs text-muted-foreground">
-				{df.format(new Date(event.date))}
+				Year {year} · {season.name} - day {dayOfSeason}
 			</span>
 			<span>{event.text}</span>
 		</div>
@@ -29,13 +25,9 @@ const CalendarDay = () => {
 	const { dayOfSeason, season, year } = getCalendar();
 	return (
 		<div className="flex gap-1 whitespace-nowrap">
-			<div>year {year},</div>
-			<div>the</div>
-			<div className="w-8 text-center">
-				{dayOfSeason}
-				{nth(dayOfSeason)}
+			<div>
+				Year {year} · {season.name}, day {dayOfSeason}
 			</div>
-			<div className="w-20">of {season.name}</div>
 		</div>
 	);
 };

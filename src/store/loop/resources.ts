@@ -2,7 +2,7 @@ import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
 import { SECONDS_PER_TICK } from "@/constants/gameSpeed";
 import type { Game } from "@/constants/types";
 import { incrementResource, useGame } from "../index";
-import { updateVillagerCount } from "../utils";
+import { createEvent, updateVillagerCount } from "../utils";
 
 const removeWorkers = (_count: number) => {
 	const { game } = useGame.getState();
@@ -77,10 +77,9 @@ export const updateResources = () => {
 		incrementResource("food", deaths * FOOD_EATEN_PER_SECOND);
 
 		useGame.setState(({ game }) => {
-			const event = {
-				date: new Date().getTime(),
-				text: `${deaths} villager${deaths !== 1 ? "s" : ""} starved`,
-			};
+			const event = createEvent(
+				`${deaths} villager${deaths !== 1 ? "s" : ""} starved`,
+			);
 			game.log = [event, ...game.log];
 		});
 	}

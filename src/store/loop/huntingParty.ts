@@ -1,7 +1,7 @@
 import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
 import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { incrementResource, useGame } from "..";
-import { getPByTime } from "../utils";
+import { createEvent, getPByTime } from "../utils";
 
 const hasHuntingPartyReturned = () => {
 	const {
@@ -51,10 +51,9 @@ const handleHuntingPartyReturn = () => {
 	useGame.setState(({ game }) => {
 		game.isHuntingPartyActive = false;
 
-		const event = {
-			date: new Date().getTime(),
-			text: `${hunterCount} hunters returned with ${huntingPartyFood.toFixed(2)} food`,
-		};
+		const event = createEvent(
+			`${hunterCount} hunters returned with ${huntingPartyFood.toFixed(2)} food`,
+		);
 		game.log = [event, ...game.log];
 	});
 };

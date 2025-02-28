@@ -1,6 +1,6 @@
 import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { useGame } from "..";
-import { getPByTime, updateVillagerCount } from "../utils";
+import { createEvent, getPByTime, updateVillagerCount } from "../utils";
 
 export const addWorker = (amount: number) => {
 	useGame.setState(({ game }) => {
@@ -49,7 +49,7 @@ const createVillager = () => {
 
 	const { max, min, floor, sqrt } = Math;
 	const villagersToCreate = max(
-		min(floor(sqrt(villagers.amount)) - 1, spacesAvailable),
+		min(floor(villagers.amount / 50), spacesAvailable),
 		1,
 	);
 
@@ -59,10 +59,9 @@ const createVillager = () => {
 	useGame.setState(({ game }) => {
 		game.isIncomingVillager = false;
 
-		const event = {
-			date: new Date().getTime(),
-			text: `${villagersToCreate} villager${villagersToCreate !== 1 ? "s" : ""} joined the community`,
-		};
+		const event = createEvent(
+			`${villagersToCreate} villager${villagersToCreate !== 1 ? "s" : ""} joined the community`,
+		);
 		game.log = [event, ...game.log];
 	});
 };

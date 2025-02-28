@@ -22,7 +22,11 @@ export const ResetButton = ({
 					game.buildings.huts.amount = 10;
 					game.jobs.farmers.amount = 20;
 					game.log = [
-						{ date: new Date().getTime(), text: "What just happened?" },
+						{
+							date: new Date().getTime(),
+							tick: 0,
+							text: "What just happened?",
+						},
 					];
 				});
 			}

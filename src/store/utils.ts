@@ -1,5 +1,6 @@
 import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
-import { useGame } from ".";
+import type { Event } from "@/constants/types";
+import { useGame } from "@/store";
 
 // Villager
 export const updateVillagerCount = (amount: number) => {
@@ -24,3 +25,13 @@ export const getPByTime = (seconds: number) => {
 	const expectedTrials = seconds * TICKS_PER_SECOND;
 	return getP(expectedTrials);
 };
+
+export function createEvent(text: string) {
+	const event: Event = {
+		date: new Date().getTime(),
+		tick: useGame.getState().game.tickCount,
+		text,
+	};
+
+	return event;
+}

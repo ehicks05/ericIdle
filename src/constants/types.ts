@@ -8,6 +8,7 @@ export interface ResourceAmount {
 }
 export interface Event {
 	date: number;
+	tick: number;
 	text: string;
 }
 
