@@ -13,6 +13,7 @@ export const DEFAULT_GAME: Game = {
 	progress: progressChecks,
 
 	log: [],
+	tickCount: 0,
 	defaultJob: "idlers",
 	villagerCreatedAt: Date.now(),
 	isIncomingVillager: false,

@@ -112,6 +112,7 @@ export interface Game {
 	};
 
 	log: Event[];
+	tickCount: number;
 	defaultJob: keyof Game["jobs"];
 	villagerCreatedAt: number;
 	isIncomingVillager: boolean;
