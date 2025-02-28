@@ -3,6 +3,7 @@ import { FOOD_EATEN_PER_SECOND } from "@/constants/game.js";
 import type { Resource } from "@/constants/types";
 import { incrementResource, useGame } from "@/store";
 import { intlFormatDistance } from "date-fns";
+import { ChevronsUp, Ellipsis } from "lucide-react";
 import React from "react";
 import { GameIcon } from "./GameIcon";
 import {
@@ -172,11 +173,15 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 			: resource.amount.toFixed(2);
 
 	const rateColumn =
-		resource.name === "villagers"
-			? game.isIncomingVillager
-				? "+"
-				: "..."
-			: `${rate > 0 ? "+" : ""}${rate.toFixed(2)}/s`;
+		resource.name === "villagers" ? (
+			game.isIncomingVillager ? (
+				<ChevronsUp size={16} />
+			) : (
+				<Ellipsis size={16} />
+			)
+		) : (
+			`${rate > 0 ? "+" : ""}${rate.toFixed(2)}/s`
+		);
 
 	return (
 		<tr>
