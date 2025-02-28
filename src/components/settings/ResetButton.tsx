@@ -21,6 +21,9 @@ export const ResetButton = ({
 					game.resources.research.amount = 20;
 					game.buildings.huts.amount = 10;
 					game.jobs.farmers.amount = 20;
+					game.log = [
+						{ date: new Date().getTime(), text: "What just happened?" },
+					];
 				});
 			}
 		}
