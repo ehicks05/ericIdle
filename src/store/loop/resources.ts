@@ -1,3 +1,4 @@
+import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
 import { SECONDS_PER_TICK } from "@/constants/gameSpeed";
 import type { Game } from "@/constants/types";
 import { incrementResource, useGame } from "../index";
@@ -49,7 +50,9 @@ export const updateResources = () => {
 
 		// villagers gotta eat
 		const foodConsumption =
-			resource.name === "food" ? 0.045 * game.resources.villagers.amount : 0;
+			resource.name === "food"
+				? FOOD_EATEN_PER_SECOND * game.resources.villagers.amount
+				: 0;
 
 		const newRate = additiveMod * multiplicativeMod - foodConsumption;
 
@@ -67,11 +70,11 @@ export const updateResources = () => {
 	// handle starvation
 	if (game.resources.food.amount < 0 && game.resources.villagers.amount > 0) {
 		const foodDeficit = -game.resources.food.amount;
-		const deaths = Math.ceil(foodDeficit / 0.045);
+		const deaths = Math.ceil(foodDeficit / FOOD_EATEN_PER_SECOND);
 
 		updateVillagerCount(-deaths);
 		removeWorkers(deaths);
-		incrementResource("food", deaths * 0.045);
+		incrementResource("food", deaths * FOOD_EATEN_PER_SECOND);
 
 		useGame.setState(({ game }) => {
 			const event = {

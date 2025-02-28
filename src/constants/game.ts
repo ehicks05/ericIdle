@@ -20,3 +20,5 @@ export const DEFAULT_GAME: Game = {
 	huntingPartyReturnedAt: Date.now(),
 	isHuntingPartyActive: false,
 };
+
+export const FOOD_EATEN_PER_SECOND = 0.045;

@@ -71,13 +71,6 @@ export const Villagers = () => {
 	const { game } = useGame();
 	return (
 		<table className="w-full">
-			{/* <thead>
-				<tr>
-					<th className="px-2 text-left" />
-					<th className="px-2 text-right">#</th>
-					<th />
-				</tr>
-			</thead> */}
 			<tbody>
 				{Object.values(game.jobs)
 					.filter((job) => job.status === "visible")

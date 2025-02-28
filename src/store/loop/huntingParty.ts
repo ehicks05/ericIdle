@@ -1,5 +1,6 @@
 import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { incrementResource, useGame } from "..";
+import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
 
 const hasHuntingPartyReturned = () => {
 	const {
@@ -34,8 +35,7 @@ const handleHuntingPartyReturn = () => {
 	const { jobs } = useGame.getState().game;
 	const hunterCount = jobs.hunters.amount;
 
-	const foodEatenPerSecond = 0.045;
-	const baseFoodPerHunter = foodEatenPerSecond * 1.2;
+	const baseFoodPerHunter = FOOD_EATEN_PER_SECOND * 1.2;
 	const expectedSecondsPerHunt = 30;
 	const randomFactor = 0.8 + Math.random() * 0.4;
 	const huntingPartyFood =

@@ -46,13 +46,6 @@ export const Technologies = () => {
 
 	return (
 		<table className="w-full">
-			{/* <thead>
-				<tr>
-					<th className="px-2 text-left" />
-					<th className="px-2 text-right">Price</th>
-					<th />
-				</tr>
-			</thead> */}
 			<tbody>
 				{Object.values(game.technologies)
 					.filter((technology) => technology.status === "visible")

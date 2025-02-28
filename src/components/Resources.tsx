@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { FOOD_EATEN_PER_SECOND } from "@/constants/game.js";
 import type { Resource } from "@/constants/types";
 import { incrementResource, useGame } from "@/store";
 import { intlFormatDistance } from "date-fns";
@@ -139,7 +140,10 @@ const RateInfo = ({ resource }: { resource: Resource }) => {
 					<tr key="foodConsumption">
 						<td>Villagers</td>
 						<td className="pl-2 text-right">
-							-{(game.resources.villagers.amount * 0.045).toFixed(2)}
+							-
+							{(
+								game.resources.villagers.amount * FOOD_EATEN_PER_SECOND
+							).toFixed(2)}
 						</td>
 					</tr>
 				)}
@@ -218,14 +222,6 @@ export const Resources = () => {
 
 	return (
 		<table className="w-full">
-			{/* <thead>
-				<tr>
-					<th className="px-2 text-left">Resource</th>
-					<th className="px-2 text-right">#</th>
-					<th className="px-2 text-right w-24">Rate</th>
-					<th />
-				</tr>
-			</thead> */}
 			<tbody>
 				{Object.values(game.resources)
 					.filter((resource) => resource.status === "visible")

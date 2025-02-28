@@ -79,14 +79,6 @@ export const Buildings = () => {
 
 	return (
 		<table className="w-full">
-			{/* <thead>
-				<tr>
-					<th className="px-2 text-left" />
-					<th className="px-2 text-right">#</th>
-					<th className="px-2 text-right">Price</th>
-					<th />
-				</tr>
-			</thead> */}
 			<tbody>
 				{Object.values(game.buildings)
 					.filter((building) => building.status === "visible")
