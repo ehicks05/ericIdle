@@ -36,7 +36,7 @@ export const Log = () => {
 	const { log } = useGame().game;
 
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="relative flex flex-col gap-2">
 			<CalendarDay />
 			<ScrollArea className="h-[600px]">
 				<div className="flex flex-col gap-2 text-sm">
@@ -44,6 +44,7 @@ export const Log = () => {
 						<LogLine key={event.date} event={event} />
 					))}
 				</div>
+				<div className="absolute bottom-0 w-[calc(100%-0.5rem)] h-1/12 bg-gradient-to-b from-transparent to-background" />
 			</ScrollArea>
 		</div>
 	);
