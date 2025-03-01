@@ -25,7 +25,7 @@ export const resources: Record<keyof Game["resources"], Resource> = {
 		name: "leather",
 		image: "piggyBank",
 		status: "hidden",
-		prereq: "unlockHunting",
+		prereq: "",
 		baseLimit: 20,
 		limit: 20,
 		amount: 0,

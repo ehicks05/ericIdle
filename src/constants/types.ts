@@ -14,7 +14,7 @@ export interface Event {
 
 export interface Resource {
 	name: keyof Game["resources"];
-	prereq: keyof Game["progress"];
+	prereq: keyof Game["progress"] | "";
 	status: UnlockStatus;
 	image: keyof typeof ICONS;
 	amount: number;
