@@ -27,7 +27,10 @@ const BuildingRow = ({ building }: { building: Building }) => {
 									{building.name}
 								</div>
 							</TooltipTrigger>
-							<TooltipContent side="right" className="bg-muted text-white">
+							<TooltipContent
+								side="right"
+								className="p-4 rounded-lg bg-muted text-foreground"
+							>
 								<EffectsTable gameObject={building} />
 							</TooltipContent>
 						</Tooltip>

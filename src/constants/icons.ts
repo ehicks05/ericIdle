@@ -57,7 +57,7 @@ export const ICONS = {
 	treePine: { Icon: TreePine, color: "text-green-600" },
 	mountain: { Icon: Mountain, color: "text-stone-500" },
 	flaskConical: { Icon: FlaskConical, color: "text-blue-500" },
-	users: { Icon: Users, color: "text-yellow-200/50" },
+	users: { Icon: Users, color: "text-yellow-300/75" },
 	piggyBank: { Icon: PiggyBank, color: "text-pink-300/75" },
 
 	// villagers

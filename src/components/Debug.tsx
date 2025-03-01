@@ -11,7 +11,7 @@ export const Debug = ({ perf: { history, max } }: { perf: Perf }) => {
 	const tickTimes = `${(average).toFixed(2)} ms (max: ${max} ms)`;
 
 	return (
-		<div className="flex flex-col gap-2 text-muted-foreground">
+		<div className="flex flex-col gap-2">
 			<div className="flex flex-col gap-1 p-4 bg-muted">
 				Perf
 				<p>Tick duration: {tickTimes}</p>

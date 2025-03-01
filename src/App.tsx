@@ -13,6 +13,7 @@ import { doGameTick } from "@/store/loop";
 import { Debug } from "./components/Debug";
 import { Log } from "./components/Log";
 import { ResetButton } from "./components/Settings/ResetButton";
+import { ThemeToggle } from "./components/ThemeToggle";
 
 function App() {
 	const { game } = useGame();
@@ -34,9 +35,12 @@ function App() {
 
 	return (
 		<div className="h-svh max-w-7xl mx-auto flex flex-col items-center p-8 gap-8">
-			<section className="text-5xl font-bold self-start">
-				<span>Eric</span>
-				<span className="text-green-600">Idle</span>
+			<section className="flex items-center justify-between w-full text-5xl font-bold self-start">
+				<h1>
+					<span>Eric</span>
+					<span className="text-green-600">Idle</span>
+				</h1>
+				<ThemeToggle />
 			</section>
 			<section className="grow w-full flex flex-col lg:flex-row gap-12">
 				<div className="w-full lg:w-1/4 min-w-80">

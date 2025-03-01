@@ -31,7 +31,7 @@ const buildTable = (
 				</tr>
 				<tr>
 					{columns.map((column) => (
-						<th className="p-4" key={column}>
+						<th className="p-2" key={column}>
 							{camelToTitle(column)}
 						</th>
 					))}
@@ -41,7 +41,7 @@ const buildTable = (
 				{data.map((rowData) => (
 					<tr key={rowData.resource}>
 						{columns.map((column) => (
-							<td className="p-4" key={column}>
+							<td className="p-2" key={column}>
 								{rowData[column]}
 							</td>
 						))}
