@@ -2,7 +2,7 @@ import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
 import { incrementResource, useGame } from "..";
 import { createEvent, getPByTime } from "../utils";
 
-export const SECONDS_PER_HUNT = 30;
+export const SECONDS_PER_HUNT = 60;
 
 const rand = (from: number, to: number) => {
 	const low = Math.min(from, to);

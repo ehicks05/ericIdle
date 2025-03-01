@@ -217,7 +217,9 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 			<td className="px-2 text-right">
 				<TooltipProvider>
 					<Tooltip>
-						<TooltipTrigger>{rateColumn}</TooltipTrigger>
+						<TooltipTrigger className="flex w-full items-baseline justify-end">
+							{rateColumn}
+						</TooltipTrigger>
 						<TooltipContent
 							side="right"
 							className="p-4 rounded-lg bg-muted text-foreground"

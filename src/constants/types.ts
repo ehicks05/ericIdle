@@ -110,6 +110,7 @@ export interface Game {
 		unlockLibraries: ProgressCheck;
 		unlockBuilders: ProgressCheck;
 		unlockSmithies: ProgressCheck;
+		unlockNever: ProgressCheck;
 	};
 
 	log: Event[];

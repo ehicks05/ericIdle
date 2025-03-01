@@ -22,6 +22,7 @@ import {
 	FlaskConical,
 	Gavel,
 	GraduationCap,
+	Ham,
 	Hammer,
 	HandCoins,
 	HardHat,
@@ -80,6 +81,7 @@ export const ICONS = {
 	briefcaseMedical: { Icon: BriefcaseMedical, color: "text-neutral-500" },
 	music: { Icon: Music, color: "text-neutral-500" },
 	target: { Icon: Target, color: "text-red-500" },
+	ham: { Icon: Ham, color: "text-rose-600" },
 	handCoins: { Icon: HandCoins, color: "text-amber-500" },
 
 	// technologies

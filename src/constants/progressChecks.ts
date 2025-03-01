@@ -56,4 +56,9 @@ export const progressChecks: Record<keyof Game["progress"], ProgressCheck> = {
 		goal: { resource: "villagers", amount: 50 },
 		unlocked: false,
 	},
+	unlockNever: {
+		name: "unlockNever",
+		goal: { resource: "villagers", amount: Number.MAX_SAFE_INTEGER },
+		unlocked: false,
+	},
 };

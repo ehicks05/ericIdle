@@ -9,10 +9,18 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 		production: [],
 		amount: 0,
 	},
+	hunters: {
+		name: "hunters",
+		image: "ham",
+		prereq: "unlockVillagers",
+		status: "hidden",
+		production: [{ resource: "food", amount: 0.05 }],
+		amount: 0,
+	},
 	farmers: {
 		name: "farmers",
 		image: "shovel",
-		prereq: "unlockVillagers",
+		prereq: "unlockFarming",
 		status: "hidden",
 		production: [{ resource: "food", amount: 0.05 }],
 		amount: 0,
@@ -28,17 +36,9 @@ export const jobs: Record<keyof Game["jobs"], Job> = {
 	foresters: {
 		name: "foresters",
 		image: "axe",
-		prereq: "unlockWoodConstruction",
-		status: "hidden",
-		production: [{ resource: "lumber", amount: 0.03 }],
-		amount: 0,
-	},
-	hunters: {
-		name: "hunters",
-		image: "target",
 		prereq: "unlockVillagers",
 		status: "hidden",
-		production: [],
+		production: [{ resource: "lumber", amount: 0.03 }],
 		amount: 0,
 	},
 	miners: {

@@ -85,7 +85,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	huntingCamps: {
 		name: "huntingCamps",
 		image: "tent",
-		prereq: "unlockVillagers",
+		prereq: "unlockNever",
 		cost: [{ resource: "food", amount: 2 }],
 		resourceLimitModifier: [],
 		bonus: [],
@@ -96,7 +96,7 @@ export const buildings: Record<keyof Game["buildings"], Building> = {
 	smithies: {
 		name: "smithies",
 		image: "anvil",
-		prereq: "unlockSmithies",
+		prereq: "unlockNever",
 		cost: [{ resource: "lumber", amount: 3 }],
 		resourceLimitModifier: [],
 		bonus: [],
