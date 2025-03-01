@@ -41,15 +41,17 @@ export const sellBuilding = (building: Building) => {
 	);
 };
 
-export const assignJob = (name: keyof Game["jobs"], amount: number) => {
-	const { game } = useGame.getState();
-	const idlerCount = game.jobs.idlers.amount;
-	const jobCount = game.jobs[name].amount;
+export const assignJob = (name: keyof Game["jobs"], _amount: number) => {
+	const { jobs } = useGame.getState().game;
+	const idlerCount = jobs.idlers.amount;
+	const jobCount = jobs[name].amount;
 
-	if (
-		(amount > 0 && idlerCount >= amount) ||
-		(amount < 0 && jobCount >= amount)
-	) {
+	const amount =
+		_amount > 0
+			? Math.min(_amount, idlerCount)
+			: -1 * Math.min(Math.abs(_amount), jobCount);
+
+	if (amount) {
 		useGame.setState(({ game }) => {
 			game.jobs[name].amount += amount;
 			game.jobs.idlers.amount -= amount;
