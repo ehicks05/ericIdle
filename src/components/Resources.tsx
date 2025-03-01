@@ -57,19 +57,22 @@ const LimitInfo = ({ resource }: { resource: Resource }) => {
 };
 
 const TimeUntil = ({ resource }: { resource: Resource }) => {
-	const time =
-		resource.rate > 0
-			? (resource.limit - resource.amount) / resource.rate
-			: resource.amount / -resource.rate;
+	const { rate, limit, amount } = resource;
+	const { time, result } =
+		rate > 0
+			? { time: (limit - amount) / rate, result: "full" }
+			: rate < 0
+				? { time: amount / -rate, result: "empty" }
+				: { time: 0, result: "" };
 
-	const destination = resource.rate > 0 ? "full" : "empty";
+	const fmt = (time: number) =>
+		intlFormatDistance(new Date().getTime() + time * 1000, new Date(), {
+			style: "narrow",
+		});
 
-	const rateInfo =
-		resource.rate > 0 || resource.rate < 0
-			? `${destination} in ${intlFormatDistance(new Date().getTime() + time * 1000, new Date(), { style: "narrow" })}`
-			: "No change";
+	const label = time === 0 ? "--" : `${result} in ${fmt(time)}`;
 
-	return <div>{rateInfo}</div>;
+	return <div>{label}</div>;
 };
 
 const RateInfo = ({ resource }: { resource: Resource }) => {
