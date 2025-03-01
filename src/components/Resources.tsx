@@ -135,29 +135,26 @@ const RateInfo = ({ resource }: { resource: Resource }) => {
 			);
 		});
 
-	const rateInfo = (
-		<table>
-			<tbody>
-				{production}
-				{mods}
-				{resource.name === "food" && (
-					<tr key="foodConsumption">
-						<td>Villagers</td>
-						<td className="pl-2 text-right">
-							-
-							{(
-								game.resources.villagers.amount * FOOD_EATEN_PER_SECOND
-							).toFixed(2)}
-						</td>
-					</tr>
-				)}
-			</tbody>
-		</table>
-	);
-
 	return (
 		<div>
-			{rateInfo}
+			<table>
+				<tbody>
+					{production}
+					{mods}
+					{resource.name === "food" && (
+						<tr key="foodConsumption">
+							<td>Villagers</td>
+							<td className="pl-2 text-right">
+								{(
+									game.resources.villagers.amount *
+									FOOD_EATEN_PER_SECOND *
+									-1
+								).toFixed(2)}
+							</td>
+						</tr>
+					)}
+				</tbody>
+			</table>
 			<TimeUntil resource={resource} />
 		</div>
 	);
