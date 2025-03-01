@@ -104,6 +104,9 @@ const RateInfo = ({ resource }: { resource: Resource }) => {
 			);
 		});
 
+	const percent = (amount: number) =>
+		Intl.NumberFormat("en-US", { style: "percent" }).format(amount);
+
 	const mods = Object.values(game.buildings)
 		.filter(
 			(building) =>
@@ -118,16 +121,12 @@ const RateInfo = ({ resource }: { resource: Resource }) => {
 				<React.Fragment key={building.name}>
 					{bonus.map((bonus) => {
 						const amount = building.amount * bonus.amount;
-						const prettyAmount =
-							bonus.type === "additive"
-								? amount.toFixed(2)
-								: !bonus.type || bonus.type === "multiplicative"
-									? `${(1 + amount * 100).toFixed(0)}%`
-									: "?";
+						// const prettyAmount =
+						// 	bonus.type === "additive" ? amount.toFixed(2) : percent(amount);
 						return (
 							<tr key={bonus.resource}>
 								<td className="pl-2">{building.name}</td>
-								<td className="pl-2 text-right">+{prettyAmount}</td>
+								<td className="pl-2 text-right">+{percent(amount)}</td>
 							</tr>
 						);
 					})}
