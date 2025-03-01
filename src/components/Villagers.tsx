@@ -18,7 +18,7 @@ const JobRow = ({ job }: { job: Job }) => {
 
 	return (
 		<tr>
-			<td className="p-2 w-full">
+			<td className="p-1 w-full">
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
@@ -43,8 +43,8 @@ const JobRow = ({ job }: { job: Job }) => {
 					</Tooltip>
 				</TooltipProvider>
 			</td>
-			<td className="px-2 text-right">{job.amount}</td>
-			<td className="px-2 text-center whitespace-nowrap">
+			<td className="p-1 text-right">{job.amount}</td>
+			<td className="p-1 text-center whitespace-nowrap">
 				{job.name !== "idlers" && (
 					<div className="space-x-2">
 						<Button

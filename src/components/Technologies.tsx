@@ -12,13 +12,13 @@ const TechnologyRow = ({ technology }: { technology: Technology }) => {
 
 	return (
 		<tr>
-			<td className="px-2 w-full">
+			<td className="p-1 w-full">
 				<div className="flex items-center gap-2">
 					<GameIcon icon={technology.image} />
 					{camelToTitle(technology.name)}
 				</div>
 			</td>
-			<td className="px-2 text-right">
+			<td className="p-1 text-right">
 				{technology.cost.map((cost) => (
 					<ResourceCost
 						key={technology.name}
@@ -27,7 +27,7 @@ const TechnologyRow = ({ technology }: { technology: Technology }) => {
 					/>
 				))}
 			</td>
-			<td className="px-2">
+			<td className="p-1">
 				<Button
 					variant="secondary"
 					size="sm"

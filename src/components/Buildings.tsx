@@ -17,28 +17,24 @@ const BuildingRow = ({ building }: { building: Building }) => {
 
 	return (
 		<tr>
-			<td className="px-2">
-				<div className="flex flex-row">
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger>
-								<div className="flex gap-1">
-									<GameIcon icon={building.image} />
-									{building.name}
-								</div>
-							</TooltipTrigger>
-							<TooltipContent
-								side="right"
-								className="p-4 rounded-lg bg-muted text-foreground"
-							>
-								<EffectsTable gameObject={building} />
-							</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
-				</div>
+			<td className="p-1 w-full">
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger className="flex gap-1">
+							<GameIcon icon={building.image} />
+							{building.name}
+						</TooltipTrigger>
+						<TooltipContent
+							side="right"
+							className="p-4 rounded-lg bg-muted text-foreground"
+						>
+							<EffectsTable gameObject={building} />
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
 			</td>
-			<td className="px-2 text-right w-full">{building.amount}</td>
-			<td className="px-2 text-right">
+			<td className="p-1 text-right">{building.amount}</td>
+			<td className="p-1 text-right">
 				{scaleBuildingCosts(building).map((scaledCost) => {
 					const resource = game.resources[scaledCost.resource];
 
@@ -51,7 +47,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
 					);
 				})}
 			</td>
-			<td className="px-2">
+			<td className="p-1">
 				<div className="space-x-2">
 					<Button
 						variant="secondary"
