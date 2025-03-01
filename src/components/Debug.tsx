@@ -22,7 +22,7 @@ export const Debug = ({ perf: { history, max } }: { perf: Perf }) => {
 			</div>
 			<div className="flex flex-col gap-1 p-4 bg-muted">
 				Icons
-				<div className="grid grid-cols-12 w-fit mx-auto gap-2 ">
+				<div className="flex flex-wrap justify-between gap-2 ">
 					{Object.entries(ICONS).map(([name, { Icon, color }]) => (
 						<Icon key={name} className={color} />
 					))}

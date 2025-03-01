@@ -18,7 +18,7 @@ const JobRow = ({ job }: { job: Job }) => {
 
 	return (
 		<tr>
-			<td className="p-2">
+			<td className="p-2 w-full">
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
@@ -41,14 +41,14 @@ const JobRow = ({ job }: { job: Job }) => {
 				</TooltipProvider>
 			</td>
 			<td className="px-2 text-right">{job.amount}</td>
-			<td className="px-2 text-center">
+			<td className="px-2 text-center whitespace-nowrap">
 				{job.name !== "idlers" && (
 					<div className="space-x-2">
 						<Button
 							variant="secondary"
 							size="sm"
 							disabled={game.jobs.idlers.amount <= 0}
-							onClick={() => assignJob(job.name, 1)}
+							onClick={(e) => assignJob(job.name, 1 * (e.ctrlKey ? 10 : 1))}
 						>
 							+
 						</Button>
@@ -56,7 +56,7 @@ const JobRow = ({ job }: { job: Job }) => {
 							variant="secondary"
 							size="sm"
 							disabled={job.amount <= 0}
-							onClick={() => assignJob(job.name, -1)}
+							onClick={(e) => assignJob(job.name, -1 * (e.ctrlKey ? 10 : 1))}
 						>
 							-
 						</Button>

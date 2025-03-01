@@ -180,8 +180,19 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 				<Ellipsis size={16} />
 			)
 		) : (
-			`${rate > 0 ? "+" : ""}${rate.toFixed(2)}/s`
+			<>
+				{rate > 0 ? "+" : ""}
+				{rate.toFixed(2)}
+				<span className="text-sm text-muted-foreground">/s</span>
+			</>
 		);
+
+	const quantity = (
+		<>
+			{amount}
+			<span className="text-sm text-muted-foreground">/{limit}</span>
+		</>
+	);
 
 	return (
 		<tr>
@@ -194,7 +205,7 @@ const ResourceRow = ({ resource }: { resource: Resource }) => {
 			<td className="px-2 text-right">
 				<TooltipProvider>
 					<Tooltip>
-						<TooltipTrigger>{`${amount}/${limit}`}</TooltipTrigger>
+						<TooltipTrigger>{quantity}</TooltipTrigger>
 						<TooltipContent side="right" className="bg-muted text-white">
 							<LimitInfo resource={resource} />
 						</TooltipContent>

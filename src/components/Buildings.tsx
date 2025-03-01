@@ -34,7 +34,7 @@ const BuildingRow = ({ building }: { building: Building }) => {
 					</TooltipProvider>
 				</div>
 			</td>
-			<td className="px-2 text-right">{building.amount}</td>
+			<td className="px-2 text-right w-full">{building.amount}</td>
 			<td className="px-2 text-right">
 				{scaleBuildingCosts(building).map((scaledCost) => {
 					const resource = game.resources[scaledCost.resource];

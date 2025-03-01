@@ -12,7 +12,7 @@ const TechnologyRow = ({ technology }: { technology: Technology }) => {
 
 	return (
 		<tr>
-			<td className="px-2">
+			<td className="px-2 w-full">
 				<div className="flex items-center gap-2">
 					<GameIcon icon={technology.image} />
 					{camelToTitle(technology.name)}

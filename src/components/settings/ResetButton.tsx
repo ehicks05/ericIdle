@@ -1,34 +1,20 @@
 import { useGame } from "@/store";
 import { Button } from "../ui/button";
 
-export const ResetButton = ({
-	skipConfirm = false,
-}: { skipConfirm?: boolean }) => {
+interface Props {
+	skipConfirm?: boolean;
+	cb?: () => void;
+}
+
+export const ResetButton = ({ skipConfirm = false, cb }: Props) => {
 	const { resetGame } = useGame();
 
 	const handleReset = () => {
-		if (
-			skipConfirm ||
-			window.confirm("Are you sure you? All progress will be lost.")
-		) {
+		const confirm = "Are you sure you? All progress will be lost.";
+		if (skipConfirm || window.confirm(confirm)) {
 			resetGame();
-
-			if (import.meta.env.DEV) {
-				useGame.setState(({ game }) => {
-					game.resources.food.amount = 20;
-					game.resources.villagers.amount = 20;
-					game.resources.lumber.amount = 20;
-					game.resources.research.amount = 20;
-					game.buildings.huts.amount = 10;
-					game.jobs.farmers.amount = 20;
-					game.log = [
-						{
-							date: new Date().getTime(),
-							tick: 0,
-							text: "What just happened?",
-						},
-					];
-				});
+			if (cb) {
+				cb();
 			}
 		}
 	};

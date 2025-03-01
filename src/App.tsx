@@ -33,20 +33,20 @@ function App() {
 	].filter(({ unlocked }) => unlocked);
 
 	return (
-		<div className="h-svh p-6 grid justify-center items-end gap-4">
-			<section className="text-5xl font-bold">
+		<div className="h-svh max-w-7xl mx-auto flex flex-col items-center p-8 gap-8">
+			<section className="text-5xl font-bold self-start">
 				<span>Eric</span>
 				<span className="text-green-600">Idle</span>
 			</section>
-			<section className="h-full flex flex-col md:flex-row items-start gap-4">
-				<div className="w-80">
+			<section className="grow w-full flex flex-col lg:flex-row gap-12">
+				<div className="w-full lg:w-1/4 min-w-80">
 					<Resources />
 				</div>
-				<div>
-					<Tabs defaultValue="Buildings" className="w-full">
-						<TabsList>
+				<div className="w-full lg:w-1/2">
+					<Tabs defaultValue="Buildings">
+						<TabsList className="w-full">
 							{tabs.map((tab) => (
-								<TabsTrigger key={tab.name} value={tab.name}>
+								<TabsTrigger key={tab.name} value={tab.name} className="w-full">
 									{tab.name}
 								</TabsTrigger>
 							))}
@@ -68,7 +68,7 @@ function App() {
 						</TabsContent>
 					</Tabs>
 				</div>
-				<div className="w-80 h-3/4">
+				<div className="w-full lg:w-1/4">
 					<Log />
 				</div>
 			</section>
@@ -76,7 +76,26 @@ function App() {
 				hi
 				{import.meta.env.DEV && (
 					<span className="ml-4">
-						<ResetButton skipConfirm />
+						<ResetButton
+							skipConfirm
+							cb={() => {
+								useGame.setState(({ game }) => {
+									game.resources.food.amount = 20;
+									game.resources.villagers.amount = 20;
+									game.resources.lumber.amount = 20;
+									game.resources.research.amount = 20;
+									game.buildings.huts.amount = 10;
+									game.jobs.farmers.amount = 20;
+									game.log = [
+										{
+											date: new Date().getTime(),
+											tick: 0,
+											text: "You wake up",
+										},
+									];
+								});
+							}}
+						/>
 					</span>
 				)}
 			</footer>
