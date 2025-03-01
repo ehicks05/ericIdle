@@ -2,13 +2,6 @@ import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import type { Event } from "@/constants/types";
 import { useGame } from "@/store";
 
-// Villager
-export const updateVillagerCount = (amount: number) => {
-	useGame.setState(({ game }) => {
-		game.resources.villagers.amount += amount;
-	});
-};
-
 /**
  * Returns the probability `p` needed so that you have a 50% chance of success
  * after `expectedTrials`.

@@ -1,65 +1,53 @@
 import { FOOD_EATEN_PER_SECOND } from "@/constants/game";
-import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { incrementResource, useGame } from "..";
 import { createEvent, getPByTime } from "../utils";
 
-const hasHuntingPartyReturned = () => {
-	const {
-		game: {
-			jobs: { hunters },
-			isHuntingPartyActive,
-			huntingPartyReturnedAt,
-		},
-	} = useGame.getState();
+export const SECONDS_PER_HUNT = 30;
 
-	// wait at least 5 seconds
-	const msSinceLastEvent = Date.now() - huntingPartyReturnedAt;
-	if (msSinceLastEvent < 5000) return false;
+const rand = (from: number, to: number) => {
+	const low = Math.min(from, to);
+	const high = Math.max(from, to);
+	return low + Math.random() * (high - low);
+};
 
-	const isHunters = hunters.amount > 0;
-	if (!isHunters) {
-		useGame.setState(({ game }) => {
-			game.isHuntingPartyActive = false;
-		});
-		return false;
-	}
-
-	if (isHuntingPartyActive === false) {
-		useGame.setState(({ game }) => {
-			game.isHuntingPartyActive = true;
-			game.huntingPartyReturnedAt = Date.now();
-		});
-	}
-
-	const rand = Math.random() / TICKS_PER_SECOND;
-	const p = getPByTime(30);
-	return rand < p;
+const huntingPartyFood = () => {
+	const hunterCount = useGame.getState().game.jobs.hunters.amount;
+	const baseFoodPerHunter = FOOD_EATEN_PER_SECOND * 1.2;
+	const randomFactor = rand(0.8, 1.2);
+	return baseFoodPerHunter * SECONDS_PER_HUNT * hunterCount * randomFactor;
 };
 
 const handleHuntingPartyReturn = () => {
-	const { jobs } = useGame.getState().game;
-	const hunterCount = jobs.hunters.amount;
+	const foodFound = huntingPartyFood();
 
-	const baseFoodPerHunter = FOOD_EATEN_PER_SECOND * 1.2;
-	const expectedSecondsPerHunt = 30;
-	const randomFactor = 0.8 + Math.random() * 0.4;
-	const huntingPartyFood =
-		baseFoodPerHunter * expectedSecondsPerHunt * hunterCount * randomFactor;
-
-	incrementResource("food", huntingPartyFood);
+	incrementResource("food", foodFound);
 
 	useGame.setState(({ game }) => {
 		game.isHuntingPartyActive = false;
 
-		const event = createEvent(
-			`${hunterCount} hunters returned with ${huntingPartyFood.toFixed(2)} food`,
-		);
+		const event = createEvent(`Hunters find ${foodFound.toFixed(2)} food`);
 		game.log = [event, ...game.log];
+		game.huntingPartyReturnedAt = Date.now();
 	});
 };
 
 export const checkHuntingParty = () => {
-	if (hasHuntingPartyReturned()) {
-		handleHuntingPartyReturn();
+	const isHunters = useGame.getState().game.jobs.hunters.amount > 0;
+
+	if (isHunters) {
+		useGame.setState(({ game }) => {
+			game.isHuntingPartyActive = true;
+		});
+
+		const rand = Math.random();
+		const p = getPByTime(SECONDS_PER_HUNT);
+
+		if (rand < p) {
+			handleHuntingPartyReturn();
+		}
+	} else {
+		useGame.setState(({ game }) => {
+			game.isHuntingPartyActive = false;
+		});
 	}
 };

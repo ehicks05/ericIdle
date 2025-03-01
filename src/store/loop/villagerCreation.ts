@@ -1,73 +1,55 @@
-import { TICKS_PER_SECOND } from "@/constants/gameSpeed";
 import { useGame } from "..";
-import { createEvent, getPByTime, updateVillagerCount } from "../utils";
+import { createEvent, getPByTime } from "../utils";
 
-export const addWorker = (amount: number) => {
-	useGame.setState(({ game }) => {
-		game.jobs[game.defaultJob].amount += amount;
-	});
-};
+const VILLAGER_CREATION_SECONDS = import.meta.env.DEV ? 3 : 30;
 
-const hasVillagerArrived = () => {
-	const {
-		game: {
-			resources: { villagers, food },
-			isIncomingVillager,
-			villagerCreatedAt,
-		},
-	} = useGame.getState();
+const { max, min, round } = Math;
 
-	// wait at least 5 seconds
-	const msSinceLastEvent = Date.now() - villagerCreatedAt;
-	if (msSinceLastEvent < 5000) return false;
+const isPopulationGrowing = () => {
+	const { villagers, food } = useGame.getState().game.resources;
 
 	const isRoom = villagers.amount < villagers.limit;
-	const isFood = food.amount >= 1;
+	const isFood = food.amount > 0;
 
-	if (isRoom && isFood) {
-		if (isIncomingVillager === false) {
-			useGame.setState(({ game }) => {
-				game.isIncomingVillager = true;
-				game.villagerCreatedAt = Date.now();
-			});
-		}
-
-		const rand = Math.random() / TICKS_PER_SECOND;
-		const p = getPByTime(30);
-		return rand < p;
-	}
-
-	useGame.setState(({ game }) => {
-		game.isIncomingVillager = false;
-	});
-	return false;
+	return isRoom && isFood;
 };
 
-const createVillager = () => {
+const getVillagersToCreate = () => {
 	const { villagers } = useGame.getState().game.resources;
 	const spacesAvailable = villagers.limit - villagers.amount;
 
-	const { max, min, floor, sqrt } = Math;
-	const villagersToCreate = max(
-		min(floor(villagers.amount / 50), spacesAvailable),
-		1,
-	);
+	return max(min(round(villagers.amount / 50), spacesAvailable), 1);
+};
 
-	updateVillagerCount(villagersToCreate);
-	addWorker(villagersToCreate);
+const createVillager = () => {
+	const villagersToCreate = getVillagersToCreate();
 
 	useGame.setState(({ game }) => {
-		game.isIncomingVillager = false;
+		game.resources.villagers.amount += villagersToCreate;
+		game.jobs[game.defaultJob].amount += villagersToCreate;
 
 		const event = createEvent(
-			`${villagersToCreate} villager${villagersToCreate !== 1 ? "s" : ""} joined the community`,
+			`${villagersToCreate} ${villagersToCreate === 1 ? "villager joins" : "villagers join"} the community`,
 		);
 		game.log = [event, ...game.log];
+		game.villagerCreatedAt = Date.now();
 	});
 };
 
 export const checkVillagerCreation = () => {
-	if (hasVillagerArrived()) {
-		createVillager();
+	if (isPopulationGrowing()) {
+		useGame.setState(({ game }) => {
+			game.isIncomingVillager = true;
+		});
+
+		const rand = Math.random();
+		const p = getPByTime(VILLAGER_CREATION_SECONDS);
+		if (rand < p) {
+			createVillager();
+		}
+	} else {
+		useGame.setState(({ game }) => {
+			game.isIncomingVillager = false;
+		});
 	}
 };
