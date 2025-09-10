@@ -1,3 +1,6 @@
+> [!NOTE]
+> merging this project into https://github.com/ehicks05/toy-apps/tree/master/src/eric-idle for the time being. will return to this repo if I'm ever motivated to work on it more.
+
 # prototype clicker/idle game
 
 Haven't gotten very far into actual gameplay, but this project has been great
